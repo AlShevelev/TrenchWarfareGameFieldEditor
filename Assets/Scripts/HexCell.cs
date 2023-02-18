@@ -19,13 +19,22 @@ public class HexCell : MonoBehaviour {
 		}
 		set {
 			elevation = value;
-            Vector3 position = transform.localPosition;
+			Vector3 position = transform.localPosition;
 			position.y = value * HexMetrics.elevationStep;
-			transform.localPosition = position;     
+			position.y +=
+				(HexMetrics.SampleNoise(position).y * 2f - 1f) *
+				HexMetrics.elevationPerturbStrength;
+			transform.localPosition = position;
 
-            Vector3 uiPosition = uiRect.localPosition;
-			uiPosition.z = value * -HexMetrics.elevationStep;
-			uiRect.localPosition = uiPosition;                   
+			Vector3 uiPosition = uiRect.localPosition;
+			uiPosition.z = -position.y;
+			uiRect.localPosition = uiPosition;
+		}
+	}
+
+	public Vector3 Position {
+		get {
+			return transform.localPosition;
 		}
 	}
 	
