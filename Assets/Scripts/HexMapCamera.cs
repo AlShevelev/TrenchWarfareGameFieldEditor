@@ -6,7 +6,7 @@ public class HexMapCamera : MonoBehaviour {
 
     float rotationAngle;
 
-    float zoom = 1f;
+    float zoom = 0f;
 
     public float stickMinZoom, stickMaxZoom;
 
@@ -21,6 +21,8 @@ public class HexMapCamera : MonoBehaviour {
 	void Awake () {
 		swivel = transform.GetChild(0);
 		stick = swivel.GetChild(0);
+
+		setStartZoomAndPosition();
 	}
 
     void Update () {
@@ -60,22 +62,31 @@ public class HexMapCamera : MonoBehaviour {
 
 		Vector3 position = transform.localPosition;
 		position += direction * distance;
-		transform.localPosition = ClampPosition(position);;
+		transform.localPosition = ClampPosition(position);
 	}
 
     Vector3 ClampPosition (Vector3 position) {
-        float xMax =
-			(grid.chunkCountX * HexMetrics.chunkSizeX - 0.5f) *
-			(2f * HexMetrics.innerRadius);
+        float xMax = getMaxXPosition();
 		position.x = Mathf.Clamp(position.x, 0f, xMax);
 
-    float zMax =
-			(grid.chunkCountZ * HexMetrics.chunkSizeZ - 1) *
-			(1.5f * HexMetrics.outerRadius);
+    	float zMax = getMaxZPosition();
 		position.z = Mathf.Clamp(position.z, 0f, zMax);
 
 		return position;
 	}
+
+	float getMaxXPosition() {
+        return 
+			(grid.chunkCountX * HexMetrics.chunkSizeX - 0.5f) *
+			(2f * HexMetrics.innerRadius);
+	}
+
+	float getMaxZPosition() {
+        return 
+			(grid.chunkCountZ * HexMetrics.chunkSizeZ - 1) *
+			(1.5f * HexMetrics.outerRadius);
+	}
+
 
     void AdjustRotation (float delta) {
         rotationAngle += delta * rotationSpeed * Time.deltaTime;
@@ -86,5 +97,14 @@ public class HexMapCamera : MonoBehaviour {
 			rotationAngle -= 360f;
 		}
 		transform.localRotation = Quaternion.Euler(0f, rotationAngle, 0f);
+	}
+
+	void setStartZoomAndPosition() {
+		AdjustZoom(0);
+
+		Vector3 startPosition = transform.localPosition;
+		startPosition.x = getMaxXPosition() / 2f;
+		startPosition.z = getMaxZPosition() / 2f;
+		transform.localPosition = startPosition;
 	}
 }
