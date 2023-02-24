@@ -113,6 +113,14 @@ public class HexCell : MonoBehaviour {
 			return (elevation + HexMetrics.streamBedElevationOffset) *	HexMetrics.elevationStep;
 		}
 	}
+
+	public float RiverSurfaceY {
+		get {
+			return
+				(elevation + HexMetrics.riverSurfaceElevationOffset) *
+				HexMetrics.elevationStep;
+		}
+	}
 	
     public HexCell GetNeighbor (HexDirection direction) {
 		return neighbors[(int)direction];

@@ -25,7 +25,7 @@ public class HexMetrics {
 
 	public static Texture2D noiseSource;
 
-	public const float cellPerturbStrength = 0f;  //4f;
+	public const float cellPerturbStrength = 4f;
 
 	public const float noiseScale = 0.003f;
 
@@ -34,7 +34,9 @@ public class HexMetrics {
 	// Size of a chunk of a map
 	public const int chunkSizeX = 5, chunkSizeZ = 5;
 
-	public const float streamBedElevationOffset = -1f;
+	public const float streamBedElevationOffset = -1.75f;
+
+	public const float riverSurfaceElevationOffset = -0.5f;
 
     public static Vector3[] corners = {
 		new Vector3(0f, 0f, outerRadius),
@@ -104,4 +106,14 @@ public class HexMetrics {
 			(corners[(int)direction] + corners[(int)direction + 1]) *
 			(0.5f * solidFactor);
 	}	
+
+	public static Vector3 Perturb (Vector3 position) {
+		Vector4 sample = HexMetrics.SampleNoise(position);
+		
+		position.x += (sample.x * 2f - 1f) * HexMetrics.cellPerturbStrength;
+		//position.y += (sample.y * 2f - 1f) * HexMetrics.cellPerturbStrength;
+		position.z += (sample.z * 2f - 1f) * HexMetrics.cellPerturbStrength;
+		
+		return position;
+	}
 }
