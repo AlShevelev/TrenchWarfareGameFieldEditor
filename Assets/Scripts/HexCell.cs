@@ -172,6 +172,20 @@ public class HexCell : MonoBehaviour {
 		}
 	}
 
+	int urbanLevel;
+
+	public int UrbanLevel {
+		get {
+			return urbanLevel;
+		}
+		set {
+			if (urbanLevel != value) {
+				urbanLevel = value;
+				RefreshSelfOnly();
+			}
+		}
+	}
+
 	public bool HasRoadThroughEdge (HexDirection direction) {
 		return roads[(int)direction];
 	}

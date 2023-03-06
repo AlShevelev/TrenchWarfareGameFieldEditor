@@ -30,6 +30,10 @@ public class HexMapEditor : MonoBehaviour {
 
 	bool applyWaterLevel = true;
 
+	int activeUrbanLevel;
+
+	bool applyUrbanLevel;
+
 
 	void Awake () {
 		SelectColor(0);
@@ -95,6 +99,34 @@ public class HexMapEditor : MonoBehaviour {
 		brushSize = (int)size;
 	}
 
+	public void ShowUI (bool visible) {
+		hexGrid.ShowUI(visible);
+	}
+
+	public void SetRiverMode (int mode) {
+		riverMode = (OptionalToggle)mode;
+	}
+
+	public void SetRoadMode (int mode) {
+		roadMode = (OptionalToggle)mode;
+	}
+
+	public void SetApplyWaterLevel (bool toggle) {
+		applyWaterLevel = toggle;
+	}
+	
+	public void SetWaterLevel (float level) {
+		activeWaterLevel = (int)level;
+	}	
+
+	public void SetApplyUrbanLevel (bool toggle) {
+		applyUrbanLevel = toggle;
+	}
+	
+	public void SetUrbanLevel (float level) {
+		activeUrbanLevel = (int)level;
+	}
+		
 	void EditCell (HexCell cell) {
 		if (cell) {
 			if (applyColor) {
@@ -106,6 +138,9 @@ public class HexMapEditor : MonoBehaviour {
 			if (applyWaterLevel) {
 				cell.WaterLevel = activeWaterLevel;
 			}			
+			if (applyUrbanLevel) {
+				cell.UrbanLevel = activeUrbanLevel;
+			}
 			if (riverMode == OptionalToggle.No) {
 				cell.RemoveRiver();
 			}
@@ -143,23 +178,4 @@ public class HexMapEditor : MonoBehaviour {
 		}
 	}
 
-	public void ShowUI (bool visible) {
-		hexGrid.ShowUI(visible);
-	}
-
-	public void SetRiverMode (int mode) {
-		riverMode = (OptionalToggle)mode;
-	}
-
-	public void SetRoadMode (int mode) {
-		roadMode = (OptionalToggle)mode;
-	}
-
-	public void SetApplyWaterLevel (bool toggle) {
-		applyWaterLevel = toggle;
-	}
-	
-	public void SetWaterLevel (float level) {
-		activeWaterLevel = (int)level;
-	}	
 }
