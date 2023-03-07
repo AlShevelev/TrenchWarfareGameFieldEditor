@@ -186,6 +186,34 @@ public class HexCell : MonoBehaviour {
 		}
 	}
 
+	int farmLevel;
+
+	public int FarmLevel {
+		get {
+			return farmLevel;
+		}
+		set {
+			if (farmLevel != value) {
+				farmLevel = value;
+				RefreshSelfOnly();
+			}
+		}
+	}
+
+	int plantLevel;
+
+	public int PlantLevel {
+		get {
+			return plantLevel;
+		}
+		set {
+			if (plantLevel != value) {
+				plantLevel = value;
+				RefreshSelfOnly();
+			}
+		}
+	}
+
 	public bool HasRoadThroughEdge (HexDirection direction) {
 		return roads[(int)direction];
 	}
