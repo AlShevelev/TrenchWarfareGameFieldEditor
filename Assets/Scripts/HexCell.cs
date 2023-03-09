@@ -214,6 +214,20 @@ public class HexCell : MonoBehaviour {
 		}
 	}
 
+	bool walled;
+
+	public bool Walled {
+		get {
+			return walled;
+		}
+		set {
+			if (walled != value) {
+				walled = value;
+				Refresh();
+			}
+		}
+	}
+
 	public bool HasRoadThroughEdge (HexDirection direction) {
 		return roads[(int)direction];
 	}
