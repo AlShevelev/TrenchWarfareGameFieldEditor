@@ -757,6 +757,7 @@ MonoBehaviour:
     - {fileID: 214946836783288693, guid: 0f130a3d95b3544a39ae40859a67a10c, type: 3}
     - {fileID: 3661158238664609010, guid: ce6d3e7b87b294a3bb019218d2e47ba9, type: 3}
   walls: {fileID: 6239407678798852726}
+  bridge: {fileID: 5635156399099458040, guid: 8ce6588d3f9654d20a2921412bab51aa, type: 3}
 --- !u!1 &6821039048578408889
 GameObject:
   m_ObjectHideFlags: 0

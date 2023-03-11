@@ -52,6 +52,8 @@ public class HexMetrics {
 
 	public const float wallElevationOffset = verticalTerraceStepSize;
 
+	public const float bridgeDesignLength = 7f;
+
 	static HexHash[] hashGrid;
 
     public static Vector3[] corners = {
