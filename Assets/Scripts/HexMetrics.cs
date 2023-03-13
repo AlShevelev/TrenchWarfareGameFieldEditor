@@ -31,6 +31,9 @@ public class HexMetrics {
 
 	public const float elevationPerturbStrength = 1.5f;
 
+	// Size of a map in chunks
+	public const int chunkCountX = 10, chunkCountZ = 10;
+
 	// Size of a chunk of a map
 	public const int chunkSizeX = 5, chunkSizeZ = 5;
 
@@ -55,6 +58,8 @@ public class HexMetrics {
 	public const float bridgeDesignLength = 7f;
 
 	static HexHash[] hashGrid;
+
+	public static Color[] colors;
 
     public static Vector3[] corners = {
 		new Vector3(0f, 0f, outerRadius),

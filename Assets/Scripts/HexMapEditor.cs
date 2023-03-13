@@ -1,17 +1,11 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System.IO;
 
 public class HexMapEditor : MonoBehaviour {
-
-	public Color[] colors;
-
 	public HexGrid hexGrid;
 
-	private Color activeColor;
-
 	int activeElevation;
-
-	bool applyColor;
 
 	bool applyElevation = true;
 
@@ -43,9 +37,7 @@ public class HexMapEditor : MonoBehaviour {
 
 	bool applyPlantLevel;
 
-	void Awake () {
-		SelectColor(0);
-	}
+	int activeTerrainTypeIndex;	
 
 	void Update () {
 		if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject()) {
@@ -88,11 +80,8 @@ public class HexMapEditor : MonoBehaviour {
 		isDrag = false;
 	}
 
-	public void SelectColor (int index) {
-		applyColor = index >= 0;
-		if (applyColor) {
-			activeColor = colors[index];
-		}
+	public void SetTerrainTypeIndex (int index) {
+		activeTerrainTypeIndex = index;
 	}
 
 	public void SetElevation (float elevation) {
@@ -153,8 +142,8 @@ public class HexMapEditor : MonoBehaviour {
 		
 	void EditCell (HexCell cell) {
 		if (cell) {
-			if (applyColor) {
-				cell.Color = activeColor;
+			if (activeTerrainTypeIndex >= 0) {
+				cell.TerrainTypeIndex = activeTerrainTypeIndex;
 			}
 			if (applyElevation) {
 				cell.Elevation = activeElevation;
@@ -213,5 +202,30 @@ public class HexMapEditor : MonoBehaviour {
 
 	public void SetWalledMode (int mode) {
 		walledMode = (OptionalToggle)mode;
+	}
+
+	public void Save() {
+		Debug.Log(Application.persistentDataPath);
+
+		string path = Path.Combine(Application.persistentDataPath, "test.map");
+
+		using(BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.Create))) {
+			writer.Write(0);			// Header (format version - 0)
+			hexGrid.Save(writer);
+		}
+	}
+
+	public void Load() {
+		string path = Path.Combine(Application.persistentDataPath, "test.map");
+		using (BinaryReader reader = new BinaryReader(File.OpenRead(path))) {
+			int header = reader.ReadInt32();
+
+			if (header == 0) {			// Format version checking
+				hexGrid.Load(reader);
+			}
+			else {
+				Debug.LogWarning("Unknown map format " + header);
+			}
+		}
 	}
 }

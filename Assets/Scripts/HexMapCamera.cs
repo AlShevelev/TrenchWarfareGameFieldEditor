@@ -77,13 +77,13 @@ public class HexMapCamera : MonoBehaviour {
 
 	float getMaxXPosition() {
         return 
-			(grid.chunkCountX * HexMetrics.chunkSizeX - 0.5f) *
+			(HexMetrics.chunkCountX * HexMetrics.chunkSizeX - 0.5f) *
 			(2f * HexMetrics.innerRadius);
 	}
 
 	float getMaxZPosition() {
         return 
-			(grid.chunkCountZ * HexMetrics.chunkSizeZ - 1) *
+			(HexMetrics.chunkCountZ * HexMetrics.chunkSizeZ - 1) *
 			(1.5f * HexMetrics.outerRadius);
 	}
 
