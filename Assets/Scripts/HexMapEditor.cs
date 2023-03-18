@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.IO;
 
@@ -38,6 +39,10 @@ public class HexMapEditor : MonoBehaviour {
 	bool applyPlantLevel;
 
 	int activeTerrainTypeIndex;	
+
+	public HexMapCamera mainCamera;
+
+	public InputField nameInput;
 
 	void Update () {
 		if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject()) {
@@ -207,7 +212,8 @@ public class HexMapEditor : MonoBehaviour {
 	public void Save() {
 		Debug.Log(Application.persistentDataPath);
 
-		string path = Path.Combine(Application.persistentDataPath, "test.map");
+		string fileName = nameInput.text;
+		string path = Path.Combine(Application.persistentDataPath, fileName);
 
 		using(BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.Create))) {
 			writer.Write(0);			// Header (format version - 0)
@@ -216,12 +222,21 @@ public class HexMapEditor : MonoBehaviour {
 	}
 
 	public void Load() {
-		string path = Path.Combine(Application.persistentDataPath, "test.map");
+		string fileName = nameInput.text;
+
+		string path = Path.Combine(Application.persistentDataPath, fileName);
+
+		if(!File.Exists(path)) {
+			Debug.LogWarning("File not found: "+fileName);
+			return;
+		}
+
 		using (BinaryReader reader = new BinaryReader(File.OpenRead(path))) {
 			int header = reader.ReadInt32();
 
 			if (header == 0) {			// Format version checking
 				hexGrid.Load(reader);
+				mainCamera.setStartZoomAndPosition();
 			}
 			else {
 				Debug.LogWarning("Unknown map format " + header);

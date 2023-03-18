@@ -31,9 +31,6 @@ public class HexMetrics {
 
 	public const float elevationPerturbStrength = 1.5f;
 
-	// Size of a map in chunks
-	public const int chunkCountX = 10, chunkCountZ = 10;
-
 	// Size of a chunk of a map
 	public const int chunkSizeX = 5, chunkSizeZ = 5;
 

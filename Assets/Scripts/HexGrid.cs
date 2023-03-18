@@ -8,7 +8,9 @@ public class HexGrid : MonoBehaviour {
 	public HexCell cellPrefab;
 	public Text cellLabelPrefab;
 
-	int cellCountX, cellCountZ;
+	public int cellCountX = 20, cellCountZ = 15;
+
+	int chunkCountX, chunkCountZ;
 
     HexCell[] cells;
 
@@ -27,20 +29,37 @@ public class HexGrid : MonoBehaviour {
 		HexMetrics.InitializeHashGrid(seed);
 		HexMetrics.colors = colors;
 
-		cells = new HexCell[cellCountZ * cellCountX];
+		CreateMap(cellCountX, cellCountZ);
+	}
 
-		cellCountX = HexMetrics.chunkCountX * HexMetrics.chunkSizeX;
-		cellCountZ = HexMetrics.chunkCountZ * HexMetrics.chunkSizeZ;
+	public void CreateMap (int x, int z) {
+		if (x <= 0 || x % HexMetrics.chunkSizeX != 0 || z <= 0 || z % HexMetrics.chunkSizeZ != 0) {
+			Debug.LogError("Unsupported map size.");
+			return;
+		}
+
+		// Clearing an old map
+		if (chunks != null) {
+			for (int i = 0; i < chunks.Length; i++) {
+				Destroy(chunks[i].gameObject);
+			}
+		}
+
+		// And creating a new one
+		cellCountX = x;
+		cellCountZ = z;
+		chunkCountX = cellCountX / HexMetrics.chunkSizeX;
+		chunkCountZ = cellCountZ / HexMetrics.chunkSizeZ;
 
 		CreateChunks();
 		CreateCells();
 	}
 
 	void CreateChunks () {
-		chunks = new HexGridChunk[HexMetrics.chunkCountX * HexMetrics.chunkCountZ];
+		chunks = new HexGridChunk[chunkCountX * chunkCountZ];
 
-		for (int z = 0, i = 0; z < HexMetrics.chunkCountZ; z++) {
-			for (int x = 0; x < HexMetrics.chunkCountX; x++) {
+		for (int z = 0, i = 0; z < chunkCountZ; z++) {
+			for (int x = 0; x < chunkCountX; x++) {
 				HexGridChunk chunk = chunks[i++] = Instantiate(chunkPrefab);
 				chunk.transform.SetParent(transform);
 			}
@@ -115,7 +134,7 @@ public class HexGrid : MonoBehaviour {
 	void AddCellToChunk (int x, int z, HexCell cell) {
 		int chunkX = x / HexMetrics.chunkSizeX;
 		int chunkZ = z / HexMetrics.chunkSizeZ;
-		HexGridChunk chunk = chunks[chunkX + chunkZ * HexMetrics.chunkCountX];
+		HexGridChunk chunk = chunks[chunkX + chunkZ * chunkCountX];
 
 		int localX = x - chunkX * HexMetrics.chunkSizeX;
 		int localZ = z - chunkZ * HexMetrics.chunkSizeZ;
@@ -141,12 +160,17 @@ public class HexGrid : MonoBehaviour {
 	}
 
 	public void Save (BinaryWriter writer) {
+		writer.Write(cellCountX);
+		writer.Write(cellCountZ);
+
 		for (int i = 0; i < cells.Length; i++) {
 			cells[i].Save(writer);
 		}
 	}
 
 	public void Load (BinaryReader reader) {
+		CreateMap(reader.ReadInt32(), reader.ReadInt32());
+
 		for (int i = 0; i < cells.Length; i++) {
 			cells[i].Load(reader);
 		}

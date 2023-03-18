@@ -18,6 +18,12 @@ public class HexMapCamera : MonoBehaviour {
 
     public HexGrid grid;
 
+	public bool Locked {
+		set {
+			enabled = !value;
+		}
+	}
+
 	void Awake () {
 		swivel = transform.GetChild(0);
 		stick = swivel.GetChild(0);
@@ -76,15 +82,11 @@ public class HexMapCamera : MonoBehaviour {
 	}
 
 	float getMaxXPosition() {
-        return 
-			(HexMetrics.chunkCountX * HexMetrics.chunkSizeX - 0.5f) *
-			(2f * HexMetrics.innerRadius);
+        return (grid.cellCountX - 0.5f) *	(2f * HexMetrics.innerRadius);
 	}
 
 	float getMaxZPosition() {
-        return 
-			(HexMetrics.chunkCountZ * HexMetrics.chunkSizeZ - 1) *
-			(1.5f * HexMetrics.outerRadius);
+        return (grid.cellCountZ - 1) * (1.5f * HexMetrics.outerRadius);
 	}
 
 
@@ -99,7 +101,7 @@ public class HexMapCamera : MonoBehaviour {
 		transform.localRotation = Quaternion.Euler(0f, rotationAngle, 0f);
 	}
 
-	void setStartZoomAndPosition() {
+	public void setStartZoomAndPosition() {
 		AdjustZoom(0);
 
 		Vector3 startPosition = transform.localPosition;
