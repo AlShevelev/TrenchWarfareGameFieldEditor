@@ -45,18 +45,26 @@ public class HexMapEditor : MonoBehaviour {
 	public InputField nameInput;
 
 	void Update () {
-		if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject()) {
-			HandleInput();
-		} else {
-			previousCell = null;
+		if (!EventSystem.current.IsPointerOverGameObject()) {
+			if (Input.GetMouseButton(0)) {
+				HandleInput();
+				return;
+			}
+			if (Input.GetKeyDown(KeyCode.U)) {
+				if (Input.GetKey(KeyCode.LeftShift)) {
+					DestroyUnit();
+				}
+				else {
+					CreateUnit();
+				}
+			}
 		}
+		previousCell = null;
 	}
 
 	void HandleInput () {
-		Ray inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-		RaycastHit hit;
-		if (Physics.Raycast(inputRay, out hit)) {
-			HexCell currentCell = hexGrid.GetCell(hit.point);
+		HexCell currentCell = GetCellUnderCursor();
+		if (currentCell) {
 			if (previousCell && previousCell != currentCell) {
 				ValidateDrag(currentCell);
 			}
@@ -241,6 +249,29 @@ public class HexMapEditor : MonoBehaviour {
 			else {
 				Debug.LogWarning("Unknown map format " + header);
 			}
+		}
+	}
+
+	HexCell GetCellUnderCursor () {
+		Ray inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+		RaycastHit hit;
+		if (Physics.Raycast(inputRay, out hit)) {
+			return hexGrid.GetCell(hit.point);
+		}
+		return null;
+	}
+
+	void CreateUnit () {
+		HexCell cell = GetCellUnderCursor();
+		if (cell && !cell.Unit) {
+			hexGrid.AddUnit(Instantiate(HexUnit.unitPrefab), cell);
+		}
+	}
+
+	void DestroyUnit () {
+		HexCell cell = GetCellUnderCursor();
+		if (cell && cell.Unit) {
+			hexGrid.RemoveUnit(cell.Unit);
 		}
 	}
 }

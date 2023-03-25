@@ -24,9 +24,14 @@ public class HexGrid : MonoBehaviour {
 
 	public Color[] colors;
 
+	List<HexUnit> units = new List<HexUnit>();
+
+	public HexUnit unitPrefab;
+
     void Awake () {
 		HexMetrics.noiseSource = noiseSource;
 		HexMetrics.InitializeHashGrid(seed);
+		HexUnit.unitPrefab = unitPrefab;
 		HexMetrics.colors = colors;
 
 		CreateMap(cellCountX, cellCountZ);
@@ -39,6 +44,7 @@ public class HexGrid : MonoBehaviour {
 		}
 
 		// Clearing an old map
+		ClearUnits();
 		if (chunks != null) {
 			for (int i = 0; i < chunks.Length; i++) {
 				Destroy(chunks[i].gameObject);
@@ -80,6 +86,7 @@ public class HexGrid : MonoBehaviour {
 		if (!HexMetrics.noiseSource) {
 			HexMetrics.noiseSource = noiseSource;
 			HexMetrics.InitializeHashGrid(seed);
+			HexUnit.unitPrefab = unitPrefab;
 			HexMetrics.colors = colors;
 		}
 	}
@@ -166,9 +173,16 @@ public class HexGrid : MonoBehaviour {
 		for (int i = 0; i < cells.Length; i++) {
 			cells[i].Save(writer);
 		}
+
+		writer.Write(units.Count);
+		for (int i = 0; i < units.Count; i++) {
+			units[i].Save(writer);
+		}
 	}
 
 	public void Load (BinaryReader reader) {
+		ClearUnits();
+
 		CreateMap(reader.ReadInt32(), reader.ReadInt32());
 
 		for (int i = 0; i < cells.Length; i++) {
@@ -178,5 +192,28 @@ public class HexGrid : MonoBehaviour {
 		for (int i = 0; i < chunks.Length; i++) {
 			chunks[i].Refresh();
 		}
+
+		int unitCount = reader.ReadInt32();
+		for (int i = 0; i < unitCount; i++) {
+			HexUnit.Load(reader, this);
+		}
+	}
+
+	void ClearUnits () {
+		for (int i = 0; i < units.Count; i++) {
+			units[i].Die();
+		}
+		units.Clear();
+	}
+
+	public void AddUnit (HexUnit unit, HexCell location) {
+		units.Add(unit);
+		unit.transform.SetParent(transform, false);
+		unit.Location = location;
+	}
+
+	public void RemoveUnit (HexUnit unit) {
+		units.Remove(unit);
+		unit.Die();
 	}
 }

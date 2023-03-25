@@ -8904,6 +8904,7 @@ MonoBehaviour:
   - {r: 0.0107040405, g: 0, b: 1, a: 0}
   - {r: 1, g: 0.47134614, b: 0, a: 0}
   - {r: 1, g: 1, b: 1, a: 0}
+  unitPrefab: {fileID: 2686054069075168601, guid: b7e186481ed3d4186be46c10df88337a, type: 3}
 --- !u!4 &1316749995
 Transform:
   m_ObjectHideFlags: 0
@@ -9439,6 +9440,7 @@ MonoBehaviour:
   hexGrid: {fileID: 1316749994}
   mainCamera: {fileID: 163749745}
   nameInput: {fileID: 1904566361}
+  unitPrefab: {fileID: 2686054069075168601, guid: b7e186481ed3d4186be46c10df88337a, type: 3}
 --- !u!114 &1485447623
 MonoBehaviour:
   m_ObjectHideFlags: 0

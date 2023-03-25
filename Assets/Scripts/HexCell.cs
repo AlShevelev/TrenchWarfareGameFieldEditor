@@ -224,6 +224,8 @@ public class HexCell : MonoBehaviour {
 		}
 	}
 
+	public HexUnit Unit { get; set; }
+
 	public bool HasRoadThroughEdge (HexDirection direction) {
 		return roads[(int)direction];
 	}
@@ -311,16 +313,25 @@ public class HexCell : MonoBehaviour {
 
 	void RefreshSelfOnly () {
 		chunk.Refresh();
+
+		if (Unit) {
+			Unit.ValidateLocation();
+		}
 	}
 
 	void Refresh () {
 		if (chunk) {
 			chunk.Refresh();
+
 			for (int i = 0; i < neighbors.Length; i++) {
 				HexCell neighbor = neighbors[i];
 				if (neighbor != null && neighbor.chunk != chunk) {
 					neighbor.chunk.Refresh();
 				}
+			}
+
+			if (Unit) {
+				Unit.ValidateLocation();
 			}
 		}
 	}
