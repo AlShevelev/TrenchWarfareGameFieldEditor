@@ -181,6 +181,8 @@ public class HexGrid : MonoBehaviour {
 	}
 
 	public void Load (BinaryReader reader) {
+		StopAllCoroutines();
+
 		ClearUnits();
 
 		CreateMap(reader.ReadInt32(), reader.ReadInt32());
@@ -215,5 +217,66 @@ public class HexGrid : MonoBehaviour {
 	public void RemoveUnit (HexUnit unit) {
 		units.Remove(unit);
 		unit.Die();
+	}
+
+	public void FindDistancesTo (HexCell cell) {
+		StopAllCoroutines();
+		StartCoroutine(Search(cell));
+	}
+
+	IEnumerator Search (HexCell cell) {
+		for (int i = 0; i < cells.Length; i++) {
+			cells[i].Distance = int.MaxValue;
+		}
+
+		WaitForSeconds delay = new WaitForSeconds(1 / 60f);
+		
+		List<HexCell> frontier = new List<HexCell>();
+		cell.Distance = 0;
+		frontier.Add(cell);
+
+		while (frontier.Count > 0) {
+			yield return delay;
+			
+			HexCell current = frontier[0];
+			frontier.RemoveAt(0);
+
+			for (HexDirection d = HexDirection.NE; d <= HexDirection.NW; d++) {
+				HexCell neighbor = current.GetNeighbor(d);
+
+				if (neighbor == null) {
+					continue;
+				}
+				if (neighbor.IsUnderwater) {
+					continue;
+				}
+
+				HexEdgeType edgeType = current.GetEdgeType(neighbor);
+				if (edgeType == HexEdgeType.Cliff) {
+					continue;
+				}
+
+				int distance = current.Distance;
+				if (current.HasRoadThroughEdge(d)) {
+					distance += 1;
+				}
+				else {
+					distance += edgeType == HexEdgeType.Flat ? 5 : 10;
+					distance += neighbor.UrbanLevel + neighbor.FarmLevel + neighbor.PlantLevel;
+				}
+
+				if (neighbor.Distance == int.MaxValue) {
+					neighbor.Distance = distance;
+					frontier.Add(neighbor);
+				}
+				else if (current.Walled != neighbor.Walled) {
+					continue;
+				}
+				else if (distance < neighbor.Distance) {
+					neighbor.Distance = distance;
+				}
+				frontier.Sort((x, y) => x.Distance.CompareTo(y.Distance));
+			}
+		}
 	}
 }

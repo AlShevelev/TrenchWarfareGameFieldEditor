@@ -226,6 +226,16 @@ public class HexCell : MonoBehaviour {
 
 	public HexUnit Unit { get; set; }
 
+	int distance;
+	public int Distance {
+		get {
+			return distance;
+		}
+		set {
+			distance = value;
+		}
+	}
+
 	public bool HasRoadThroughEdge (HexDirection direction) {
 		return roads[(int)direction];
 	}
