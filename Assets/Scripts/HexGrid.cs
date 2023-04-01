@@ -105,6 +105,14 @@ public class HexGrid : MonoBehaviour {
 		return cells[index];
 	}	
 
+	public HexCell GetCell (int xOffset, int zOffset) {
+		return cells[xOffset + zOffset * cellCountX];
+	}
+	
+	public HexCell GetCell (int cellIndex) {
+		return cells[cellIndex];
+	}
+
 	void CreateCell (int x, int z, int i) {
 		Vector3 position;
 		position.x = (x + z * 0.5f - z / 2) * (HexMetrics.innerRadius * 2f);

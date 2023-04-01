@@ -6,6 +6,14 @@ public class NewMapMenu : MonoBehaviour {
 
     public HexMapCamera mainCamera;
 
+	bool generateMaps = true;
+
+	public HexMapGenerator mapGenerator;
+
+	public void ToggleMapGeneration (bool toggle) {
+		generateMaps = toggle;
+	}
+
     public void Open () {
 		gameObject.SetActive(true);
         mainCamera.Locked = true;
@@ -29,7 +37,12 @@ public class NewMapMenu : MonoBehaviour {
 	}
 
     void CreateMap (int x, int z) {
-		hexGrid.CreateMap(x, z);
+		if (generateMaps) {
+			mapGenerator.GenerateMap(x, z);
+		}
+		else {
+			hexGrid.CreateMap(x, z);
+		}
         mainCamera.setStartZoomAndPosition();
 		Close();
 	}
