@@ -200,14 +200,20 @@ public class HexMapEditor : MonoBehaviour {
 		int centerX = center.coordinates.X;
 		int centerZ = center.coordinates.Z;
 
-		for (int r = 0, z = centerZ - brushSize; z <= centerZ; z++, r++) {
-			for (int x = centerX - r; x <= centerX + brushSize; x++) {
+		int actualBrushSize = brushSize;
+		// Brush size is ignored for rivers and roads
+		if(riverMode == OptionalToggle.Yes || roadMode == OptionalToggle.Yes) {
+			actualBrushSize = 0;
+		}
+
+		for (int r = 0, z = centerZ - actualBrushSize; z <= centerZ; z++, r++) {
+			for (int x = centerX - r; x <= centerX + actualBrushSize; x++) {
 				EditCell(hexGrid.GetCell(new HexCoordinates(x, z)));
 			}
 		}
 
-		for (int r = 0, z = centerZ + brushSize; z > centerZ; z--, r++) {
-			for (int x = centerX - brushSize; x <= centerX + r; x++) {
+		for (int r = 0, z = centerZ + actualBrushSize; z > centerZ; z--, r++) {
+			for (int x = centerX - actualBrushSize; x <= centerX + r; x++) {
 				EditCell(hexGrid.GetCell(new HexCoordinates(x, z)));
 			}
 		}
