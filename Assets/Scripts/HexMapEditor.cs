@@ -1,16 +1,17 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System;
 using System.IO;
 
 public class HexMapEditor : MonoBehaviour {
 	public HexGrid hexGrid;
 
-	int activeElevation;
+	//int activeElevation;
 
-	bool applyElevation = true;
+	//bool applyElevation = true;
 
-	int brushSize;
+	//int brushSize;
 
 	enum OptionalToggle {
 		Ignore, Yes, No
@@ -38,11 +39,13 @@ public class HexMapEditor : MonoBehaviour {
 
 	bool applyPlantLevel;
 
-	int activeTerrainTypeIndex;	
+	//int activeTerrainTypeIndex;	
 
 	public HexMapCamera mainCamera;
 
 	public InputField nameInput;
+
+	public EditorState state;
 
 	void Update () {
 		if (!EventSystem.current.IsPointerOverGameObject()) {
@@ -94,19 +97,19 @@ public class HexMapEditor : MonoBehaviour {
 	}
 
 	public void SetTerrainTypeIndex (int index) {
-		activeTerrainTypeIndex = index;
+		//activeTerrainTypeIndex = index;
 	}
 
 	public void SetElevation (float elevation) {
-		activeElevation = (int)elevation;
+		//activeElevation = (int)elevation;
 	}	
 
 	public void SetApplyElevation (bool toggle) {
-		applyElevation = toggle;
+		//applyElevation = toggle;
 	}
 
 	public void SetBrushSize (float size) {
-		brushSize = (int)size;
+		//brushSize = (int)size;
 	}
 
 	public void ShowUI (bool visible) {
@@ -155,12 +158,16 @@ public class HexMapEditor : MonoBehaviour {
 		
 	void EditCell (HexCell cell) {
 		if (cell) {
-			if (activeTerrainTypeIndex >= 0) {
-				cell.TerrainTypeIndex = activeTerrainTypeIndex;
+			// if (activeTerrainTypeIndex >= 0) {
+			// 	cell.TerrainTypeIndex = activeTerrainTypeIndex;
+			// }
+			if(state.activeTool == Tool.Terrain) {
+				cell.TerrainTypeIndex = TerrainToIndex(state.terrainSelected);
+				cell.Elevation = state.terrainElevation;
 			}
-			if (applyElevation) {
-				cell.Elevation = activeElevation;
-			}
+			// if (applyElevation) {
+			// 	cell.Elevation = activeElevation;
+			// }
 			if (applyWaterLevel) {
 				cell.WaterLevel = activeWaterLevel;
 			}			
@@ -200,11 +207,27 @@ public class HexMapEditor : MonoBehaviour {
 		int centerX = center.coordinates.X;
 		int centerZ = center.coordinates.Z;
 
-		int actualBrushSize = brushSize;
-		// Brush size is ignored for rivers and roads
-		if(riverMode == OptionalToggle.Yes || roadMode == OptionalToggle.Yes) {
-			actualBrushSize = 0;
+		int actualBrushSize = 0;
+		switch(state.activeTool) {
+			case Tool.Terrain: {
+				actualBrushSize = state.terrainBrushSize;
+				break;
+			}
+			case Tool.Water: {
+				actualBrushSize = state.waterBrushSize;
+				break;
+			}
+			default: {
+				// Brush size is ignored for rivers and roads
+				actualBrushSize = 0;
+				break;
+			}
 		}
+
+		
+		// if(riverMode == OptionalToggle.Yes || roadMode == OptionalToggle.Yes) {
+		// 	actualBrushSize = 0;
+		// }
 
 		for (int r = 0, z = centerZ - actualBrushSize; z <= centerZ; z++, r++) {
 			for (int x = centerX - r; x <= centerX + actualBrushSize; x++) {
@@ -278,6 +301,17 @@ public class HexMapEditor : MonoBehaviour {
 		HexCell cell = GetCellUnderCursor();
 		if (cell && cell.Unit) {
 			hexGrid.RemoveUnit(cell.Unit);
+		}
+	}
+
+	private int TerrainToIndex(Terrain terrain) {
+		switch(terrain) {
+			case Terrain.Sand:  return 0;
+			case Terrain.Grass:  return 1;
+			case Terrain.Mud:  return 2;
+			case Terrain.Stone:  return 3;
+			case Terrain.Snow:  return 4;
+			default: throw new InvalidOperationException("This terrain type is not supported: " + terrain);
 		}
 	}
 }
