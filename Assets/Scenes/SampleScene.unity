@@ -909,7 +909,7 @@ MonoBehaviour:
   m_Direction: 0
   m_MinValue: 0
   m_MaxValue: 1
-  m_WholeNumbers: 0
+  m_WholeNumbers: 1
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3917,7 +3917,7 @@ MonoBehaviour:
   m_Direction: 0
   m_MinValue: 0
   m_MaxValue: 1
-  m_WholeNumbers: 0
+  m_WholeNumbers: 1
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -9472,7 +9472,7 @@ MonoBehaviour:
   m_Direction: 0
   m_MinValue: 0
   m_MaxValue: 1
-  m_WholeNumbers: 0
+  m_WholeNumbers: 1
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -16802,7 +16802,7 @@ MonoBehaviour:
   m_Direction: 0
   m_MinValue: 0
   m_MaxValue: 1
-  m_WholeNumbers: 0
+  m_WholeNumbers: 1
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -17165,6 +17165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: {fileID: 306554566}
+  editor: {fileID: 1485447622}
 --- !u!1 &1404612793
 GameObject:
   m_ObjectHideFlags: 0
@@ -17831,7 +17832,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hexGrid: {fileID: 1316749994}
   mainCamera: {fileID: 163749745}
-  nameInput: {fileID: 1904566361}
+  nameInput: {fileID: 340547978}
   state: {fileID: 306554566}
 --- !u!114 &1485447623
 MonoBehaviour:
@@ -22710,7 +22711,7 @@ MonoBehaviour:
   m_Direction: 0
   m_MinValue: 0
   m_MaxValue: 1
-  m_WholeNumbers: 0
+  m_WholeNumbers: 1
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -23795,6 +23796,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d38a4c54105ee43e9b23673101c0b91d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  editor: {fileID: 1485447622}
+  newMapMenu: {fileID: 984592970}
 --- !u!1 &2009715477
 GameObject:
   m_ObjectHideFlags: 0

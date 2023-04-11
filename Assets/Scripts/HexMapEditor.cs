@@ -16,28 +16,28 @@ public class HexMapEditor : MonoBehaviour {
 	enum OptionalToggle {
 		Ignore, Yes, No
 	}
-	OptionalToggle riverMode, roadMode, walledMode;
+	//OptionalToggle riverMode, roadMode, walledMode;
 
 	bool isDrag;
 	HexDirection dragDirection;
 	HexCell previousCell;
 
-	int activeWaterLevel;
+	//int activeWaterLevel;
 
-	bool applyWaterLevel = true;
+	//bool applyWaterLevel = true;
 
-	int activeUrbanLevel;
+	//int activeUrbanLevel;
 
-	bool applyUrbanLevel;
+	//bool applyUrbanLevel;
 
-	int activeFarmLevel;
+	//int activeFarmLevel;
 
-	bool applyFarmLevel;
+	//bool applyFarmLevel;
 
 
-	int activePlantLevel;
+	//int activePlantLevel;
 
-	bool applyPlantLevel;
+	//bool applyPlantLevel;
 
 	//int activeTerrainTypeIndex;	
 
@@ -46,6 +46,10 @@ public class HexMapEditor : MonoBehaviour {
 	public InputField nameInput;
 
 	public EditorState state;
+
+	void Start() {
+		UpdateLevelsVisibility();
+	}
 
 	void Update () {
 		if (!EventSystem.current.IsPointerOverGameObject()) {
@@ -113,47 +117,51 @@ public class HexMapEditor : MonoBehaviour {
 	}
 
 	public void ShowUI (bool visible) {
-		hexGrid.ShowUI(visible);
+//		hexGrid.ShowUI(visible);
+	}
+
+	public void UpdateLevelsVisibility() {
+		hexGrid.ShowUI(state.labelsIsOn);
 	}
 
 	public void SetRiverMode (int mode) {
-		riverMode = (OptionalToggle)mode;
+		//riverMode = (OptionalToggle)mode;
 	}
 
 	public void SetRoadMode (int mode) {
-		roadMode = (OptionalToggle)mode;
+		//roadMode = (OptionalToggle)mode;
 	}
 
 	public void SetApplyWaterLevel (bool toggle) {
-		applyWaterLevel = toggle;
+		//applyWaterLevel = toggle;
 	}
 	
 	public void SetWaterLevel (float level) {
-		activeWaterLevel = (int)level;
+		//activeWaterLevel = (int)level;
 	}	
 
 	public void SetApplyUrbanLevel (bool toggle) {
-		applyUrbanLevel = toggle;
+		//applyUrbanLevel = toggle;
 	}
 	
 	public void SetUrbanLevel (float level) {
-		activeUrbanLevel = (int)level;
+		//activeUrbanLevel = (int)level;
 	}
 
 	public void SetApplyFarmLevel (bool toggle) {
-		applyFarmLevel = toggle;
+		//applyFarmLevel = toggle;
 	}
 
 	public void SetFarmLevel (float level) {
-		activeFarmLevel = (int)level;
+		//activeFarmLevel = (int)level;
 	}
 
 	public void SetApplyPlantLevel (bool toggle) {
-		applyPlantLevel = toggle;
+		//applyPlantLevel = toggle;
 	}
 
 	public void SetPlantLevel (float level) {
-		activePlantLevel = (int)level;
+		//activePlantLevel = (int)level;
 	}
 		
 	void EditCell (HexCell cell) {
@@ -168,34 +176,61 @@ public class HexMapEditor : MonoBehaviour {
 			// if (applyElevation) {
 			// 	cell.Elevation = activeElevation;
 			// }
-			if (applyWaterLevel) {
-				cell.WaterLevel = activeWaterLevel;
-			}			
-			if (applyUrbanLevel) {
-				cell.UrbanLevel = activeUrbanLevel;
+			if(state.activeTool == Tool.Water) {
+				cell.WaterLevel = state.waterLevel;
 			}
-			if (applyFarmLevel) {
-				cell.FarmLevel = activeFarmLevel;
+			// if (applyWaterLevel) {
+			// 	cell.WaterLevel = activeWaterLevel;
+			// }			
+			// if (applyUrbanLevel) {
+			// 	cell.UrbanLevel = activeUrbanLevel;
+			// }
+
+			if(state.activeTool == Tool.Urban) {
+				cell.UrbanLevel = state.urbanLevel;
 			}
-			if (applyPlantLevel) {
-				cell.PlantLevel = activePlantLevel;
+
+			if (state.activeTool == Tool.Farms) {
+				cell.FarmLevel = state.farmLevel;
 			}
-			if (riverMode == OptionalToggle.No) {
+			if (state.activeTool == Tool.Plants) {
+				cell.PlantLevel = state.plantLevel;
+			}
+			// if (riverMode == OptionalToggle.No) {
+			// 	cell.RemoveRiver();
+			// }
+			if(state.activeTool == Tool.Rivers && !state.riversIsOn) {
 				cell.RemoveRiver();
 			}
-			if (roadMode == OptionalToggle.No) {
+
+			// if (roadMode == OptionalToggle.No) {
+			// 	cell.RemoveRoads();
+			// }
+			if(state.activeTool == Tool.Roads && !state.roadsIsOn) {
 				cell.RemoveRoads();
 			}
-			if (walledMode != OptionalToggle.Ignore) {
-				cell.Walled = walledMode == OptionalToggle.Yes;
+
+			// if (walledMode != OptionalToggle.Ignore) {
+			// 	cell.Walled = walledMode == OptionalToggle.Yes;
+			// }
+			
+			if(state.activeTool == Tool.Walls) {
+				cell.Walled = state.wallsIsOn;
 			}
+
 			if (isDrag) {
 				HexCell otherCell = cell.GetNeighbor(dragDirection.Opposite());
 				if (otherCell) {
-					if (riverMode == OptionalToggle.Yes) {
+					// if (riverMode == OptionalToggle.Yes) {
+					// 	otherCell.SetOutgoingRiver(dragDirection);
+					// }
+					if(state.activeTool == Tool.Rivers && state.riversIsOn) {
 						otherCell.SetOutgoingRiver(dragDirection);
 					}
-					if (roadMode == OptionalToggle.Yes) {
+					// if (roadMode == OptionalToggle.Yes) {
+					// 	otherCell.AddRoad(dragDirection);
+					// }
+					if(state.activeTool == Tool.Roads && state.roadsIsOn) {
 						otherCell.AddRoad(dragDirection);
 					}
 				}
@@ -243,7 +278,7 @@ public class HexMapEditor : MonoBehaviour {
 	}
 
 	public void SetWalledMode (int mode) {
-		walledMode = (OptionalToggle)mode;
+		//walledMode = (OptionalToggle)mode;
 	}
 
 	public void Save() {
