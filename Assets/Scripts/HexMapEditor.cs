@@ -7,39 +7,9 @@ using System.IO;
 public class HexMapEditor : MonoBehaviour {
 	public HexGrid hexGrid;
 
-	//int activeElevation;
-
-	//bool applyElevation = true;
-
-	//int brushSize;
-
-	enum OptionalToggle {
-		Ignore, Yes, No
-	}
-	//OptionalToggle riverMode, roadMode, walledMode;
-
 	bool isDrag;
 	HexDirection dragDirection;
 	HexCell previousCell;
-
-	//int activeWaterLevel;
-
-	//bool applyWaterLevel = true;
-
-	//int activeUrbanLevel;
-
-	//bool applyUrbanLevel;
-
-	//int activeFarmLevel;
-
-	//bool applyFarmLevel;
-
-
-	//int activePlantLevel;
-
-	//bool applyPlantLevel;
-
-	//int activeTerrainTypeIndex;	
 
 	public HexMapCamera mainCamera;
 
@@ -100,91 +70,20 @@ public class HexMapEditor : MonoBehaviour {
 		isDrag = false;
 	}
 
-	public void SetTerrainTypeIndex (int index) {
-		//activeTerrainTypeIndex = index;
-	}
-
-	public void SetElevation (float elevation) {
-		//activeElevation = (int)elevation;
-	}	
-
-	public void SetApplyElevation (bool toggle) {
-		//applyElevation = toggle;
-	}
-
-	public void SetBrushSize (float size) {
-		//brushSize = (int)size;
-	}
-
-	public void ShowUI (bool visible) {
-//		hexGrid.ShowUI(visible);
-	}
-
 	public void UpdateLevelsVisibility() {
 		hexGrid.ShowUI(state.labelsIsOn);
-	}
-
-	public void SetRiverMode (int mode) {
-		//riverMode = (OptionalToggle)mode;
-	}
-
-	public void SetRoadMode (int mode) {
-		//roadMode = (OptionalToggle)mode;
-	}
-
-	public void SetApplyWaterLevel (bool toggle) {
-		//applyWaterLevel = toggle;
-	}
-	
-	public void SetWaterLevel (float level) {
-		//activeWaterLevel = (int)level;
-	}	
-
-	public void SetApplyUrbanLevel (bool toggle) {
-		//applyUrbanLevel = toggle;
-	}
-	
-	public void SetUrbanLevel (float level) {
-		//activeUrbanLevel = (int)level;
-	}
-
-	public void SetApplyFarmLevel (bool toggle) {
-		//applyFarmLevel = toggle;
-	}
-
-	public void SetFarmLevel (float level) {
-		//activeFarmLevel = (int)level;
-	}
-
-	public void SetApplyPlantLevel (bool toggle) {
-		//applyPlantLevel = toggle;
-	}
-
-	public void SetPlantLevel (float level) {
-		//activePlantLevel = (int)level;
 	}
 		
 	void EditCell (HexCell cell) {
 		if (cell) {
-			// if (activeTerrainTypeIndex >= 0) {
-			// 	cell.TerrainTypeIndex = activeTerrainTypeIndex;
-			// }
 			if(state.activeTool == Tool.Terrain) {
 				cell.TerrainTypeIndex = TerrainToIndex(state.terrainSelected);
 				cell.Elevation = state.terrainElevation;
 			}
-			// if (applyElevation) {
-			// 	cell.Elevation = activeElevation;
-			// }
+
 			if(state.activeTool == Tool.Water) {
 				cell.WaterLevel = state.waterLevel;
 			}
-			// if (applyWaterLevel) {
-			// 	cell.WaterLevel = activeWaterLevel;
-			// }			
-			// if (applyUrbanLevel) {
-			// 	cell.UrbanLevel = activeUrbanLevel;
-			// }
 
 			if(state.activeTool == Tool.Urban) {
 				cell.UrbanLevel = state.urbanLevel;
@@ -196,23 +95,14 @@ public class HexMapEditor : MonoBehaviour {
 			if (state.activeTool == Tool.Plants) {
 				cell.PlantLevel = state.plantLevel;
 			}
-			// if (riverMode == OptionalToggle.No) {
-			// 	cell.RemoveRiver();
-			// }
+
 			if(state.activeTool == Tool.Rivers && !state.riversIsOn) {
 				cell.RemoveRiver();
 			}
 
-			// if (roadMode == OptionalToggle.No) {
-			// 	cell.RemoveRoads();
-			// }
 			if(state.activeTool == Tool.Roads && !state.roadsIsOn) {
 				cell.RemoveRoads();
 			}
-
-			// if (walledMode != OptionalToggle.Ignore) {
-			// 	cell.Walled = walledMode == OptionalToggle.Yes;
-			// }
 			
 			if(state.activeTool == Tool.Walls) {
 				cell.Walled = state.wallsIsOn;
@@ -221,15 +111,10 @@ public class HexMapEditor : MonoBehaviour {
 			if (isDrag) {
 				HexCell otherCell = cell.GetNeighbor(dragDirection.Opposite());
 				if (otherCell) {
-					// if (riverMode == OptionalToggle.Yes) {
-					// 	otherCell.SetOutgoingRiver(dragDirection);
-					// }
 					if(state.activeTool == Tool.Rivers && state.riversIsOn) {
 						otherCell.SetOutgoingRiver(dragDirection);
 					}
-					// if (roadMode == OptionalToggle.Yes) {
-					// 	otherCell.AddRoad(dragDirection);
-					// }
+
 					if(state.activeTool == Tool.Roads && state.roadsIsOn) {
 						otherCell.AddRoad(dragDirection);
 					}
@@ -259,11 +144,6 @@ public class HexMapEditor : MonoBehaviour {
 			}
 		}
 
-		
-		// if(riverMode == OptionalToggle.Yes || roadMode == OptionalToggle.Yes) {
-		// 	actualBrushSize = 0;
-		// }
-
 		for (int r = 0, z = centerZ - actualBrushSize; z <= centerZ; z++, r++) {
 			for (int x = centerX - r; x <= centerX + actualBrushSize; x++) {
 				EditCell(hexGrid.GetCell(new HexCoordinates(x, z)));
@@ -275,10 +155,6 @@ public class HexMapEditor : MonoBehaviour {
 				EditCell(hexGrid.GetCell(new HexCoordinates(x, z)));
 			}
 		}
-	}
-
-	public void SetWalledMode (int mode) {
-		//walledMode = (OptionalToggle)mode;
 	}
 
 	public void Save() {
