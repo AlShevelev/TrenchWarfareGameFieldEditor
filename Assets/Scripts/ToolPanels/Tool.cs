@@ -8,5 +8,6 @@ public enum Tool {
      Farms,
      Plants,
      System,
+     Nations,
      SaveLoad
 }

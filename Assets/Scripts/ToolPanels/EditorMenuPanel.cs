@@ -54,6 +54,7 @@ public class EditorMenuPanel : EditorToolPanelBase {
             case Tool.Farms: return "Farms Toggle";
             case Tool.Plants: return "Plants Toggle";
             case Tool.System: return "System Toggle";
+            case Tool.Nations: return "Nations Panel";
             case Tool.SaveLoad: return "Files Toggle";
             default: return "";
         }       
