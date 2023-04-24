@@ -2,7 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class NationState {
-    private readonly Nation code;
+    private  Nation? _code = null;
+    public Nation? code {
+        get { return _code; }
+        set { _code = value; }
+    }
+
 
     private Aggressiveness? _aggressiveness = null;
     public Aggressiveness? aggressiveness {
@@ -14,9 +19,4 @@ public class NationState {
     public Dictionary<Nation, Diplomacy> diplomacy {
         get { return _diplomacy; }
     }
-
-    public NationState(Nation code) {
-        this.code = code;
-    }
-
 }
