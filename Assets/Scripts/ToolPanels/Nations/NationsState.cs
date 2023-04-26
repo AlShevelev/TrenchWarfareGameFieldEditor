@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +13,10 @@ public class NationsState : MonoBehaviour {
 
     public bool CanAdd {
         get { return nations.Count < MaxNations; }
+    }
+
+    public bool CanEdit {
+        get { return nations.Count > 1 && nations.All(i => i.Value.code != null); }
     }
 
     public int AddNation() {
@@ -30,11 +36,44 @@ public class NationsState : MonoBehaviour {
         nations.Remove(id);
     }
 
-    public void UpdateCode(int id, int code) {
-        if(code == 0) {
-            return;
+    public bool UpdateCode(int id, Nation? code) {
+        if(code == null || !nations.Any(i => i.Value.code == code)) {
+            nations[id].code = code;
+            return true;
         }
 
-        nations[id].code = (Nation)code;
+        return false;
+    }
+
+    public Aggressiveness? GetNationAggresiveness(int nationStateId) {
+        return nations[nationStateId].aggressiveness;
+    }
+
+    public Nation GetNation(int nationStateId) {
+        return nations[nationStateId].code ?? throw new ArgumentNullException();;
+    }
+
+    public List<Tuple<Nation, Diplomacy?>> GetDiplomacy(int nationStateId) {
+        var result = new List<Tuple<Nation, Diplomacy?>>();
+
+        var nationState = nations[nationStateId];
+
+        foreach(var keyValue in nations) {
+            if(keyValue.Key == nationStateId) {
+                continue;
+            }
+
+            var code = keyValue.Value.code ?? throw new ArgumentNullException();
+
+            Diplomacy? diplomacy = null;
+
+            if(nationState.diplomacy.ContainsKey(code)) {
+                diplomacy = nationState.diplomacy[code];
+            }
+
+            result.Add(new Tuple<Nation, Diplomacy?>(code, diplomacy));
+        }
+
+        return result;
     }
 }

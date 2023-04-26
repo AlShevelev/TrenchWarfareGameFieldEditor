@@ -4,5 +4,5 @@ public interface EditorNationsPanelCallback {
 
     void OnUpdateNation(EditNationPanel nationPanel);
 
-    void OnNationCodeSelected(EditNationPanel nationPanel, int index);
+    bool OnNationCodeSelected(EditNationPanel nationPanel, Nation? code);
 }

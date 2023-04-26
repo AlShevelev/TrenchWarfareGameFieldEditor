@@ -1,3 +1,4 @@
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
@@ -8,9 +9,7 @@ public class EditorNationsPanel : EditorToolPanelBase, EditorNationsPanelCallbac
 
     public EditNationPanel panelPrefab;
 
-    void Start() {
-//        GetComponent<Toggle>("Labels Toggle").isOn = state.labelsIsOn;
-    }
+    public NationDetailsPanel nationDetailsPanel;
 
     public void OnAddNationClick() {
         if(!state.CanAdd) {
@@ -37,14 +36,20 @@ public class EditorNationsPanel : EditorToolPanelBase, EditorNationsPanelCallbac
     }
 
     public void OnUpdateNation(EditNationPanel nationPanel) {
-        // throw new System.NotImplementedException();
+        if(!state.CanEdit) {
+            return;
+        }
+
+        var nationStateId = nations[nationPanel];
+
+        var nation = state.GetNation(nationStateId);
+        var aggressiveness = state.GetNationAggresiveness(nationStateId);
+        var diplomacy = state.GetDiplomacy(nationStateId);
+
+        nationDetailsPanel.Open(nation, aggressiveness, diplomacy);
     }
 
-    public void OnNationCodeSelected(EditNationPanel nationPanel, int index) {
-        state.UpdateCode(nations[nationPanel], index);
+    public bool OnNationCodeSelected(EditNationPanel nationPanel, Nation? code) {
+        return state.UpdateCode(nations[nationPanel], code);
     }
 }
-
-// Update code
-// Pass Edit button click
-// Remove Diplomacy button
