@@ -1,5 +1,7 @@
-public enum HexEdgeType {
-	Flat, 
-    Slope, 
-    Cliff
+namespace TrenchWarfare {
+    public enum HexEdgeType {
+        Flat, 
+        Slope, 
+        Cliff
+    }
 }

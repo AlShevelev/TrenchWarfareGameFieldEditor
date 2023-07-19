@@ -1,5 +1,7 @@
-public enum Aggressiveness {
-    Passive,
-    Peacefull,
-    Aggresive
+namespace TrenchWarfare.Conditions.Dto {
+    public enum Aggressiveness {
+        Passive,
+        Peacefull,
+        Aggresive
+    }
 }

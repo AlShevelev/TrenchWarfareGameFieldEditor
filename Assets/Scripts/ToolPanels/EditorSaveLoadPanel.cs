@@ -1,5 +1,7 @@
-public class EditorSaveLoadPanel : EditorToolPanelBase {
-    public HexMapEditor editor;
+namespace TrenchWarfare.ToolPanels {
+    public class EditorSaveLoadPanel : EditorToolPanelBase {
+        public HexMapEditor editor;
 
-    public NewMapMenu newMapMenu;
+        public NewMapMenu newMapMenu;
+    }
 }

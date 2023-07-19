@@ -1,22 +1,25 @@
+using TrenchWarfare.ToolPanels.State;
 using UnityEngine.UI;
 
-public class EditorPlantsPanel : EditorToolPanelBase {
-    public EditorState state;
+namespace TrenchWarfare.ToolPanels {
+    public class EditorPlantsPanel : EditorToolPanelBase {
+        public EditorState state;
 
-    void Start() {
-        InitSliders();
-    }
+        void Start() {
+            InitSliders();
+        }
 
-    public void SetLevel(float level) {
-        state.plantLevel = (int)level;
-    }
+        public void SetLevel(float level) {
+            state.plantLevel = (int)level;
+        }
 
-    private void InitSliders() {
-        InitSlider(
-            "Slider", 
-            state.plantLevel, 
-            state.plantLevelMinMax.Start.Value, 
-            state.plantLevelMinMax.End.Value
-        );
+        private void InitSliders() {
+            InitSlider(
+                "Slider", 
+                state.plantLevel, 
+                state.plantLevelMinMax.Start.Value, 
+                state.plantLevelMinMax.End.Value
+            );
+        }
     }
 }

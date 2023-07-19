@@ -1,31 +1,35 @@
-public class EditorWaterPanel : EditorToolPanelBase {
-    public EditorState state;
+using TrenchWarfare.ToolPanels.State;
 
-    void Start() {
-        InitSliders();
-    }
+namespace TrenchWarfare.ToolPanels {
+    public class EditorWaterPanel : EditorToolPanelBase {
+        public EditorState state;
 
-    public void SetLevel(float level) {
-        state.waterLevel = (int)level;
-    }
+        void Start() {
+            InitSliders();
+        }
 
-    public void SetBrushSize(float brushSize) {
-        state.waterBrushSize = (int)brushSize;
-    }
+        public void SetLevel(float level) {
+            state.waterLevel = (int)level;
+        }
 
-    private void InitSliders() {
-        InitSlider(
-            "Level Slider", 
-            state.waterLevel, 
-            state.waterLevelMinMax.Start.Value, 
-            state.waterLevelMinMax.End.Value
-        );
+        public void SetBrushSize(float brushSize) {
+            state.waterBrushSize = (int)brushSize;
+        }
 
-        InitSlider(
-            "Brush Size Slider", 
-            state.waterBrushSize, 
-            state.waterBrushSizeMinMax.Start.Value, 
-            state.waterBrushSizeMinMax.End.Value
-        );
+        private void InitSliders() {
+            InitSlider(
+                "Level Slider", 
+                state.waterLevel, 
+                state.waterLevelMinMax.Start.Value, 
+                state.waterLevelMinMax.End.Value
+            );
+
+            InitSlider(
+                "Brush Size Slider", 
+                state.waterBrushSize, 
+                state.waterBrushSizeMinMax.Start.Value, 
+                state.waterBrushSizeMinMax.End.Value
+            );
+        }
     }
 }

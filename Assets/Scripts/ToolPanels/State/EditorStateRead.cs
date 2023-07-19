@@ -1,53 +1,55 @@
-public interface EditorStateRead {
-    Tool activeTool {
-        get;
-    }
+namespace TrenchWarfare.ToolPanels.State {
+    public interface EditorStateRead {
+        Tool activeTool {
+            get;
+        }
 
-    Terrain terrainSelected {
-        get;
-    }    
+        Terrain terrainSelected {
+            get;
+        }    
 
-    int terrainElevation {
-        get;
-    }
+        int terrainElevation {
+            get;
+        }
 
-    int terrainBrushSize {
-        get;
-    }
-    
-    int waterLevel {
-        get;
-    }
+        int terrainBrushSize {
+            get;
+        }
+        
+        int waterLevel {
+            get;
+        }
 
-    int waterBrushSize {
-        get;
-    }
+        int waterBrushSize {
+            get;
+        }
 
-    bool riversIsOn {
-        get;
-    }
+        bool riversIsOn {
+            get;
+        }
 
-    bool roadsIsOn {
-        get;
-    }
+        bool roadsIsOn {
+            get;
+        }
 
-    bool wallsIsOn {
-        get;
-    }
+        bool wallsIsOn {
+            get;
+        }
 
-    int urbanLevel {
-        get;
-    }
+        int urbanLevel {
+            get;
+        }
 
-    int farmLevel {
-        get;
-    }
+        int farmLevel {
+            get;
+        }
 
-    int plantLevel {
-        get;
-    }
+        int plantLevel {
+            get;
+        }
 
-    bool labelsIsOn {
-        get;
+        bool labelsIsOn {
+            get;
+        }
     }
 }
