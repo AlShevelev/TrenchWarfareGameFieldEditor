@@ -1,4 +1,4 @@
-public enum Diplomacy {
+public enum Relationship {
     Allied,
     Neutral,
     War
