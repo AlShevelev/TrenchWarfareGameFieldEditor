@@ -5,22 +5,29 @@ using Tools = TrenchWarfare.ToolPanels;
 using TrenchWarfare.ToolPanels.State;
 using System;
 using System.IO;
+using TrenchWarfare.Conditions;
 
 namespace TrenchWarfare {
 	public class HexMapEditor : MonoBehaviour {
 		public HexGrid hexGrid;
 
-		bool isDrag;
-		HexDirection dragDirection;
-		HexCell previousCell;
-
 		public HexMapCamera mainCamera;
 
 		public InputField nameInput;
 
+		public InputField metadataNameInput;
+
 		public EditorState state;
 
+		bool isDrag;
+		HexDirection dragDirection;
+		HexCell previousCell;
+
+		MapConditions mapConditions;
+
 		void Start() {
+			mapConditions = new MapConditions();
+
 			UpdateLevelsVisibility();
 		}
 
@@ -174,7 +181,6 @@ namespace TrenchWarfare {
 
 		public void Load() {
 			string fileName = nameInput.text;
-
 			string path = Path.Combine(Application.persistentDataPath, fileName);
 
 			if(!File.Exists(path)) {
@@ -193,6 +199,28 @@ namespace TrenchWarfare {
 					Debug.LogWarning("Unknown map format " + header);
 				}
 			}
+		}
+
+		public void ExportMetadata() {
+			string fileName = metadataNameInput.text;
+			string path = Path.Combine(Application.persistentDataPath, fileName);
+
+			string rawData = mapConditions.ExportToJson();
+			File.WriteAllText(path, rawData);
+		}
+
+		public void ImportMetadata() {
+			string fileName = metadataNameInput.text;
+			string path = Path.Combine(Application.persistentDataPath, fileName);
+
+			if(!File.Exists(path)) {
+				Debug.LogWarning("File not found: "+fileName);
+				return;
+			}
+
+			 string rawData = File.ReadAllText(path);
+
+			 mapConditions.ImportFromJson(rawData);
 		}
 
 		HexCell GetCellUnderCursor () {
