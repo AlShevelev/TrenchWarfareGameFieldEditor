@@ -176,6 +176,8 @@ namespace TrenchWarfare {
 			using(BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.Create))) {
 				writer.Write(0);			// Header (format version - 0)
 				hexGrid.Save(writer);
+
+				mapConditions.SaveToBinary(writer);
 			}
 		}
 
@@ -193,6 +195,7 @@ namespace TrenchWarfare {
 
 				if (header == 0) {			// Format version checking
 					hexGrid.Load(reader);
+					mapConditions.LoadFromBinary(reader);
 					mainCamera.setStartZoomAndPosition();
 				}
 				else {
