@@ -26,20 +26,28 @@ namespace TrenchWarfare.ToolPanels {
         private void InitToggles() {
             var gameObjectName = "";
             switch(state.terrainSelected) {
+                case Terrain.Plain: {
+                    gameObjectName = "Plain Toggle";
+                    break;
+                }
+                case Terrain.Wood: {
+                    gameObjectName = "Wood Toggle";
+                    break;
+                }
+                case Terrain.Marsh: {
+                    gameObjectName = "Marsh Toggle";
+                    break;
+                }
                 case Terrain.Sand: {
                     gameObjectName = "Sand Toggle";
                     break;
                 }
-                case Terrain.Grass: {
-                    gameObjectName = "Grass Toggle";
+                case Terrain.Hills: {
+                    gameObjectName = "Hills Toggle";
                     break;
                 }
-                case Terrain.Mud: {
-                    gameObjectName = "Mud Toggle";
-                    break;
-                }
-                case Terrain.Stone: {
-                    gameObjectName = "Stone Toggle";
+                case Terrain.Mountains: {
+                    gameObjectName = "Mountains Toggle";
                     break;
                 }
                 case Terrain.Snow: {

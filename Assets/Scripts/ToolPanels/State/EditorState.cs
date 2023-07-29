@@ -11,7 +11,7 @@ namespace TrenchWarfare.ToolPanels.State {
             set { _activeTool = value; }
         }
 
-        private Terrain _terrainSelected = Terrain.Sand;
+        private Terrain _terrainSelected = Terrain.Plain;
         public Terrain terrainSelected {
             get { return _terrainSelected; }
             set { _terrainSelected = value; }

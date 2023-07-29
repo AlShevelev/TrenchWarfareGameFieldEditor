@@ -1,9 +1,11 @@
 namespace TrenchWarfare.ToolPanels {
     public enum Terrain {
+        Plain,
+        Wood,
+        Marsh,
         Sand,
-        Grass,
-        Mud,
-        Stone,
+        Hills,
+        Mountains,
         Snow,
         Water
     }

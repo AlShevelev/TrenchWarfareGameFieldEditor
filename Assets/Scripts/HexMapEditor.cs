@@ -95,10 +95,6 @@ namespace TrenchWarfare {
                     }
                 }
 
-                //if(state.activeTool == Tools.Tool.Water) {
-                //	cell.WaterLevel = state.waterLevel;
-                //}
-
                 if (state.activeTool == Tools.Tool.Urban) {
 					cell.UrbanLevel = state.urbanLevel;
 				}
@@ -242,15 +238,7 @@ namespace TrenchWarfare {
 		}
 
 		private int TerrainToIndex(Tools.Terrain terrain) {
-			switch(terrain) {
-				case Tools.Terrain.Sand:  return 0;
-				case Tools.Terrain.Grass:  return 1;
-				case Tools.Terrain.Mud:  return 2;
-				case Tools.Terrain.Stone:  return 3;
-				case Tools.Terrain.Snow:  return 4;
-                case Tools.Terrain.Water: return 5;
-                default: throw new InvalidOperationException("This terrain type is not supported: " + terrain);
-			}
+			return (int)terrain;
 		}
 	}
 }
