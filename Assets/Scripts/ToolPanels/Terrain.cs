@@ -4,6 +4,7 @@ namespace TrenchWarfare.ToolPanels {
         Grass,
         Mud,
         Stone,
-        Snow
+        Snow,
+        Water
     }
 }

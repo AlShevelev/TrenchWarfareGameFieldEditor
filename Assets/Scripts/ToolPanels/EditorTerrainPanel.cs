@@ -20,7 +20,7 @@ namespace TrenchWarfare.ToolPanels {
         }
 
         public void SetBrushSize(float brushSize) {
-            state.terrainBrushSize = (int)brushSize;
+            state.brushSize = (int)brushSize;
         }
 
         private void InitToggles() {
@@ -46,6 +46,11 @@ namespace TrenchWarfare.ToolPanels {
                     gameObjectName = "Snow Toggle";
                     break;
                 }
+                case Terrain.Water: {
+                    gameObjectName = "Water Toggle";
+                    break;
+                }
+
             }
 
             GetComponent<Toggle>(gameObjectName).isOn = true;
@@ -61,9 +66,9 @@ namespace TrenchWarfare.ToolPanels {
 
             InitSlider(
                 "Brush Size Slider", 
-                state.terrainBrushSize, 
-                state.terrainBrushSizeMinMax.Start.Value, 
-                state.terrainBrushSizeMinMax.End.Value
+                state.brushSize, 
+                state.brushSizeMinMax.Start.Value, 
+                state.brushSizeMinMax.End.Value
             );
         }
     }

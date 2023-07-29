@@ -2,32 +2,28 @@ using UnityEngine;
 
 namespace TrenchWarfare {
 	public class HexMapCamera : MonoBehaviour {
-
-		Transform swivel, stick;
+		Camera mainCamera;
 
 		float rotationAngle;
 
 		float zoom = 0f;
 
-		public float stickMinZoom, stickMaxZoom;
+        public float minSize, maxSize;
 
-		public float swivelMinZoom, swivelMaxZoom;
-
-		public float moveSpeedMinZoom, moveSpeedMaxZoom;
+        public float moveSpeedMinZoom, moveSpeedMaxZoom;
 
 		public float rotationSpeed;
 
 		public HexGrid grid;
 
-		public bool Locked {
+        public bool Locked {
 			set {
 				enabled = !value;
 			}
 		}
 
 		void Awake () {
-			swivel = transform.GetChild(0);
-			stick = swivel.GetChild(0);
+			mainCamera = transform.GetChild(0).GetComponent<Camera>();
 
 			setStartZoomAndPosition();
 		}
@@ -53,11 +49,8 @@ namespace TrenchWarfare {
 		void AdjustZoom (float delta) {
 			zoom = Mathf.Clamp01(zoom + delta);
 
-			float distance = Mathf.Lerp(stickMinZoom, stickMaxZoom, zoom);
-			stick.localPosition = new Vector3(0f, 0f, distance);
-
-			float angle = Mathf.Lerp(swivelMinZoom, swivelMaxZoom, zoom);
-			swivel.localRotation = Quaternion.Euler(angle, 0f, 0f);
+			float size = Mathf.Lerp(minSize, maxSize, zoom);
+			mainCamera.orthographicSize = size;
 		}
 
 		void AdjustPosition (float xDelta, float zDelta) {
@@ -82,14 +75,14 @@ namespace TrenchWarfare {
 			return position;
 		}
 
-		float getMaxXPosition() {
-			return (grid.cellCountX - 0.5f) *	(2f * HexMetrics.innerRadius);
+
+        private float getMaxXPosition() {
+			return ((grid.cellCountX - 0.5f) * (2f * HexMetrics.innerRadius));
 		}
 
-		float getMaxZPosition() {
+		private float getMaxZPosition() {
 			return (grid.cellCountZ - 1) * (1.5f * HexMetrics.outerRadius);
 		}
-
 
 		void AdjustRotation (float delta) {
 			rotationAngle += delta * rotationSpeed * Time.deltaTime;
@@ -108,7 +101,8 @@ namespace TrenchWarfare {
 			Vector3 startPosition = transform.localPosition;
 			startPosition.x = getMaxXPosition() / 2f;
 			startPosition.z = getMaxZPosition() / 2f;
+
 			transform.localPosition = startPosition;
 		}
-	}
+    }
 }

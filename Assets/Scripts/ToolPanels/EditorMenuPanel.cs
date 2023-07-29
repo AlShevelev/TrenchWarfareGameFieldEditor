@@ -48,7 +48,6 @@ namespace TrenchWarfare.ToolPanels {
         private String GetToolToggleGameObjectName(Tool tool) {
             switch(tool) {
                 case Tool.Terrain: return "Terrain Toggle";
-                case Tool.Water: return "Water Toggle";
                 case Tool.Rivers: return "Rivers Toggle";
                 case Tool.Roads: return "Roads Toggle";
                 case Tool.Walls: return "Walls Toggle";

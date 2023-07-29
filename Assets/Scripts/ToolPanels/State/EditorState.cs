@@ -23,31 +23,20 @@ namespace TrenchWarfare.ToolPanels.State {
             set { _terrainElevation = value; }
         }
 
-        public readonly Range terrainElevationMinMax = 0..6;
+        public readonly Range terrainElevationMinMax = 0..1;
 
-        private int _terrainBrushSize = 0;
-        public int terrainBrushSize {
-            get { return _terrainBrushSize; }
-            set { _terrainBrushSize = value; }
+        private int _brushSize = 0;
+        public int brushSize {
+            get { return _brushSize; }
+            set { _brushSize = value; }
         }
 
-        public readonly Range terrainBrushSizeMinMax = 0..4;
+        public readonly Range brushSizeMinMax = 0..4;
         
-        private int _waterLevel = 0;
+        private int _waterLevel = 1;
         public int waterLevel {
             get { return _waterLevel; }
-            set { _waterLevel = value; }
         }
-
-        public readonly Range waterLevelMinMax = 0..6;
-
-        private int _waterBrushSize = 0;
-        public int waterBrushSize {
-            get { return _waterBrushSize; }
-            set { _waterBrushSize = value; }
-        }
-
-        public readonly Range waterBrushSizeMinMax = 0..4;
 
         private bool _riversIsOn = false;
         public bool riversIsOn {

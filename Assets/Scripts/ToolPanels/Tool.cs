@@ -1,7 +1,6 @@
 namespace TrenchWarfare.ToolPanels {
      public enum Tool {
           Terrain,
-          Water,
           Rivers,
           Roads,
           Walls,

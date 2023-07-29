@@ -12,15 +12,11 @@ namespace TrenchWarfare.ToolPanels.State {
             get;
         }
 
-        int terrainBrushSize {
+        int brushSize {
             get;
         }
         
         int waterLevel {
-            get;
-        }
-
-        int waterBrushSize {
             get;
         }
 

@@ -87,15 +87,19 @@ namespace TrenchWarfare {
 		void EditCell (HexCell cell) {
 			if (cell) {
 				if(state.activeTool == Tools.Tool.Terrain) {
-					cell.TerrainTypeIndex = TerrainToIndex(state.terrainSelected);
-					cell.Elevation = state.terrainElevation;
-				}
+					if (state.terrainSelected == Tools.Terrain.Water) {
+                        cell.WaterLevel = state.waterLevel;
+                    } else {
+                        cell.TerrainTypeIndex = TerrainToIndex(state.terrainSelected);
+                        cell.Elevation = state.terrainElevation;
+                    }
+                }
 
-				if(state.activeTool == Tools.Tool.Water) {
-					cell.WaterLevel = state.waterLevel;
-				}
+                //if(state.activeTool == Tools.Tool.Water) {
+                //	cell.WaterLevel = state.waterLevel;
+                //}
 
-				if(state.activeTool == Tools.Tool.Urban) {
+                if (state.activeTool == Tools.Tool.Urban) {
 					cell.UrbanLevel = state.urbanLevel;
 				}
 
@@ -138,20 +142,8 @@ namespace TrenchWarfare {
 			int centerZ = center.coordinates.Z;
 
 			int actualBrushSize = 0;
-			switch(state.activeTool) {
-				case Tools.Tool.Terrain: {
-					actualBrushSize = state.terrainBrushSize;
-					break;
-				}
-				case Tools.Tool.Water: {
-					actualBrushSize = state.waterBrushSize;
-					break;
-				}
-				default: {
-					// Brush size is ignored for rivers and roads
-					actualBrushSize = 0;
-					break;
-				}
+			if (state.activeTool == Tools.Tool.Terrain) {
+				actualBrushSize = state.brushSize;
 			}
 
 			for (int r = 0, z = centerZ - actualBrushSize; z <= centerZ; z++, r++) {
@@ -256,7 +248,8 @@ namespace TrenchWarfare {
 				case Tools.Terrain.Mud:  return 2;
 				case Tools.Terrain.Stone:  return 3;
 				case Tools.Terrain.Snow:  return 4;
-				default: throw new InvalidOperationException("This terrain type is not supported: " + terrain);
+                case Tools.Terrain.Water: return 5;
+                default: throw new InvalidOperationException("This terrain type is not supported: " + terrain);
 			}
 		}
 	}
