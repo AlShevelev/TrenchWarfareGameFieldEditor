@@ -23,7 +23,7 @@ namespace TrenchWarfare.ToolPanels.State {
             set { _terrainElevation = value; }
         }
 
-        public readonly Range terrainElevationMinMax = 0..1;
+        public readonly Range terrainElevationMinMax = 0..3;
 
         private int _brushSize = 0;
         public int brushSize {
