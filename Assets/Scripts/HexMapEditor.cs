@@ -19,13 +19,21 @@ namespace TrenchWarfare {
 
 		public EditorState state;
 
-		bool isDrag;
+        public Material terrainMaterial;
+
+        bool isDrag;
 		HexDirection dragDirection;
 		HexCell previousCell;
 
 		MapConditions mapConditions;
 
-		void Start() {
+		private const String GRID_ENABLE_FLAG = "GRID_ON";
+
+        void Awake() {
+            terrainMaterial.DisableKeyword(GRID_ENABLE_FLAG);
+        }
+
+        void Start() {
 			mapConditions = new MapConditions();
 
 			UpdateLevelsVisibility();
@@ -214,7 +222,15 @@ namespace TrenchWarfare {
 			 mapConditions.ImportFromJson(rawData);
 		}
 
-		HexCell GetCellUnderCursor () {
+        public void ShowGrid(bool visible) {//%%1
+            if (visible) {
+                terrainMaterial.EnableKeyword(GRID_ENABLE_FLAG);
+            } else {
+                terrainMaterial.DisableKeyword(GRID_ENABLE_FLAG);
+            }
+        }
+
+        HexCell GetCellUnderCursor () {
 			Ray inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit hit;
 			if (Physics.Raycast(inputRay, out hit)) {

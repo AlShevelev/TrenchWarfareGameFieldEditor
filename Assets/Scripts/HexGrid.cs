@@ -146,6 +146,7 @@ namespace TrenchWarfare {
 			Text label = Instantiate<Text>(cellLabelPrefab);
 			label.rectTransform.anchoredPosition = new Vector2(position.x, position.z);
 			label.text = cell.coordinates.ToStringOnSeparateLines();
+			label.color = Color.cyan;
 
 			cell.uiRect = label.rectTransform;
 

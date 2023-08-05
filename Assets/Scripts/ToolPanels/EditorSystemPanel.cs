@@ -11,9 +11,13 @@ namespace TrenchWarfare.ToolPanels {
             GetComponent<Toggle>("Labels Toggle").isOn = state.labelsIsOn;
         }
 
-        public void SetOn(bool isOn) {
+        public void SetLabelsOn(bool isOn) {
             state.labelsIsOn = isOn;
             editor.UpdateLevelsVisibility();
+        }
+
+        public void SetGridOn(bool isOn) {
+            editor.ShowGrid(isOn);
         }
     }
 }
