@@ -42,22 +42,14 @@ namespace TrenchWarfare {
 		void Update () {
 			if (!EventSystem.current.IsPointerOverGameObject()) {
 				if (Input.GetMouseButton(0)) {
-					HandleInput();
+					HandleInput(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
 					return;
-				}
-				if (Input.GetKeyDown(KeyCode.U)) {
-					if (Input.GetKey(KeyCode.LeftShift)) {
-						DestroyUnit();
-					}
-					else {
-						CreateUnit();
-					}
 				}
 			}
 			previousCell = null;
 		}
 
-		void HandleInput () {
+		void HandleInput (bool shiftPressed) {
 			HexCell currentCell = GetCellUnderCursor();
 			if (currentCell) {
 				if (previousCell && previousCell != currentCell) {
@@ -66,7 +58,7 @@ namespace TrenchWarfare {
 				else {
 					isDrag = false;
 				}			
-				EditCells(currentCell);
+				EditCells(currentCell, shiftPressed);
 				previousCell = currentCell;
 			}
 			else {
@@ -104,14 +96,14 @@ namespace TrenchWarfare {
                 }
 
                 if (state.activeTool == Tools.Tool.Urban) {
-					cell.UrbanLevel = state.urbanLevel;
+					cell.UrbanLevel = state.urbanLevel;		
 				}
 
 				if (state.activeTool == Tools.Tool.Farms) {
 					cell.FarmLevel = state.farmLevel;
 				}
 				if (state.activeTool == Tools.Tool.Plants) {
-					cell.PlantLevel = state.plantLevel;
+                    cell.PlantLevel = state.plantLevel;
 				}
 
 				if(state.activeTool == Tools.Tool.Rivers && !state.riversIsOn) {
@@ -141,7 +133,19 @@ namespace TrenchWarfare {
 			}
 		}
 
-		void EditCells (HexCell center) {
+		void EditCells (HexCell center, bool shiftPressed) {
+			// todo Units panel will be used in the next commits
+			if (state.activeTool == Tools.Tool.Plants) {
+				if (shiftPressed) {
+					DestroyUnit();
+				} else {
+					CreateUnit();
+				}
+
+				return;
+			}
+
+
 			int centerX = center.coordinates.X;
 			int centerZ = center.coordinates.Z;
 
@@ -222,7 +226,7 @@ namespace TrenchWarfare {
 			 mapConditions.ImportFromJson(rawData);
 		}
 
-        public void ShowGrid(bool visible) {//%%1
+        public void ShowGrid(bool visible) {
             if (visible) {
                 terrainMaterial.EnableKeyword(GRID_ENABLE_FLAG);
             } else {

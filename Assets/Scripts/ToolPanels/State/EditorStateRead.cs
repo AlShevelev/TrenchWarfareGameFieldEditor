@@ -1,3 +1,5 @@
+using TrenchWarfare.Units;
+
 namespace TrenchWarfare.ToolPanels.State {
     public interface EditorStateRead {
         Tool activeTool {

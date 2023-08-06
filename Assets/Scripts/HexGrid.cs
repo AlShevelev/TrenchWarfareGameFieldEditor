@@ -225,6 +225,8 @@ namespace TrenchWarfare {
 
 		public void AddUnit (HexUnit unit, HexCell location) {
 			units.Add(unit);
+
+			unit.Init(cellCountZ);
 			unit.transform.SetParent(transform, false);
 			unit.Location = location;
 		}

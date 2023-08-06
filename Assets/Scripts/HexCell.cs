@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using TrenchWarfare.Units;
 
 namespace TrenchWarfare {
 	public class HexCell : MonoBehaviour {
@@ -211,7 +212,21 @@ namespace TrenchWarfare {
 			}
 		}
 
-		bool walled;
+        private UnitType _unit;
+
+        public UnitType unit {
+            get {
+                return _unit;
+            }
+            set {
+                if (_unit != value) {
+                    _unit = value;
+                    RefreshSelfOnly();
+                }
+            }
+        }
+
+        bool walled;
 
 		public bool Walled {
 			get {

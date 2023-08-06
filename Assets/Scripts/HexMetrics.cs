@@ -59,6 +59,11 @@ namespace TrenchWarfare {
 
 		public static Color[] colors;
 
+		/// <summary>
+		/// Start Y coordinate for all units
+		/// </summary>
+		public const float unitStarY = 10f;
+
 		public static Vector3[] corners = {
 			new Vector3(0f, 0f, outerRadius),
 			new Vector3(innerRadius, 0f, 0.5f * outerRadius),
@@ -67,7 +72,8 @@ namespace TrenchWarfare {
 			new Vector3(-innerRadius, 0f, -0.5f * outerRadius),
 			new Vector3(-innerRadius, 0f, 0.5f * outerRadius),
 			new Vector3(0f, 0f, outerRadius)
-		};    
+		};
+
 		static float[][] featureThresholds = {
 			new float[] {0.0f, 0.0f, 0.4f},
 			new float[] {0.0f, 0.4f, 0.6f},
