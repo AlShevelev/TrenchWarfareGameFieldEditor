@@ -14,14 +14,12 @@ namespace TrenchWarfare.Conditions.Dto {
         Mexico = 11,
         Mongolia = 12,
         Montenegro = 13,
-        Portugal = 14,
-        Romania = 15,
-        Russia = 16,
-        Serbia = 17,
-        Turkey = 18,
-        USA = 19,
-        USNorth = 20,
-        USSouth = 21,
-        Vietnam = 22
+        Romania = 14,
+        Russia = 15,
+        Serbia = 16,
+        Turkey = 17,
+        USA = 18,
+        USNorth = 19,
+        USSouth = 20,
     }
 }

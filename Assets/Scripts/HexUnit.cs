@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.U2D;
 using System.IO;
 
 namespace TrenchWarfare {
@@ -24,7 +25,14 @@ namespace TrenchWarfare {
 
 		public static HexUnit unitPrefab;
 
-		public void ValidateLocation () {
+		public SpriteAtlas atlas;
+
+        void Start() {
+			var sprite = atlas.GetSprite("Armored car");
+			GetComponent<SpriteRenderer>().sprite = sprite;
+        }
+
+        public void ValidateLocation () {
 			transform.localPosition = getPosition(location);
 		}
 
