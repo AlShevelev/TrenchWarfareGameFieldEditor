@@ -10,13 +10,13 @@ namespace TrenchWarfare.ToolPanels {
         }
 
         public void SetLevel(float level) {
-            state.urbanLevel = (int)level;
+            state.UrbanLevel = (int)level;
         }
 
         private void InitSliders() {
             InitSlider(
                 "Slider", 
-                state.urbanLevel, 
+                state.UrbanLevel, 
                 state.urbanLevelMinMax.Start.Value, 
                 state.urbanLevelMinMax.End.Value
             );

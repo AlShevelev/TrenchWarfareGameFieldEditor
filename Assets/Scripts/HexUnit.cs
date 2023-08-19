@@ -28,8 +28,6 @@ namespace TrenchWarfare {
 			}
 		}
 
-		public static HexUnit unitPrefab;
-
 		public SpriteAtlas atlas;
 
 		void Start() {
@@ -56,7 +54,7 @@ namespace TrenchWarfare {
 
 		public static void Load(BinaryReader reader, HexGrid grid) {
 			HexCoordinates coordinates = HexCoordinates.Load(reader);
-			grid.AddUnit(Instantiate(unitPrefab), grid.GetCell(coordinates));
+			// grid.AddUnit(Instantiate(unitPrefab), grid.GetCell(coordinates));
 		}
 
 		public void Init(int cellCountZ) {
@@ -110,7 +108,7 @@ namespace TrenchWarfare {
 				};
                 case UnitType.Cavalry: {
 					switch (unitInfo.Nation) {
-						case Nation.AustriaHungary: return "Cavalry Austro-Hungary";
+						case Nation.AustriaHungary: return "Cavalry Austro-Hungaria";
 						case Nation.Belgium: return "Cavalry Belgia";
 						case Nation.Bulgaria: return "Cavalry Bulgaria";
 						case Nation.China: return "Cavalry China";

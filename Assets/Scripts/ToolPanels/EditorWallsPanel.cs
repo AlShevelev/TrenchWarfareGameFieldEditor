@@ -6,11 +6,11 @@ namespace TrenchWarfare.ToolPanels {
         public EditorState state;
 
         void Start() {
-            GetComponent<Toggle>("On Toggle").isOn = state.wallsIsOn;
+            GetComponent<Toggle>("On Toggle").isOn = state.WallsIsOn;
         }
 
         public void SetOn(bool isOn) {
-            state.wallsIsOn = isOn;
+            state.WallsIsOn = isOn;
         }
     }
 }

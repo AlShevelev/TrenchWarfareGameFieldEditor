@@ -12,20 +12,20 @@ namespace TrenchWarfare.ToolPanels {
         }
 
         public void SetTerrain(int terraint) {
-            state.terrainSelected = (Terrain)terraint;
+            state.TerrainSelected = (Terrain)terraint;
         }
 
         public void SetElevation(float elevation) {
-            state.terrainElevation = (int)elevation;
+            state.TerrainElevation = (int)elevation;
         }
 
         public void SetBrushSize(float brushSize) {
-            state.brushSize = (int)brushSize;
+            state.BrushSize = (int)brushSize;
         }
 
         private void InitToggles() {
             var gameObjectName = "";
-            switch(state.terrainSelected) {
+            switch(state.TerrainSelected) {
                 case Terrain.Plain: {
                     gameObjectName = "Plain Toggle";
                     break;
@@ -67,14 +67,14 @@ namespace TrenchWarfare.ToolPanels {
         private void InitSliders() {
             InitSlider(
                 "Elevation Slider", 
-                state.terrainElevation, 
+                state.TerrainElevation, 
                 state.terrainElevationMinMax.Start.Value, 
                 state.terrainElevationMinMax.End.Value
             );
 
             InitSlider(
                 "Brush Size Slider", 
-                state.brushSize, 
+                state.BrushSize, 
                 state.brushSizeMinMax.Start.Value, 
                 state.brushSizeMinMax.End.Value
             );

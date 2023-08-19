@@ -8,11 +8,11 @@ namespace TrenchWarfare.ToolPanels {
         public HexMapEditor editor;
 
         void Start() {
-            GetComponent<Toggle>("Labels Toggle").isOn = state.labelsIsOn;
+            GetComponent<Toggle>("Labels Toggle").isOn = state.LabelsIsOn;
         }
 
         public void SetLabelsOn(bool isOn) {
-            state.labelsIsOn = isOn;
+            state.LabelsIsOn = isOn;
             editor.UpdateLevelsVisibility();
         }
 

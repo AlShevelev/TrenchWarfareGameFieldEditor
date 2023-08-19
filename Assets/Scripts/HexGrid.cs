@@ -39,7 +39,6 @@ namespace TrenchWarfare {
 		void Awake () {
 			HexMetrics.noiseSource = noiseSource;
 			HexMetrics.InitializeHashGrid(seed);
-			HexUnit.unitPrefab = unitPrefab;
 			HexMetrics.colors = colors;
 
 			CreateMap(cellCountX, cellCountZ);
@@ -94,7 +93,6 @@ namespace TrenchWarfare {
 			if (!HexMetrics.noiseSource) {
 				HexMetrics.noiseSource = noiseSource;
 				HexMetrics.InitializeHashGrid(seed);
-				HexUnit.unitPrefab = unitPrefab;
 				HexMetrics.colors = colors;
 			}
 		}

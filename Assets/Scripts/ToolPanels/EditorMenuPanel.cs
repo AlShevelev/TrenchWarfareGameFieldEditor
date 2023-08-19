@@ -17,7 +17,7 @@ namespace TrenchWarfare.ToolPanels {
         }
 
         void Start() {
-            GetToolToggle(state.activeTool).isOn = true;
+            GetToolToggle(state.ActiveTool).isOn = true;
             start = false;
         }
 
@@ -36,7 +36,7 @@ namespace TrenchWarfare.ToolPanels {
             }
 
             if(!start) {
-                state.activeTool = selectedTool;
+                state.ActiveTool = selectedTool;
             }
         }
 

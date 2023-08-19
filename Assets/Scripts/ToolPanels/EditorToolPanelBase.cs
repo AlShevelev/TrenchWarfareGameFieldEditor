@@ -15,11 +15,21 @@ namespace TrenchWarfare.ToolPanels {
             return gameObject.transform.Find(gameObjectName).GetComponent<T>();
         }
 
-        protected void InitSlider(string gameObjectName, int value, int min, int max) {
-            var elevationSlider = GetComponent<Slider>(gameObjectName);
-            elevationSlider.minValue = min;
-            elevationSlider.maxValue = max;
-            elevationSlider.value = value;
+        protected void InitSlider(string gameObjectName, float value, float min, float max) {
+            var slider = GetComponent<Slider>(gameObjectName);
+            slider.minValue = min;
+            slider.maxValue = max;
+            slider.value = value;
+        }
+
+        protected void InitLabel(string gameObjectName, string value) {
+            var label = GetComponent<Text>(gameObjectName);
+            label.text = value;
+        }
+
+       protected void InitDropdown(string gameObjectName, int value) {
+            var dropdown = GetComponent<Dropdown>(gameObjectName);
+            dropdown.value = value;
         }
     }
 }

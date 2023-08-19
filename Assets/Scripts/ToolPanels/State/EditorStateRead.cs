@@ -1,50 +1,50 @@
 namespace TrenchWarfare.ToolPanels.State {
     public interface EditorStateRead {
-        Tool activeTool {
+        Tool ActiveTool {
             get;
         }
 
-        Terrain terrainSelected {
+        Terrain TerrainSelected {
             get;
         }    
 
-        int terrainElevation {
+        int TerrainElevation {
             get;
         }
 
-        int brushSize {
+        int BrushSize {
             get;
         }
         
-        int waterLevel {
+        int WaterLevel {
             get;
         }
 
-        bool riversIsOn {
+        bool RiversIsOn {
             get;
         }
 
-        bool roadsIsOn {
+        bool RoadsIsOn {
             get;
         }
 
-        bool wallsIsOn {
+        bool WallsIsOn {
             get;
         }
 
-        int urbanLevel {
+        int UrbanLevel {
             get;
         }
 
-        int farmLevel {
+        int FarmLevel {
             get;
         }
 
-        int plantLevel {
+        int PlantLevel {
             get;
         }
 
-        bool labelsIsOn {
+        bool LabelsIsOn {
             get;
         }
     }

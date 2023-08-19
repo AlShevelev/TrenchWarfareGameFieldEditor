@@ -3,9 +3,9 @@ using TrenchWarfare.Domain.Enums;
 
 namespace TrenchWarfare.Domain.Units {
     public class UnitInfo {
-        private readonly UnitType _type;
+        private UnitType _type;
 
-        private readonly Nation _nation;
+        private Nation _nation;
 
         /// <summary>
         /// [0, 1]
@@ -21,9 +21,9 @@ namespace TrenchWarfare.Domain.Units {
         // for experience rank calculation
         private int _tookPartInBattles;
 
-        public UnitType Type => _type;
+        public UnitType Type { get => _type; set => _type = value; }
 
-        public Nation Nation => _nation;
+        public Nation Nation { get => _nation; set => _nation = value; }
 
         public float Fatigue { get => _fatigue; set => _fatigue = value; }
 
@@ -296,6 +296,21 @@ namespace TrenchWarfare.Domain.Units {
             _movementPoints = movementPoints;
             _experienceRank = experienceRank;
             _tookPartInBattles = tookPartInBattles;
+        }
+
+        public UnitInfo Copy(Func<UnitInfo, UnitInfo> update) {
+            return update((UnitInfo)MemberwiseClone());
+        }
+
+        public int GetBattlesForExperienceRank(UnitExperienceRank unitExperienceRank) {
+            return unitExperienceRank switch {
+                UnitExperienceRank.Rookies => 0,
+                UnitExperienceRank.Fighters => 1,
+                UnitExperienceRank.Proficients => 3,
+                UnitExperienceRank.Veterans => 6,
+                UnitExperienceRank.Elite => 10,
+                _ => throw new NotImplementedException()
+            };
         }
     }
 }

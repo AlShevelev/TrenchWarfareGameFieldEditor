@@ -83,51 +83,51 @@ namespace TrenchWarfare {
 		}
 
 		public void UpdateLevelsVisibility() {
-			hexGrid.ShowUI(state.labelsIsOn);
+			hexGrid.ShowUI(state.LabelsIsOn);
 		}
 			
 		void EditCell (HexCell cell) {
 			if (cell) {
-				if(state.activeTool == Tools.Tool.Terrain) {
-					if (state.terrainSelected == Tools.Terrain.Water) {
-                        cell.WaterLevel = state.waterLevel;
+				if(state.ActiveTool == Tools.Tool.Terrain) {
+					if (state.TerrainSelected == Tools.Terrain.Water) {
+                        cell.WaterLevel = state.WaterLevel;
                     } else {
-                        cell.TerrainTypeIndex = TerrainToIndex(state.terrainSelected);
-                        cell.Elevation = state.terrainElevation;
+                        cell.TerrainTypeIndex = TerrainToIndex(state.TerrainSelected);
+                        cell.Elevation = state.TerrainElevation;
                     }
                 }
 
-                if (state.activeTool == Tools.Tool.Urban) {
-					cell.UrbanLevel = state.urbanLevel;		
+                if (state.ActiveTool == Tools.Tool.Urban) {
+					cell.UrbanLevel = state.UrbanLevel;		
 				}
 
-				if (state.activeTool == Tools.Tool.Farms) {
-					cell.FarmLevel = state.farmLevel;
+				if (state.ActiveTool == Tools.Tool.Farms) {
+					cell.FarmLevel = state.FarmLevel;
 				}
-				if (state.activeTool == Tools.Tool.Plants) {
-                    cell.PlantLevel = state.plantLevel;
+				if (state.ActiveTool == Tools.Tool.Plants) {
+                    cell.PlantLevel = state.PlantLevel;
 				}
 
-				if(state.activeTool == Tools.Tool.Rivers && !state.riversIsOn) {
+				if(state.ActiveTool == Tools.Tool.Rivers && !state.RiversIsOn) {
 					cell.RemoveRiver();
 				}
 
-				if(state.activeTool == Tools.Tool.Roads && !state.roadsIsOn) {
+				if(state.ActiveTool == Tools.Tool.Roads && !state.RoadsIsOn) {
 					cell.RemoveRoads();
 				}
 				
-				if(state.activeTool == Tools.Tool.Walls) {
-					cell.Walled = state.wallsIsOn;
+				if(state.ActiveTool == Tools.Tool.Walls) {
+					cell.Walled = state.WallsIsOn;
 				}
 
 				if (isDrag) {
 					HexCell otherCell = cell.GetNeighbor(dragDirection.Opposite());
 					if (otherCell) {
-						if(state.activeTool == Tools.Tool.Rivers && state.riversIsOn) {
+						if(state.ActiveTool == Tools.Tool.Rivers && state.RiversIsOn) {
 							otherCell.SetOutgoingRiver(dragDirection);
 						}
 
-						if(state.activeTool == Tools.Tool.Roads && state.roadsIsOn) {
+						if(state.ActiveTool == Tools.Tool.Roads && state.RoadsIsOn) {
 							otherCell.AddRoad(dragDirection);
 						}
 					}
@@ -137,7 +137,7 @@ namespace TrenchWarfare {
 
 		void EditCells (HexCell center, bool shiftPressed) {
 			// todo Units panel will be used in the next commits
-			if (state.activeTool == Tools.Tool.Plants) {
+			if (state.ActiveTool == Tools.Tool.Units) {
 				if (shiftPressed) {
 					DestroyUnit();
 				} else {
@@ -152,8 +152,8 @@ namespace TrenchWarfare {
 			int centerZ = center.coordinates.Z;
 
 			int actualBrushSize = 0;
-			if (state.activeTool == Tools.Tool.Terrain) {
-				actualBrushSize = state.brushSize;
+			if (state.ActiveTool == Tools.Tool.Terrain) {
+				actualBrushSize = state.BrushSize;
 			}
 
 			for (int r = 0, z = centerZ - actualBrushSize; z <= centerZ; z++, r++) {
@@ -248,13 +248,8 @@ namespace TrenchWarfare {
 		void CreateUnit () {
 			HexCell cell = GetCellUnderCursor();
 			if (cell && !cell.Unit) {
-				var prefab = Instantiate(HexUnit.unitPrefab);
-				prefab.AttachUnitInfo(
-					new UnitInfo(
-						UnitType.Tank,
-						Nation.Russia
-					)
-				);
+				var prefab = Instantiate(hexGrid.unitPrefab);
+				prefab.AttachUnitInfo(state.UnitInfo);
 
 				hexGrid.AddUnit(prefab, cell);
 			}
