@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
-using TrenchWarfare.Units;
+using TrenchWarfare.Domain.Enums;
 
 namespace TrenchWarfare {
 	public class HexCell : MonoBehaviour {

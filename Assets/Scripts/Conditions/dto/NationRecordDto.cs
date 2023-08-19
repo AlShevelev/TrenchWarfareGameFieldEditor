@@ -1,4 +1,5 @@
 using System;
+using TrenchWarfare.Domain.Enums;
 
 namespace TrenchWarfare.Conditions.Dto {
     [Serializable]

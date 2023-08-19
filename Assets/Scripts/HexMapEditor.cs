@@ -6,6 +6,8 @@ using TrenchWarfare.ToolPanels.State;
 using System;
 using System.IO;
 using TrenchWarfare.Conditions;
+using TrenchWarfare.Domain.Enums;
+using TrenchWarfare.Domain.Units;
 
 namespace TrenchWarfare {
 	public class HexMapEditor : MonoBehaviour {
@@ -246,7 +248,15 @@ namespace TrenchWarfare {
 		void CreateUnit () {
 			HexCell cell = GetCellUnderCursor();
 			if (cell && !cell.Unit) {
-				hexGrid.AddUnit(Instantiate(HexUnit.unitPrefab), cell);
+				var prefab = Instantiate(HexUnit.unitPrefab);
+				prefab.AttachUnitInfo(
+					new UnitInfo(
+						UnitType.Tank,
+						Nation.Russia
+					)
+				);
+
+				hexGrid.AddUnit(prefab, cell);
 			}
 		}
 

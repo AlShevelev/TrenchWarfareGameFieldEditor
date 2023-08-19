@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using TrenchWarfare.Conditions.Dto;
+using TrenchWarfare.Domain.Enums;
 using UnityEngine;
 
 namespace TrenchWarfare.Conditions {

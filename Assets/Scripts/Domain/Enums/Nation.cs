@@ -1,4 +1,4 @@
-namespace TrenchWarfare.Conditions.Dto {
+namespace TrenchWarfare.Domain.Enums {
     public enum Nation {
         AustriaHungary = 0,
         Belgium = 1,
