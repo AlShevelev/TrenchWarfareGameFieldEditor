@@ -40,10 +40,6 @@ namespace TrenchWarfare.ToolPanels.State {
             get;
         }
 
-        int PlantLevel {
-            get;
-        }
-
         bool LabelsIsOn {
             get;
         }

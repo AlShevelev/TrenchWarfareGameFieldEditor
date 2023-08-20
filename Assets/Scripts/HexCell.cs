@@ -198,20 +198,6 @@ namespace TrenchWarfare {
 			}
 		}
 
-		int plantLevel;
-
-		public int PlantLevel {
-			get {
-				return plantLevel;
-			}
-			set {
-				if (plantLevel != value) {
-					plantLevel = value;
-					RefreshSelfOnly();
-				}
-			}
-		}
-
         private UnitType _unit;
 
         public UnitType unit {
@@ -430,7 +416,6 @@ namespace TrenchWarfare {
 			writer.Write((byte)waterLevel);
 			writer.Write((byte)urbanLevel);
 			writer.Write((byte)farmLevel);
-			writer.Write((byte)plantLevel);
 			writer.Write(walled);
 
 			writer.Write(hasIncomingRiver);
@@ -451,7 +436,6 @@ namespace TrenchWarfare {
 			waterLevel = reader.ReadByte();
 			urbanLevel = reader.ReadByte();
 			farmLevel = reader.ReadByte();
-			plantLevel = reader.ReadByte();
 
 			walled = reader.ReadBoolean();
 

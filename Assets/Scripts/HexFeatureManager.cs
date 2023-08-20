@@ -3,7 +3,7 @@ using UnityEngine;
 namespace TrenchWarfare {
 	public class HexFeatureManager : MonoBehaviour {
 
-		public HexFeatureCollection[] urbanCollections, farmCollections, plantCollections;
+		public HexFeatureCollection[] urbanCollections, farmCollections;
 
 		Transform container;
 
@@ -42,21 +42,23 @@ namespace TrenchWarfare {
 			else if (otherPrefab) {
 				prefab = otherPrefab;
 				usedHash = hash.b;
-			}
-
-			otherPrefab = PickPrefab(plantCollections, cell.PlantLevel, hash.c, hash.d);
-
-			if (prefab) {
-				if (otherPrefab && hash.c < usedHash) {
-					prefab = otherPrefab;
-				}
-			}
-			else if (otherPrefab) {
-				prefab = otherPrefab;
-			}
-			else {
+			} else {
 				return;
 			}
+
+			//otherPrefab = PickPrefab(plantCollections, cell.PlantLevel, hash.c, hash.d);
+
+			//if (prefab) {
+			//	if (otherPrefab && hash.c < usedHash) {
+			//		prefab = otherPrefab;
+			//	}
+			//}
+			//else if (otherPrefab) {
+			//	prefab = otherPrefab;
+			//}
+			//else {
+			//	return;
+			//}
 
 			Transform instance = Instantiate(prefab);
 
