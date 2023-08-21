@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 1411018013438802422}
   - component: {fileID: 3297408329896122921}
   - component: {fileID: 5482712275985997694}
+  - component: {fileID: 4609905741042351541}
   m_Layer: 0
-  m_Name: Infantry
+  m_Name: Unit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -98,3 +99,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   atlas: {fileID: 100100200, guid: 3a7d33956f5d84dafa7d835f79684e0e, type: 3}
+--- !u!114 &4609905741042351541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5758921607240392104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0, b: 0.016824722, a: 0.5}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1

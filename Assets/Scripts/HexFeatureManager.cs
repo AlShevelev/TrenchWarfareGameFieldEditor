@@ -46,20 +46,6 @@ namespace TrenchWarfare {
 				return;
 			}
 
-			//otherPrefab = PickPrefab(plantCollections, cell.PlantLevel, hash.c, hash.d);
-
-			//if (prefab) {
-			//	if (otherPrefab && hash.c < usedHash) {
-			//		prefab = otherPrefab;
-			//	}
-			//}
-			//else if (otherPrefab) {
-			//	prefab = otherPrefab;
-			//}
-			//else {
-			//	return;
-			//}
-
 			Transform instance = Instantiate(prefab);
 
 			position.y += instance.localScale.y * 0.5f;
