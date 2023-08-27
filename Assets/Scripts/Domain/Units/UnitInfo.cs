@@ -21,6 +21,10 @@ namespace TrenchWarfare.Domain.Units {
         // for experience rank calculation
         private int _tookPartInBattles;
 
+        private UnitBoost _boost1;
+        private UnitBoost _boost2;
+        private UnitBoost _boost3;
+
         public UnitType Type { get => _type; set => _type = value; }
 
         public Nation Nation { get => _nation; set => _nation = value; }
@@ -37,6 +41,16 @@ namespace TrenchWarfare.Domain.Units {
 
         public int TookPartInBattles {
             get => _tookPartInBattles; set => _tookPartInBattles = value;
+        }
+
+        public UnitBoost Boost1 {
+            get => _boost1; set => _boost1 = value;
+        }
+        public UnitBoost Boost2 {
+            get => _boost2; set => _boost2 = value;
+        }
+        public UnitBoost Boost3 {
+            get => _boost3; set => _boost3 = value;
         }
 
         public float MaxHealth {
@@ -278,6 +292,9 @@ namespace TrenchWarfare.Domain.Units {
             _movementPoints = MaxMovementPoints;
             _experienceRank = UnitExperienceRank.Rookies;
             _tookPartInBattles = 0;
+            _boost1 = UnitBoost.None;
+            _boost2 = UnitBoost.None;
+            _boost3 = UnitBoost.None;
         }
 
 
@@ -288,7 +305,11 @@ namespace TrenchWarfare.Domain.Units {
             float health,
             float movementPoints,
             UnitExperienceRank experienceRank,
-            int tookPartInBattles) {
+            int tookPartInBattles,
+            UnitBoost boost1,
+            UnitBoost boost2,
+            UnitBoost boost3
+        ) {
             _type = type;
             _nation = nation;
             _fatigue = fatigue;
@@ -296,6 +317,9 @@ namespace TrenchWarfare.Domain.Units {
             _movementPoints = movementPoints;
             _experienceRank = experienceRank;
             _tookPartInBattles = tookPartInBattles;
+            _boost1 = boost1;
+            _boost2 = boost2;
+            _boost3 = boost3;
         }
 
         public UnitInfo Copy(Func<UnitInfo, UnitInfo> update) {

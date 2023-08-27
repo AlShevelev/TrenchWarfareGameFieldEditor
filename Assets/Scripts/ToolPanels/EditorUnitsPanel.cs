@@ -15,6 +15,9 @@ namespace TrenchWarfare.ToolPanels {
             InitDropdown("Type", (int)sourceUnit.Type);
             InitDropdown("Nation", (int)sourceUnit.Nation);
             InitDropdown("Experience Rank", (int)sourceUnit.ExperienceRank);
+            InitDropdown("Boost 1", (int)sourceUnit.Boost1);
+            InitDropdown("Boost 2", (int)sourceUnit.Boost2);
+            InitDropdown("Boost 3", (int)sourceUnit.Boost3);
 
             InitSliders();
             InitBattlesSlider();
@@ -76,6 +79,78 @@ namespace TrenchWarfare.ToolPanels {
             );
 
             UpdateBattlesLabel();
+        }
+
+        public void SetBooster1(int value) {
+            state.UnitInfo = state.UnitInfo.Copy(i => {
+                    var boostValue = (UnitBoost)value;
+
+                    if (boostValue != UnitBoost.None) {
+                        if (i.Boost2  == boostValue) {
+                            i.Boost2 = UnitBoost.None;
+                            InitDropdown("Boost 2", (int)i.Boost2);
+                        }
+
+                        if (i.Boost3  == boostValue) {
+                            i.Boost3 = UnitBoost.None;
+                            InitDropdown("Boost 3", (int)i.Boost3);
+                        }
+                    }
+
+
+                    i.Boost1 = boostValue;
+                    return i;
+
+                }
+            );
+        }
+
+        public void SetBooster2(int value) {
+            state.UnitInfo = state.UnitInfo.Copy(i => {
+                    var boostValue = (UnitBoost)value;
+
+                    if (boostValue != UnitBoost.None) {
+                        if (i.Boost1  == boostValue) {
+                            i.Boost1 = UnitBoost.None;
+                            InitDropdown("Boost 1", (int)i.Boost1);
+                        }
+
+                        if (i.Boost3  == boostValue) {
+                            i.Boost3 = UnitBoost.None;
+                            InitDropdown("Boost 3", (int)i.Boost3);
+                        }
+                    }
+
+
+                    i.Boost2 = boostValue;
+                    return i;
+
+                }
+            );
+        }
+
+        public void SetBooster3(int value) {
+            state.UnitInfo = state.UnitInfo.Copy(i => {
+                    var boostValue = (UnitBoost)value;
+
+                    if (boostValue != UnitBoost.None) {
+                        if (i.Boost1  == boostValue) {
+                            i.Boost1 = UnitBoost.None;
+                            InitDropdown("Boost 1", (int)i.Boost1);
+                        }
+
+                        if (i.Boost2  == boostValue) {
+                            i.Boost2 = UnitBoost.None;
+                            InitDropdown("Boost 2", (int)i.Boost2);
+                        }
+                    }
+
+
+                    i.Boost3 = boostValue;
+                    return i;
+
+                }
+            );
         }
 
         private void InitSliders() {

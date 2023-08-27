@@ -67,10 +67,10 @@ namespace TrenchWarfare {
 
 			result.y = HexMetrics.unitStarY + (cellCountZ - 1 - cell.coordinates.Z) * 0.01f;
 
-			if (unitInfo.Type == UnitType.Infantry || unitInfo.Type == UnitType.Cavalry) {
-				// Move the unit up a little bit
-				result.z += HexMetrics.outerRadius / 3f;
-			}
+			//if (unitInfo.Type == UnitType.Infantry || unitInfo.Type == UnitType.Cavalry) {
+			//	// Move the unit up a little bit
+			//	result.z += HexMetrics.outerRadius / 5f;
+			//}
 
 
 			return result;
