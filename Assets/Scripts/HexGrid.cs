@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using TrenchWarfare.UI;
 
 namespace TrenchWarfare {
 	public class HexGrid : MonoBehaviour {

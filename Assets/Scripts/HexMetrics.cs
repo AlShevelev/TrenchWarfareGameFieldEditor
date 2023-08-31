@@ -62,7 +62,7 @@ namespace TrenchWarfare {
 		/// <summary>
 		/// Start Y coordinate for all units
 		/// </summary>
-		public const float unitStarY = 10f;
+		public const float unitStartY = 10f;
 
 		public static Vector3[] corners = {
 			new Vector3(0f, 0f, outerRadius),
