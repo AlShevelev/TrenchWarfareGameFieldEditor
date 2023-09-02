@@ -52,7 +52,6 @@ namespace TrenchWarfare.ToolPanels {
                 case Tool.Roads: return "Roads Toggle";
                 case Tool.Walls: return "Walls Toggle";
                 case Tool.Urban: return "Urban Toggle";
-                case Tool.Farms: return "Farms Toggle";
                 case Tool.System: return "System Toggle";
                 case Tool.SaveLoad: return "Files Toggle";
                 default: return "";

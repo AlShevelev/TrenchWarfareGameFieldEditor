@@ -286,7 +286,7 @@ namespace TrenchWarfare {
 					}
 					else {
 						moveCost = edgeType == HexEdgeType.Flat ? 5 : 10;
-						moveCost += neighbor.UrbanLevel + neighbor.FarmLevel;
+						moveCost += neighbor.UrbanLevel;
 					}
 
 					int distance = current.Distance + moveCost;

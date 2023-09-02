@@ -64,14 +64,6 @@ namespace TrenchWarfare.ToolPanels.State {
 
         public readonly Range urbanLevelMinMax = 0..3;
 
-        private int _farmLevel = 0;
-        public int FarmLevel {
-            get => _farmLevel;
-            set => _farmLevel = value;
-        }
-
-        public readonly Range farmLevelMinMax = 0..3;
-
         private bool _labelsIsOn = false;
         public bool LabelsIsOn {
             get => _labelsIsOn;

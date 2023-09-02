@@ -6,7 +6,6 @@ namespace TrenchWarfare.ToolPanels {
         Units,
         Walls,
         Urban,
-        Farms,
         System,
         SaveLoad,
      }

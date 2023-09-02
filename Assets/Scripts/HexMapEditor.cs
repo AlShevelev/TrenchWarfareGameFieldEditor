@@ -101,10 +101,6 @@ namespace TrenchWarfare {
 					cell.UrbanLevel = state.UrbanLevel;		
 				}
 
-				if (state.ActiveTool == Tools.Tool.Farms) {
-					cell.FarmLevel = state.FarmLevel;
-				}
-
 				if(state.ActiveTool == Tools.Tool.Rivers && !state.RiversIsOn) {
 					cell.RemoveRiver();
 				}

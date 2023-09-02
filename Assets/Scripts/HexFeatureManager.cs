@@ -3,7 +3,7 @@ using UnityEngine;
 namespace TrenchWarfare {
 	public class HexFeatureManager : MonoBehaviour {
 
-		public HexFeatureCollection[] urbanCollections, farmCollections;
+		public HexFeatureCollection[] urbanCollections;
 
 		Transform container;
 
@@ -29,29 +29,15 @@ namespace TrenchWarfare {
 			HexHash hash = HexMetrics.SampleHashGrid(position);
 			
 			Transform prefab = PickPrefab(urbanCollections, cell.UrbanLevel, hash.a, hash.d);
-			Transform otherPrefab = PickPrefab(farmCollections, cell.FarmLevel, hash.b, hash.d);
-			
-			float usedHash = hash.a;
-			
-			if (prefab) {
-				if (otherPrefab && hash.b < hash.a) {
-					prefab = otherPrefab;
-					usedHash = hash.b;
-				}
-			}
-			else if (otherPrefab) {
-				prefab = otherPrefab;
-				usedHash = hash.b;
-			} else {
-				return;
-			}
 
-			Transform instance = Instantiate(prefab);
+			if (prefab != null) {
+				Transform instance = Instantiate(prefab);//$1$
 
-			position.y += instance.localScale.y * 0.5f;
-			instance.localPosition = HexMetrics.Perturb(position);
-			instance.localRotation = Quaternion.Euler(0f, 360f * hash.e, 0f);
-			instance.SetParent(container, false);
+				position.y += instance.localScale.y * 0.5f;
+				instance.localPosition = HexMetrics.Perturb(position);
+				instance.localRotation = Quaternion.Euler(0f, 360f * hash.e, 0f);
+				instance.SetParent(container, false);
+			}
 		}
 
 		Transform PickPrefab (
