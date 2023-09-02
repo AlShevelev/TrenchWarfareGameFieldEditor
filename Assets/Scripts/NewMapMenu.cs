@@ -7,14 +7,6 @@ namespace TrenchWarfare {
 
 		public HexMapCamera mainCamera;
 
-		bool generateMaps = true;
-
-		public HexMapGenerator mapGenerator;
-
-		public void ToggleMapGeneration (bool toggle) {
-			generateMaps = toggle;
-		}
-
 		public void Open () {
 			gameObject.SetActive(true);
 			mainCamera.Locked = true;
@@ -38,12 +30,7 @@ namespace TrenchWarfare {
 		}
 
 		void CreateMap (int x, int z) {
-			if (generateMaps) {
-				mapGenerator.GenerateMap(x, z);
-			}
-			else {
-				hexGrid.CreateMap(x, z);
-			}
+			hexGrid.CreateMap(x, z);
 			mainCamera.setStartZoomAndPosition();
 			Close();
 		}
