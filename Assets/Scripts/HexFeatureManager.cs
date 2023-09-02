@@ -31,7 +31,7 @@ namespace TrenchWarfare {
 			Transform prefab = PickPrefab(urbanCollections, cell.UrbanLevel, hash.a, hash.d);
 
 			if (prefab != null) {
-				Transform instance = Instantiate(prefab);//$1$
+				Transform instance = Instantiate(prefab);
 
 				position.y += instance.localScale.y * 0.5f;
 				instance.localPosition = HexMetrics.Perturb(position);

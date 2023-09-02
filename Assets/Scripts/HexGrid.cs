@@ -30,13 +30,6 @@ namespace TrenchWarfare {
 
 		public HexUnit unitPrefab;
 
-		HexCellPriorityQueue searchFrontier;
-
-		int searchFrontierPhase;
-
-		HexCell currentPathFrom, currentPathTo;
-		bool currentPathExists;
-
 		void Awake () {
 			HexMetrics.noiseSource = noiseSource;
 			HexMetrics.InitializeHashGrid(seed);
@@ -233,91 +226,6 @@ namespace TrenchWarfare {
 		public void RemoveUnit (HexUnit unit) {
 			units.Remove(unit);
 			unit.Die();
-		}
-
-		public void FindPath (HexCell fromCell, HexCell toCell, int speed) {
-			currentPathFrom = fromCell;
-			currentPathTo = toCell;
-			currentPathExists = Search(fromCell, toCell, speed);
-		}
-
-		bool Search (HexCell fromCell, HexCell toCell, int speed) {
-			searchFrontierPhase += 2;
-
-			if (searchFrontier == null) {
-				searchFrontier = new HexCellPriorityQueue();
-			}
-			else {
-				searchFrontier.Clear();
-			}
-			
-			fromCell.SearchPhase = searchFrontierPhase;
-			fromCell.Distance = 0;
-			searchFrontier.Enqueue(fromCell);
-
-			while (searchFrontier.Count > 0) {
-				HexCell current = searchFrontier.Dequeue();
-				current.SearchPhase += 1;
-				
-				if (current == toCell) {
-					return true;
-				}
-
-				int currentTurn = current.Distance / speed;
-
-				for (HexDirection d = HexDirection.NE; d <= HexDirection.NW; d++) {
-					HexCell neighbor = current.GetNeighbor(d);
-
-					if (neighbor == null || neighbor.SearchPhase > searchFrontierPhase) {
-						continue;
-					}
-					if (neighbor.IsUnderwater) {
-						continue;
-					}
-
-					HexEdgeType edgeType = current.GetEdgeType(neighbor);
-					if (edgeType == HexEdgeType.Cliff) {
-						continue;
-					}
-
-					int moveCost;
-					if (current.HasRoadThroughEdge(d)) {
-						moveCost = 1;
-					}
-					else {
-						moveCost = edgeType == HexEdgeType.Flat ? 5 : 10;
-						moveCost += neighbor.UrbanLevel;
-					}
-
-					int distance = current.Distance + moveCost;
-					int turn = distance / speed;
-
-					if (turn > currentTurn) {
-						distance = turn * speed + moveCost;
-					}
-
-					if (neighbor.SearchPhase < searchFrontierPhase) {
-						neighbor.SearchPhase = searchFrontierPhase;
-						neighbor.Distance = distance;
-						neighbor.PathFrom = current;
-
-						neighbor.SearchHeuristic = neighbor.coordinates.DistanceTo(toCell.coordinates);
-
-						searchFrontier.Enqueue(neighbor);
-					}
-					else if (current.Walled != neighbor.Walled) {
-						continue;
-					}
-					else if (distance < neighbor.Distance) {
-						int oldPriority = neighbor.SearchPriority;
-						neighbor.Distance = distance;
-						neighbor.PathFrom = current;
-						searchFrontier.Change(neighbor, oldPriority);
-					}
-				}
-			}
-
-			return false;
 		}
 	}
 }

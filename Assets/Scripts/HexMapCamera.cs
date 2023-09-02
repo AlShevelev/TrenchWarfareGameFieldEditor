@@ -8,6 +8,7 @@ namespace TrenchWarfare {
 
 		float zoom = 0f;
 
+		// [40:65] for the game mode, [40: 150 for the editor mode]
         public float minSize, maxSize;
 
         public float moveSpeedMinZoom, moveSpeedMaxZoom;

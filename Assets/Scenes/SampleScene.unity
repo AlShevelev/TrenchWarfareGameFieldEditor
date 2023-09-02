@@ -1398,7 +1398,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minSize: 40
-  maxSize: 65
+  maxSize: 150
   moveSpeedMinZoom: 200
   moveSpeedMaxZoom: 300
   rotationSpeed: 180
