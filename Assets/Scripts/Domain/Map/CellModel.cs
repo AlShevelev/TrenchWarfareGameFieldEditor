@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using TrenchWarfare.Domain.Enums;
 
 namespace TrenchWarfare.Domain.Map {
@@ -21,7 +22,12 @@ namespace TrenchWarfare.Domain.Map {
 
 		public bool HasRiverBeginOrEnd { get => _hasIncomingRiver != _hasOutgoingRiver; }
 
+		// The cell has a road in a certain direction
+		public bool[] Roads;
+		public bool HasRoads { get => Roads.Any(i => i); }
+
         public CellModel() {
+			Roads = new bool[6];
         }
 
 		public bool HasRiverThroughEdge (HexDirection direction) {

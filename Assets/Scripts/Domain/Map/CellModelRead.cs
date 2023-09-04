@@ -15,7 +15,11 @@ namespace TrenchWarfare.Domain.Map {
 
 		bool HasRiverBeginOrEnd { get; }
 
+        bool HasRoads { get; }
+
         bool HasRiverThroughEdge (HexDirection direction);
+
+        bool HasRoadThroughEdge (HexDirection direction);
     }
 }
 

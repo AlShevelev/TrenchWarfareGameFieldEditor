@@ -13,21 +13,6 @@ namespace TrenchWarfare {
 
 		public HexCoordinates coordinates;
 
-		// The cell has a road in a certain direction
-		[SerializeField]
-		bool[] roads;
-
-		public bool HasRoads {
-			get {
-				for (int i = 0; i < roads.Length; i++) {
-					if (roads[i]) {
-						return true;
-					}
-				}
-				return false;
-			}
-		}
-
 		public Color Color {
 			get {
 				return HexMetrics.colors[terrainTypeIndex];
@@ -68,8 +53,8 @@ namespace TrenchWarfare {
 				RefreshPosition();
 				ValidateRivers();
 
-				for (int i = 0; i < roads.Length; i++) {
-					if (roads[i] && GetElevationDifference((HexDirection)i) > 1) {
+				for (int i = 0; i < _model.Roads.Length; i++) {
+					if (_model.Roads[i] && GetElevationDifference((HexDirection)i) > 1) {
 						SetRoad(i, false);
 					}
 				}
@@ -204,7 +189,7 @@ namespace TrenchWarfare {
 		}
 
 		public bool HasRoadThroughEdge (HexDirection direction) {
-			return roads[(int)direction];
+			return _model.Roads[(int)direction];
 		}
 		
 		public HexCell GetNeighbor (HexDirection direction) {
@@ -309,7 +294,7 @@ namespace TrenchWarfare {
 		}
 
 		public void AddRoad (HexDirection direction) {
-			if (!roads[(int)direction] && !_model.HasRiverThroughEdge(direction) &&
+			if (!_model.Roads[(int)direction] && !_model.HasRiverThroughEdge(direction) &&
 				GetElevationDifference(direction) <= 1) {
 				SetRoad((int)direction, true);
 			}
@@ -317,15 +302,15 @@ namespace TrenchWarfare {
 
 		public void RemoveRoads () {
 			for (int i = 0; i < neighbors.Length; i++) {
-				if (roads[i]) {
+				if (_model.Roads[i]) {
 					SetRoad(i, false);
 				}
 			}
 		}
 
 		void SetRoad (int index, bool state) {
-			roads[index] = state;
-			neighbors[index].roads[(int)((HexDirection)index).Opposite()] = state;
+			_model.Roads[index] = state;
+			neighbors[index]._model.Roads[(int)((HexDirection)index).Opposite()] = state;
 			neighbors[index].RefreshSelfOnly();
 			RefreshSelfOnly();
 		}
@@ -369,8 +354,8 @@ namespace TrenchWarfare {
 			writer.Write(_model.HasOutgoingRiver);
 			writer.Write((byte)_model.OutgoingRiver);
 
-			for (int i = 0; i < roads.Length; i++) {
-				writer.Write(roads[i]);
+			for (int i = 0; i < _model.Roads.Length; i++) {
+				writer.Write(_model.Roads[i]);
 			}
 		}
 
@@ -389,8 +374,8 @@ namespace TrenchWarfare {
 			_model.HasOutgoingRiver = reader.ReadBoolean();
 			_model.OutgoingRiver = (HexDirection)reader.ReadByte();
 
-			for (int i = 0; i < roads.Length; i++) {
-				roads[i] = reader.ReadBoolean();
+			for (int i = 0; i < _model.Roads.Length; i++) {
+				_model.Roads[i] = reader.ReadBoolean();
 			}
 		}
 

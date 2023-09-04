@@ -71,7 +71,7 @@ namespace TrenchWarfare {
 				Triangulate(d, cell);
 			}
 
-			if (!cell.IsUnderwater && !cell.Model.HasRiver && !cell.HasRoads) {
+			if (!cell.IsUnderwater && !cell.Model.HasRiver && !cell.Model.HasRoads) {
 				features.AddFeature(cell, cell.Position);
 			}
 		}
@@ -264,7 +264,7 @@ namespace TrenchWarfare {
 		) {
 			TriangulateEdgeFan(center, e, cell.TerrainTypeIndex);
 
-			if (cell.HasRoads) {
+			if (cell.Model.HasRoads) {
 				Vector2 interpolators = GetRoadInterpolators(direction, cell);
 				TriangulateRoad(
 					center,
@@ -276,7 +276,7 @@ namespace TrenchWarfare {
 		}
 
 		void TriangulateAdjacentToRiver (HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e) {
-			if (cell.HasRoads) {
+			if (cell.Model.HasRoads) {
 				TriangulateRoadAdjacentToRiver(direction, cell, center, e);
 			}
 
