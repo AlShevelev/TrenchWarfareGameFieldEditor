@@ -187,10 +187,6 @@ namespace TrenchWarfare {
 		void Awake () {
 			_model = new CellModel();
 		}
-
-		public bool HasRoadThroughEdge (HexDirection direction) {
-			return _model.Roads[(int)direction];
-		}
 		
 		public HexCell GetNeighbor (HexDirection direction) {
 			return neighbors[(int)direction];

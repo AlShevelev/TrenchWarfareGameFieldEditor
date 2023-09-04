@@ -100,7 +100,7 @@ namespace TrenchWarfare {
 			else {
 				TriangulateWithoutRiver(direction, cell, center, e);
 
-				if (!cell.IsUnderwater && !cell.HasRoadThroughEdge(direction)) {
+				if (!cell.IsUnderwater && !cell.Model.HasRoadThroughEdge(direction)) {
 					features.AddFeature(cell, (center + e.v1 + e.v5) * (1f / 3f));
 				}
 			}
@@ -270,7 +270,7 @@ namespace TrenchWarfare {
 					center,
 					Vector3.Lerp(center, e.v1, interpolators.x),
 					Vector3.Lerp(center, e.v5, interpolators.y),
-					e, cell.HasRoadThroughEdge(direction)
+					e, cell.Model.HasRoadThroughEdge(direction)
 				);
 			}
 		}
@@ -304,7 +304,7 @@ namespace TrenchWarfare {
 			TriangulateEdgeStrip(m, color1, cell.TerrainTypeIndex, e, color1, cell.TerrainTypeIndex);
 			TriangulateEdgeFan(center, m, cell.TerrainTypeIndex);
 
-			if (!cell.IsUnderwater && !cell.HasRoadThroughEdge(direction)) {
+			if (!cell.IsUnderwater && !cell.Model.HasRoadThroughEdge(direction)) {
 				features.AddFeature(cell, (center + e.v1 + e.v5) * (1f / 3f));
 			}
 		}
@@ -464,12 +464,12 @@ namespace TrenchWarfare {
 			}
 			
 			if (cell.GetEdgeType(direction) == HexEdgeType.Slope) {
-				TriangulateEdgeTerraces(e1, cell, e2, neighbor, cell.HasRoadThroughEdge(direction));
+				TriangulateEdgeTerraces(e1, cell, e2, neighbor, cell.Model.HasRoadThroughEdge(direction));
 			} else {
 				TriangulateEdgeStrip(
 					e1, color1, cell.TerrainTypeIndex,
 					e2, color2, neighbor.TerrainTypeIndex,
-					cell.HasRoadThroughEdge(direction));
+					cell.Model.HasRoadThroughEdge(direction));
 			}
 
 			features.AddWall(e1, cell, e2, neighbor);
@@ -821,12 +821,12 @@ namespace TrenchWarfare {
 		
 		Vector2 GetRoadInterpolators (HexDirection direction, HexCell cell) {
 			Vector2 interpolators;
-			if (cell.HasRoadThroughEdge(direction)) {
+			if (cell.Model.HasRoadThroughEdge(direction)) {
 				interpolators.x = interpolators.y = 0.5f;
 			}
 			else {
-				interpolators.x = cell.HasRoadThroughEdge(direction.Previous()) ? 0.5f : 0.25f;
-				interpolators.y = cell.HasRoadThroughEdge(direction.Next()) ? 0.5f : 0.25f;
+				interpolators.x = cell.Model.HasRoadThroughEdge(direction.Previous()) ? 0.5f : 0.25f;
+				interpolators.y = cell.Model.HasRoadThroughEdge(direction.Next()) ? 0.5f : 0.25f;
 			}
 			return interpolators;
 		}
@@ -834,7 +834,7 @@ namespace TrenchWarfare {
 		void TriangulateRoadAdjacentToRiver (
 			HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e
 		) {
-			bool hasRoadThroughEdge = cell.HasRoadThroughEdge(direction);
+			bool hasRoadThroughEdge = cell.Model.HasRoadThroughEdge(direction);
 
 			bool previousHasRiver = cell.Model.HasRiverThroughEdge(direction.Previous());
 			bool nextHasRiver = cell.Model.HasRiverThroughEdge(direction.Next());
@@ -850,13 +850,13 @@ namespace TrenchWarfare {
 			else if (cell.Model.IncomingRiver == cell.Model.OutgoingRiver.Opposite()) {
 				Vector3 corner;
 				if (previousHasRiver) {
-					if (!hasRoadThroughEdge && !cell.HasRoadThroughEdge(direction.Next())) {
+					if (!hasRoadThroughEdge && !cell.Model.HasRoadThroughEdge(direction.Next())) {
 						return;
 					}
 					corner = HexMetrics.GetSecondSolidCorner(direction);
 				}
 				else {
-					if (!hasRoadThroughEdge && !cell.HasRoadThroughEdge(direction.Previous())) {
+					if (!hasRoadThroughEdge && !cell.Model.HasRoadThroughEdge(direction.Previous())) {
 						return;
 					}				
 					corner = HexMetrics.GetFirstSolidCorner(direction);
@@ -864,8 +864,8 @@ namespace TrenchWarfare {
 				roadCenter += corner * 0.5f;
 
 				if (cell.Model.IncomingRiver == direction.Next() && (
-					cell.HasRoadThroughEdge(direction.Next2()) ||
-					cell.HasRoadThroughEdge(direction.Opposite())
+					cell.Model.HasRoadThroughEdge(direction.Next2()) ||
+					cell.Model.HasRoadThroughEdge(direction.Opposite())
 				)) {
 					features.AddBridge(roadCenter, center - corner * 0.5f);
 				}
@@ -898,15 +898,15 @@ namespace TrenchWarfare {
 					middle = direction;
 				}
 				if (
-					!cell.HasRoadThroughEdge(middle) &&
-					!cell.HasRoadThroughEdge(middle.Previous()) &&
-					!cell.HasRoadThroughEdge(middle.Next())
+					!cell.Model.HasRoadThroughEdge(middle) &&
+					!cell.Model.HasRoadThroughEdge(middle.Previous()) &&
+					!cell.Model.HasRoadThroughEdge(middle.Next())
 				) {
 					return;
 				}			
 				Vector3 offset = HexMetrics.GetSolidEdgeMiddle(middle);
 				roadCenter += offset * 0.25f;
-				if (direction == middle && cell.HasRoadThroughEdge(direction.Opposite())) {
+				if (direction == middle && cell.Model.HasRoadThroughEdge(direction.Opposite())) {
 					features.AddBridge(
 						roadCenter,
 						center - offset * (HexMetrics.innerToOuter * 0.7f)

@@ -35,5 +35,9 @@ namespace TrenchWarfare.Domain.Map {
 				_hasIncomingRiver && _incomingRiver == direction ||
 				_hasOutgoingRiver && _outgoingRiver == direction;
 		}
+
+		public bool HasRoadThroughEdge (HexDirection direction) {
+			return Roads[(int)direction];
+		}
     }
 }
