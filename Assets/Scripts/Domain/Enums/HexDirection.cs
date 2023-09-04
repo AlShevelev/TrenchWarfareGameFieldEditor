@@ -1,10 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace TrenchWarfare {
-	public enum HexDirection {
-		NE, E, SE, SW, W, NW
+namespace TrenchWarfare.Domain.Enums {
+    public enum HexDirection {
+		NE,
+		E,
+		SE,
+		SW,
+		W,
+		NW
 	}
 
 	public static class HexDirectionExtensions {

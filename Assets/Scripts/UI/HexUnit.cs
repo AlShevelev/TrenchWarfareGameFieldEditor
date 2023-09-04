@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.U2D;
 using System.IO;
 using TrenchWarfare.Domain.Units;
+using TrenchWarfare.Domain.Map;
 
 namespace TrenchWarfare.UI {
 	public class HexUnit : MonoBehaviour {

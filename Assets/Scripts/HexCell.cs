@@ -3,17 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using TrenchWarfare.Domain.Enums;
+using TrenchWarfare.Domain.Map;
 using TrenchWarfare.UI;
 
 namespace TrenchWarfare {
 	public class HexCell : MonoBehaviour {
+		CellModel _model;
+		public CellModelRead Model { get => _model; }
+
 		public HexCoordinates coordinates;
-
-		bool hasIncomingRiver, hasOutgoingRiver;
-
-		// In the case of an outgoing river, this indicates where it's going. 
-		// And for an incoming river, this indicates where it's coming from.
-		HexDirection incomingRiver, outgoingRiver;
 
 		// The cell has a road in a certain direction
 		[SerializeField]
@@ -27,42 +25,6 @@ namespace TrenchWarfare {
 					}
 				}
 				return false;
-			}
-		}
-
-		public bool HasIncomingRiver {
-			get {
-				return hasIncomingRiver;
-			}
-		}
-
-		public bool HasOutgoingRiver {
-			get {
-				return hasOutgoingRiver;
-			}
-		}
-
-		public HexDirection IncomingRiver {
-			get {
-				return incomingRiver;
-			}
-		}
-
-		public HexDirection OutgoingRiver {
-			get {
-				return outgoingRiver;
-			}
-		}
-
-		public bool HasRiver {
-			get {
-				return hasIncomingRiver || hasOutgoingRiver;
-			}
-		}
-
-		public bool HasRiverBeginOrEnd {
-			get {
-				return hasIncomingRiver != hasOutgoingRiver;
 			}
 		}
 
@@ -137,9 +99,7 @@ namespace TrenchWarfare {
 		}
 
 		public HexDirection RiverBeginOrEndDirection {
-			get {
-				return hasIncomingRiver ? incomingRiver : outgoingRiver;
-			}
+			get => _model.HasIncomingRiver ? _model.IncomingRiver : _model.OutgoingRiver;
 		}
 
 		int waterLevel;
@@ -239,6 +199,10 @@ namespace TrenchWarfare {
 
 		public int SearchPhase { get; set; }
 
+		void Awake () {
+			_model = new CellModel();
+		}
+
 		public bool HasRoadThroughEdge (HexDirection direction) {
 			return roads[(int)direction];
 		}
@@ -264,43 +228,38 @@ namespace TrenchWarfare {
 			);
 		}
 
-		public bool HasRiverThroughEdge (HexDirection direction) {
-			return
-				hasIncomingRiver && incomingRiver == direction ||
-				hasOutgoingRiver && outgoingRiver == direction;
-		}
-
 		public void RemoveRiver () {
 			RemoveOutgoingRiver();
 			RemoveIncomingRiver();
 		}
 
 		public void RemoveOutgoingRiver () {
-			if (!hasOutgoingRiver) {
+			if (!_model.HasOutgoingRiver) {
 				return;
 			}
-			hasOutgoingRiver = false;
+
+			_model.HasOutgoingRiver = false;
 			RefreshSelfOnly();
 
-			HexCell neighbor = GetNeighbor(outgoingRiver);
-			neighbor.hasIncomingRiver = false;
+			HexCell neighbor = GetNeighbor(_model.OutgoingRiver);
+			neighbor._model.HasIncomingRiver = false;
 			neighbor.RefreshSelfOnly();
 		}
 
 		public void RemoveIncomingRiver () {
-			if (!hasIncomingRiver) {
+			if (!_model.HasIncomingRiver) {
 				return;
 			}
-			hasIncomingRiver = false;
+			_model.HasIncomingRiver = false;
 			RefreshSelfOnly();
 
-			HexCell neighbor = GetNeighbor(incomingRiver);
-			neighbor.hasOutgoingRiver = false;
+			HexCell neighbor = GetNeighbor(_model.IncomingRiver);
+			neighbor._model.HasOutgoingRiver = false;
 			neighbor.RefreshSelfOnly();
 		}
 
 		public void SetOutgoingRiver (HexDirection direction) {
-			if (hasOutgoingRiver && outgoingRiver == direction) {
+			if (_model.HasOutgoingRiver && _model.OutgoingRiver == direction) {
 				return;
 			}
 
@@ -310,16 +269,16 @@ namespace TrenchWarfare {
 			}
 
 			RemoveOutgoingRiver();
-			if (hasIncomingRiver && incomingRiver == direction) {
+			if (_model.HasIncomingRiver && _model.IncomingRiver == direction) {
 				RemoveIncomingRiver();
 			}
 
-			hasOutgoingRiver = true;
-			outgoingRiver = direction;
+			_model.HasOutgoingRiver = true;
+			_model.OutgoingRiver = direction;
 
 			neighbor.RemoveIncomingRiver();
-			neighbor.hasIncomingRiver = true;
-			neighbor.incomingRiver = direction.Opposite();
+			neighbor._model.HasIncomingRiver = true;
+			neighbor._model.IncomingRiver = direction.Opposite();
 
 			SetRoad((int)direction, false);
 		}
@@ -350,7 +309,7 @@ namespace TrenchWarfare {
 		}
 
 		public void AddRoad (HexDirection direction) {
-			if (!roads[(int)direction] && !HasRiverThroughEdge(direction) &&
+			if (!roads[(int)direction] && !_model.HasRiverThroughEdge(direction) &&
 				GetElevationDifference(direction) <= 1) {
 				SetRoad((int)direction, true);
 			}
@@ -384,14 +343,14 @@ namespace TrenchWarfare {
 
 		void ValidateRivers () {
 			if (
-				hasOutgoingRiver &&
-				!IsValidRiverDestination(GetNeighbor(outgoingRiver))
+				_model.HasOutgoingRiver &&
+				!IsValidRiverDestination(GetNeighbor(_model.OutgoingRiver))
 			) {
 				RemoveOutgoingRiver();
 			}
 			if (
-				hasIncomingRiver &&
-				!GetNeighbor(incomingRiver).IsValidRiverDestination(this)
+				_model.HasIncomingRiver &&
+				!GetNeighbor(_model.IncomingRiver).IsValidRiverDestination(this)
 			) {
 				RemoveIncomingRiver();
 			}
@@ -404,11 +363,11 @@ namespace TrenchWarfare {
 			writer.Write((byte)urbanLevel);
 			writer.Write(walled);
 
-			writer.Write(hasIncomingRiver);
-			writer.Write((byte)incomingRiver);
+			writer.Write(_model.HasIncomingRiver);
+			writer.Write((byte)_model.IncomingRiver);
 
-			writer.Write(hasOutgoingRiver);
-			writer.Write((byte)outgoingRiver);
+			writer.Write(_model.HasOutgoingRiver);
+			writer.Write((byte)_model.OutgoingRiver);
 
 			for (int i = 0; i < roads.Length; i++) {
 				writer.Write(roads[i]);
@@ -424,15 +383,43 @@ namespace TrenchWarfare {
 
 			walled = reader.ReadBoolean();
 
-			hasIncomingRiver = reader.ReadBoolean();
-			incomingRiver = (HexDirection)reader.ReadByte();
+			_model.HasIncomingRiver = reader.ReadBoolean();
+			_model.IncomingRiver = (HexDirection)reader.ReadByte();
 
-			hasOutgoingRiver = reader.ReadBoolean();
-			outgoingRiver = (HexDirection)reader.ReadByte();
+			_model.HasOutgoingRiver = reader.ReadBoolean();
+			_model.OutgoingRiver = (HexDirection)reader.ReadByte();
 
 			for (int i = 0; i < roads.Length; i++) {
 				roads[i] = reader.ReadBoolean();
 			}
+		}
+
+		public static HexCoordinates FromPosition (Vector3 position) {
+			float x = position.x / (HexMetrics.innerRadius * 2f);
+			float y = -x;
+
+			float offset = position.z / (HexMetrics.outerRadius * 3f);
+			x -= offset;
+			y -= offset;
+
+			int iX = Mathf.RoundToInt(x);
+			int iY = Mathf.RoundToInt(y);
+			int iZ = Mathf.RoundToInt(-x -y);
+
+			if (iX + iY + iZ != 0) {
+				float dX = Mathf.Abs(x - iX);
+				float dY = Mathf.Abs(y - iY);
+				float dZ = Mathf.Abs(-x -y - iZ);
+
+				if (dX > dY && dX > dZ) {
+					iX = -iY - iZ;
+				}
+				else if (dZ > dY) {
+					iZ = -iX - iY;
+				}
+			}		
+
+			return new HexCoordinates(iX, iZ);
 		}
 
 		void RefreshPosition () {

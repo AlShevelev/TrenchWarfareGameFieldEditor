@@ -4,19 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 using TrenchWarfare.UI;
+using TrenchWarfare.Domain.Enums;
+using TrenchWarfare.Domain.Map;
 
 namespace TrenchWarfare {
 	public class HexGrid : MonoBehaviour {
 		public HexCell cellPrefab;
 		public Text cellLabelPrefab;
-
-		public int cellCountX = 20, cellCountZ = 15;
-
-		int chunkCountX, chunkCountZ;
-
-		HexCell[] cells;
-
-		HexGridChunk[] chunks;
 
 		public Texture2D noiseSource;
 
@@ -26,23 +20,42 @@ namespace TrenchWarfare {
 
 		public Color[] colors;
 
+		public HexUnit unitPrefab;
+
+        public int CellCountX {
+			get => model == null ? HexMetrics.defaultCellCountX : model.CellCountX;
+		}
+
+        public int CellCountZ {
+			get => model == null ? HexMetrics.defaultCellCountZ : model.CellCountZ;
+		}
+
+		int chunkCountX, chunkCountZ;
+
 		List<HexUnit> units = new List<HexUnit>();
 
-		public HexUnit unitPrefab;
+		GridModel model;
+
+		HexCell[] cells;
+
+		HexGridChunk[] chunks;
 
 		void Awake () {
 			HexMetrics.noiseSource = noiseSource;
 			HexMetrics.InitializeHashGrid(seed);
 			HexMetrics.colors = colors;
 
-			CreateMap(cellCountX, cellCountZ);
+			CreateMap(HexMetrics.defaultCellCountX, HexMetrics.defaultCellCountZ);
 		}
 
-		public void CreateMap (int x, int z) {
-			if (x <= 0 || x % HexMetrics.chunkSizeX != 0 || z <= 0 || z % HexMetrics.chunkSizeZ != 0) {
+		public void CreateMap (int sizeX, int sizeZ) {
+			if (sizeX <= 0 || sizeX % HexMetrics.chunkSizeX != 0
+				|| sizeZ <= 0 || sizeZ % HexMetrics.chunkSizeZ != 0) {
 				Debug.LogError("Unsupported map size.");
 				return;
 			}
+
+			model = new GridModel(sizeX, sizeZ);
 
 			// Clearing an old map
 			ClearUnits();
@@ -53,10 +66,8 @@ namespace TrenchWarfare {
 			}
 
 			// And creating a new one
-			cellCountX = x;
-			cellCountZ = z;
-			chunkCountX = cellCountX / HexMetrics.chunkSizeX;
-			chunkCountZ = cellCountZ / HexMetrics.chunkSizeZ;
+			chunkCountX = model.CellCountX / HexMetrics.chunkSizeX;
+			chunkCountZ = model.CellCountZ / HexMetrics.chunkSizeZ;
 
 			CreateChunks();
 			CreateCells();
@@ -74,10 +85,10 @@ namespace TrenchWarfare {
 		}
 		
 		void CreateCells () {
-			cells = new HexCell[cellCountZ * cellCountX];
+			cells = new HexCell[model.CellCountZ * model.CellCountX];
 
-			for (int z = 0, i = 0; z < cellCountZ; z++) {
-				for (int x = 0; x < cellCountX; x++) {
+			for (int z = 0, i = 0; z < model.CellCountZ; z++) {
+				for (int x = 0; x < model.CellCountX; x++) {
 					CreateCell(x, z, i++);
 				}
 			}
@@ -93,13 +104,13 @@ namespace TrenchWarfare {
 			
 		public HexCell GetCell (Vector3 position) {
 			position = transform.InverseTransformPoint(position);
-			HexCoordinates coordinates = HexCoordinates.FromPosition(position);
-			int index = coordinates.X + coordinates.Z * cellCountX + coordinates.Z / 2;
+			HexCoordinates coordinates = HexCell.FromPosition(position);
+			int index = coordinates.X + coordinates.Z * model.CellCountX + coordinates.Z / 2;
 			return cells[index];
 		}	
 
 		public HexCell GetCell (int xOffset, int zOffset) {
-			return cells[xOffset + zOffset * cellCountX];
+			return cells[xOffset + zOffset * model.CellCountX];
 		}
 		
 		public HexCell GetCell (int cellIndex) {
@@ -123,14 +134,14 @@ namespace TrenchWarfare {
 			}
 			if (z > 0) {
 				if ((z & 1) == 0) {
-					cell.SetNeighbor(HexDirection.SE, cells[i - cellCountX]);
+					cell.SetNeighbor(HexDirection.SE, cells[i - model.CellCountX]);
 					if (x > 0) {
-						cell.SetNeighbor(HexDirection.SW, cells[i - cellCountX - 1]);
+						cell.SetNeighbor(HexDirection.SW, cells[i - model.CellCountX - 1]);
 					}				
 				} else {
-					cell.SetNeighbor(HexDirection.SW, cells[i - cellCountX]);
-					if (x < cellCountX - 1) {
-						cell.SetNeighbor(HexDirection.SE, cells[i - cellCountX + 1]);
+					cell.SetNeighbor(HexDirection.SW, cells[i - model.CellCountX]);
+					if (x < model.CellCountX - 1) {
+						cell.SetNeighbor(HexDirection.SE, cells[i - model.CellCountX + 1]);
 					}				
 				}
 			}		
@@ -159,14 +170,14 @@ namespace TrenchWarfare {
 
 		public HexCell GetCell (HexCoordinates coordinates) {
 			int z = coordinates.Z;
-			if (z < 0 || z >= cellCountZ) {
+			if (z < 0 || z >= model.CellCountZ) {
 				return null;
 			}
 			int x = coordinates.X + z / 2;
-			if (x < 0 || x >= cellCountX) {
+			if (x < 0 || x >= model.CellCountX) {
 				return null;
 			}
-			return cells[x + z * cellCountX];
+			return cells[x + z * model.CellCountX];
 		}
 
 		public void ShowUI (bool visible) {
@@ -176,8 +187,8 @@ namespace TrenchWarfare {
 		}
 
 		public void Save (BinaryWriter writer) {
-			writer.Write(cellCountX);
-			writer.Write(cellCountZ);
+			writer.Write(model.CellCountX);
+			writer.Write(model.CellCountZ);
 
 			for (int i = 0; i < cells.Length; i++) {
 				cells[i].Save(writer);
@@ -187,6 +198,8 @@ namespace TrenchWarfare {
 			for (int i = 0; i < units.Count; i++) {
 				units[i].Save(writer);
 			}
+
+			model.Conditions.SaveToBinary(writer);
 		}
 
 		public void Load (BinaryReader reader) {
@@ -206,6 +219,8 @@ namespace TrenchWarfare {
 			for (int i = 0; i < unitCount; i++) {
 				HexUnit.Load(reader, this);
 			}
+
+			model.Conditions.LoadFromBinary(reader);
 		}
 
 		void ClearUnits () {
@@ -218,7 +233,7 @@ namespace TrenchWarfare {
 		public void AddUnit (HexUnit unit, HexCell location) {
 			units.Add(unit);
 
-			unit.Init(cellCountZ);
+			unit.Init(model.CellCountZ);
 			unit.transform.SetParent(transform, false);
 			unit.Location = location;
 		}

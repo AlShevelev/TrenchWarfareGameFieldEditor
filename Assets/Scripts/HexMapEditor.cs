@@ -5,9 +5,8 @@ using Tools = TrenchWarfare.ToolPanels;
 using TrenchWarfare.ToolPanels.State;
 using System;
 using System.IO;
-using TrenchWarfare.Conditions;
 using TrenchWarfare.Domain.Enums;
-using TrenchWarfare.Domain.Units;
+using TrenchWarfare.Domain.Map;
 
 namespace TrenchWarfare {
 	public class HexMapEditor : MonoBehaviour {
@@ -27,8 +26,6 @@ namespace TrenchWarfare {
 		HexDirection dragDirection;
 		HexCell previousCell;
 
-		MapConditions mapConditions;
-
 		private const String GRID_ENABLE_FLAG = "GRID_ON";
 
         void Awake() {
@@ -36,8 +33,6 @@ namespace TrenchWarfare {
         }
 
         void Start() {
-			mapConditions = new MapConditions();
-
 			UpdateLevelsVisibility();
 		}
 
@@ -171,8 +166,6 @@ namespace TrenchWarfare {
 			using(BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.Create))) {
 				writer.Write(0);			// Header (format version - 0)
 				hexGrid.Save(writer);
-
-				mapConditions.SaveToBinary(writer);
 			}
 		}
 
@@ -190,7 +183,6 @@ namespace TrenchWarfare {
 
 				if (header == 0) {			// Format version checking
 					hexGrid.Load(reader);
-					mapConditions.LoadFromBinary(reader);
 					mainCamera.setStartZoomAndPosition();
 				}
 				else {
@@ -199,27 +191,29 @@ namespace TrenchWarfare {
 			}
 		}
 
-		public void ExportMetadata() {
-			string fileName = metadataNameInput.text;
-			string path = Path.Combine(Application.persistentDataPath, fileName);
+		// // TODO get rid of it when the saving/loading is ready
+		//public void ExportMetadata() {
+		//	string fileName = metadataNameInput.text;
+		//	string path = Path.Combine(Application.persistentDataPath, fileName);
 
-			string rawData = mapConditions.ExportToJson();
-			File.WriteAllText(path, rawData);
-		}
+		//	string rawData = mapConditions.ExportToJson();
+		//	File.WriteAllText(path, rawData);
+		//}
 
-		public void ImportMetadata() {
-			string fileName = metadataNameInput.text;
-			string path = Path.Combine(Application.persistentDataPath, fileName);
+		// TODO get rid of it when the saving/loading is ready
+		//public void ImportMetadata() {
+		//	string fileName = metadataNameInput.text;
+		//	string path = Path.Combine(Application.persistentDataPath, fileName);
 
-			if(!File.Exists(path)) {
-				Debug.LogWarning("File not found: "+fileName);
-				return;
-			}
+		//	if(!File.Exists(path)) {
+		//		Debug.LogWarning("File not found: "+fileName);
+		//		return;
+		//	}
 
-			 string rawData = File.ReadAllText(path);
+		//	 string rawData = File.ReadAllText(path);
 
-			 mapConditions.ImportFromJson(rawData);
-		}
+		//	 mapConditions.ImportFromJson(rawData);
+		//}
 
         public void ShowGrid(bool visible) {
             if (visible) {

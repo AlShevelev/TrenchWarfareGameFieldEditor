@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TrenchWarfare.Domain.Enums;
 
 namespace TrenchWarfare {
 	public class HexGridChunk : MonoBehaviour {
@@ -70,7 +71,7 @@ namespace TrenchWarfare {
 				Triangulate(d, cell);
 			}
 
-			if (!cell.IsUnderwater && !cell.HasRiver && !cell.HasRoads) {
+			if (!cell.IsUnderwater && !cell.Model.HasRiver && !cell.HasRoads) {
 				features.AddFeature(cell, cell.Position);
 			}
 		}
@@ -82,10 +83,10 @@ namespace TrenchWarfare {
 				center + HexMetrics.GetSecondSolidCorner(direction)
 			);
 
-			if (cell.HasRiver) {
-				if (cell.HasRiverThroughEdge(direction)) {
+			if (cell.Model.HasRiver) {
+				if (cell.Model.HasRiverThroughEdge(direction)) {
 					e.v3.y = cell.StreamBedY;
-					if (cell.HasRiverBeginOrEnd) {
+					if (cell.Model.HasRiverBeginOrEnd) {
 						TriangulateWithRiverBeginOrEnd(direction, cell, center, e);
 					}
 					else {
@@ -169,8 +170,8 @@ namespace TrenchWarfare {
 				center2 + HexMetrics.GetFirstSolidCorner(direction.Opposite())
 			);
 
-			if (cell.HasRiverThroughEdge(direction)) {
-				TriangulateEstuary(e1, e2, cell.IncomingRiver == direction);
+			if (cell.Model.HasRiverThroughEdge(direction)) {
+				TriangulateEstuary(e1, e2, cell.Model.IncomingRiver == direction);
 			}
 			else {
 				waterShore.AddQuad(e1.v1, e1.v2, e2.v1, e2.v2);
@@ -279,18 +280,18 @@ namespace TrenchWarfare {
 				TriangulateRoadAdjacentToRiver(direction, cell, center, e);
 			}
 
-			if (cell.HasRiverThroughEdge(direction.Next())) {
-				if (cell.HasRiverThroughEdge(direction.Previous())) {
+			if (cell.Model.HasRiverThroughEdge(direction.Next())) {
+				if (cell.Model.HasRiverThroughEdge(direction.Previous())) {
 					center += HexMetrics.GetSolidEdgeMiddle(direction) *
 						(HexMetrics.innerToOuter * 0.5f);
 				}
-				else if (cell.HasRiverThroughEdge(direction.Previous2())) {
+				else if (cell.Model.HasRiverThroughEdge(direction.Previous2())) {
 					center += HexMetrics.GetFirstSolidCorner(direction) * 0.25f;
 				}
 			}
 			else if (
-				cell.HasRiverThroughEdge(direction.Previous()) &&
-				cell.HasRiverThroughEdge(direction.Next2())
+				cell.Model.HasRiverThroughEdge(direction.Previous()) &&
+				cell.Model.HasRiverThroughEdge(direction.Next2())
 			) {
 				center += HexMetrics.GetSecondSolidCorner(direction) * 0.25f;
 			}
@@ -320,7 +321,7 @@ namespace TrenchWarfare {
 			TriangulateEdgeFan(center, m, cell.TerrainTypeIndex);
 
 			if (!cell.IsUnderwater) {
-				bool reversed = cell.HasIncomingRiver;
+				bool reversed = cell.Model.HasIncomingRiver;
 				TriangulateRiverQuad(m.v2, m.v4, e.v2, e.v4, cell.RiverSurfaceY, 0.6f, reversed);
 
 				center.y = m.v2.y = m.v4.y = cell.RiverSurfaceY;
@@ -340,19 +341,19 @@ namespace TrenchWarfare {
 		
 		void TriangulateWithRiver (HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e) {
 			Vector3 centerL, centerR;
-			if (cell.HasRiverThroughEdge(direction.Opposite())) {
+			if (cell.Model.HasRiverThroughEdge(direction.Opposite())) {
 				centerL = center + HexMetrics.GetFirstSolidCorner(direction.Previous()) * 0.25f;
 				centerR = center + HexMetrics.GetSecondSolidCorner(direction.Next()) * 0.25f;
 			}
-			else if (cell.HasRiverThroughEdge(direction.Next())) {
+			else if (cell.Model.HasRiverThroughEdge(direction.Next())) {
 				centerL = center;
 				centerR = Vector3.Lerp(center, e.v5, 2f / 3f);
 			}
-			else if (cell.HasRiverThroughEdge(direction.Previous())) {
+			else if (cell.Model.HasRiverThroughEdge(direction.Previous())) {
 				centerL = Vector3.Lerp(center, e.v1, 2f / 3f);
 				centerR = center;
 			}		
-			else if (cell.HasRiverThroughEdge(direction.Next2())) {
+			else if (cell.Model.HasRiverThroughEdge(direction.Next2())) {
 				centerL = center;
 				centerR = center + HexMetrics.GetSolidEdgeMiddle(direction.Next()) * 
 					(0.5f * HexMetrics.innerToOuter);
@@ -392,7 +393,7 @@ namespace TrenchWarfare {
 			terrain.AddTriangleTerrainTypes(types);
 
 			if (!cell.IsUnderwater) {
-				bool reversed = cell.IncomingRiver == direction;
+				bool reversed = cell.Model.IncomingRiver == direction;
 				TriangulateRiverQuad(centerL, centerR, m.v2, m.v4, cell.RiverSurfaceY, 0.4f, reversed);
 				TriangulateRiverQuad(m.v2, m.v4, e.v2, e.v4, cell.RiverSurfaceY, 0.6f, reversed);
 			}
@@ -434,7 +435,7 @@ namespace TrenchWarfare {
 				e1.v5 + bridge
 			);
 
-			if (cell.HasRiverThroughEdge(direction)) {
+			if (cell.Model.HasRiverThroughEdge(direction)) {
 				e2.v3.y = neighbor.StreamBedY;
 
 				if (!cell.IsUnderwater) {
@@ -442,7 +443,7 @@ namespace TrenchWarfare {
 						TriangulateRiverQuad(
 							e1.v2, e1.v4, e2.v2, e2.v4,
 							cell.RiverSurfaceY, neighbor.RiverSurfaceY, 0.8f,
-							cell.HasIncomingRiver && cell.IncomingRiver == direction
+							cell.Model.HasIncomingRiver && cell.Model.IncomingRiver == direction
 						);
 					}
 					else if (cell.Elevation > neighbor.WaterLevel) {
@@ -835,18 +836,18 @@ namespace TrenchWarfare {
 		) {
 			bool hasRoadThroughEdge = cell.HasRoadThroughEdge(direction);
 
-			bool previousHasRiver = cell.HasRiverThroughEdge(direction.Previous());
-			bool nextHasRiver = cell.HasRiverThroughEdge(direction.Next());
+			bool previousHasRiver = cell.Model.HasRiverThroughEdge(direction.Previous());
+			bool nextHasRiver = cell.Model.HasRiverThroughEdge(direction.Next());
 
 			Vector2 interpolators = GetRoadInterpolators(direction, cell);
 			Vector3 roadCenter = center;
 
-			if (cell.HasRiverBeginOrEnd) {
+			if (cell.Model.HasRiverBeginOrEnd) {
 				roadCenter += HexMetrics.GetSolidEdgeMiddle(
 					cell.RiverBeginOrEndDirection.Opposite()
 				) * (1f / 3f);
 			}
-			else if (cell.IncomingRiver == cell.OutgoingRiver.Opposite()) {
+			else if (cell.Model.IncomingRiver == cell.Model.OutgoingRiver.Opposite()) {
 				Vector3 corner;
 				if (previousHasRiver) {
 					if (!hasRoadThroughEdge && !cell.HasRoadThroughEdge(direction.Next())) {
@@ -862,7 +863,7 @@ namespace TrenchWarfare {
 				}
 				roadCenter += corner * 0.5f;
 
-				if (cell.IncomingRiver == direction.Next() && (
+				if (cell.Model.IncomingRiver == direction.Next() && (
 					cell.HasRoadThroughEdge(direction.Next2()) ||
 					cell.HasRoadThroughEdge(direction.Opposite())
 				)) {
@@ -871,11 +872,11 @@ namespace TrenchWarfare {
 				
 				center += corner * 0.25f;			
 			}
-			else if (cell.IncomingRiver == cell.OutgoingRiver.Previous()) {
-				roadCenter -= HexMetrics.GetSecondCorner(cell.IncomingRiver) * 0.2f;
+			else if (cell.Model.IncomingRiver == cell.Model.OutgoingRiver.Previous()) {
+				roadCenter -= HexMetrics.GetSecondCorner(cell.Model.IncomingRiver) * 0.2f;
 			}
-			else if (cell.IncomingRiver == cell.OutgoingRiver.Next()) {
-				roadCenter -= HexMetrics.GetFirstCorner(cell.IncomingRiver) * 0.2f;
+			else if (cell.Model.IncomingRiver == cell.Model.OutgoingRiver.Next()) {
+				roadCenter -= HexMetrics.GetFirstCorner(cell.Model.IncomingRiver) * 0.2f;
 			}		
 			else if (previousHasRiver && nextHasRiver) {
 				if (!hasRoadThroughEdge) {

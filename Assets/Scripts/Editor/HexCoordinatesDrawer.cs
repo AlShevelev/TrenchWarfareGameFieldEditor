@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using TrenchWarfare.Domain.Map;
 
 namespace TrenchWarfare.Editor {
 	[CustomPropertyDrawer(typeof(HexCoordinates))]

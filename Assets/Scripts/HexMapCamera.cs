@@ -78,11 +78,11 @@ namespace TrenchWarfare {
 
 
         private float getMaxXPosition() {
-			return ((grid.cellCountX - 0.5f) * (2f * HexMetrics.innerRadius));
+			return ((grid.CellCountX - 0.5f) * (2f * HexMetrics.innerRadius));
 		}
 
 		private float getMaxZPosition() {
-			return (grid.cellCountZ - 1) * (1.5f * HexMetrics.outerRadius);
+			return (grid.CellCountZ - 1) * (1.5f * HexMetrics.outerRadius);
 		}
 
 		void AdjustRotation (float delta) {

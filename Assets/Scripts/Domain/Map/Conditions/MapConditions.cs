@@ -2,11 +2,11 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using TrenchWarfare.Conditions.Dto;
+using TrenchWarfare.Domain.Map.Conditions.Dto;
 using TrenchWarfare.Domain.Enums;
 using UnityEngine;
 
-namespace TrenchWarfare.Conditions {
+namespace TrenchWarfare.Domain.Map.Conditions {
     public class MapConditions {
         public MapConditionsDto conditions;
 
@@ -69,12 +69,14 @@ namespace TrenchWarfare.Conditions {
             }
         }
 
-        public void ImportFromJson(string rawData) {
-            conditions = JsonUtility.FromJson<MapConditionsDto>(rawData);
-        }
+        // TODO get rid of it when the saving/loading is ready
+        //public void ImportFromJson(string rawData) {
+        //    conditions = JsonUtility.FromJson<MapConditionsDto>(rawData);
+        //}
 
-        public string ExportToJson() {
-            return JsonUtility.ToJson(conditions);
-        }
+        // TODO get rid of it when the saving/loading is ready
+        //public string ExportToJson() {
+        //    return JsonUtility.ToJson(conditions);
+        //}
     }
 }

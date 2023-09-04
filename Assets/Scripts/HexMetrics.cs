@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TrenchWarfare.Domain.Enums;
 
 namespace TrenchWarfare {
 	public class HexMetrics {
@@ -31,6 +32,9 @@ namespace TrenchWarfare {
 		public const float noiseScale = 0.003f;
 
 		public const float elevationPerturbStrength = 1.5f;
+
+		// default map size (width & height)
+		public const int defaultCellCountX = 20, defaultCellCountZ = 15;
 
 		// Size of a chunk of a map
 		public const int chunkSizeX = 5, chunkSizeZ = 5;

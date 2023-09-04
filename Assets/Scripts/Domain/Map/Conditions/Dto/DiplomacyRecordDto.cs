@@ -1,7 +1,7 @@
 using System;
 using TrenchWarfare.Domain.Enums;
 
-namespace TrenchWarfare.Conditions.Dto {
+namespace TrenchWarfare.Domain.Map.Conditions.Dto {
 [Serializable]
     public class DiplomacyRecordDto {
         public Nation firstNation; 
