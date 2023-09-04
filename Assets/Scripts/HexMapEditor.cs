@@ -84,10 +84,10 @@ namespace TrenchWarfare {
 		void EditCell (HexCell cell) {
 			if (cell) {
 				if(state.ActiveTool == Tools.Tool.Terrain) {
-					if (state.TerrainSelected == Tools.Terrain.Water) {
+					if (state.TerrainSelected == CellTerrain.Water) {
                         cell.WaterLevel = state.WaterLevel;
                     } else {
-                        cell.TerrainTypeIndex = TerrainToIndex(state.TerrainSelected);
+                        cell.UpdateTerrainType(state.TerrainSelected);
                         cell.Elevation = state.TerrainElevation;
                     }
                 }
@@ -247,10 +247,6 @@ namespace TrenchWarfare {
 			if (cell && cell.Unit) {
 				hexGrid.RemoveUnit(cell.Unit);
 			}
-		}
-
-		private int TerrainToIndex(Tools.Terrain terrain) {
-			return (int)terrain;
 		}
 	}
 }

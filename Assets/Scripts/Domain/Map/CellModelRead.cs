@@ -20,6 +20,8 @@ namespace TrenchWarfare.Domain.Map {
         bool HasRiverThroughEdge (HexDirection direction);
 
         bool HasRoadThroughEdge (HexDirection direction);
+
+        CellTerrain TerrainType { get; }
     }
 }
 

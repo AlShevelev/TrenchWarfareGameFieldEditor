@@ -11,8 +11,8 @@ namespace TrenchWarfare.ToolPanels.State {
             set => _activeTool = value;
         }
 
-        private Terrain _terrainSelected = Terrain.Plain;
-        public Terrain TerrainSelected {
+        private CellTerrain _terrainSelected = CellTerrain.Plain;
+        public CellTerrain TerrainSelected {
             get => _terrainSelected;
             set => _terrainSelected = value;
         }

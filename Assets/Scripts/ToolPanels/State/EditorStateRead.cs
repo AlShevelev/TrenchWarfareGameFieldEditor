@@ -1,10 +1,12 @@
+using TrenchWarfare.Domain.Enums;
+
 namespace TrenchWarfare.ToolPanels.State {
     public interface EditorStateRead {
         Tool ActiveTool {
             get;
         }
 
-        Terrain TerrainSelected {
+        CellTerrain TerrainSelected {
             get;
         }    
 

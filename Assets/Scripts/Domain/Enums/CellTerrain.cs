@@ -1,5 +1,5 @@
-namespace TrenchWarfare.ToolPanels {
-    public enum Terrain {
+namespace TrenchWarfare.Domain.Enums {
+    public enum CellTerrain {
         Plain,
         Wood,
         Marsh,

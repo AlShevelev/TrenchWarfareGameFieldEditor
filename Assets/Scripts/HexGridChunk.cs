@@ -262,7 +262,7 @@ namespace TrenchWarfare {
 		void TriangulateWithoutRiver (
 			HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e
 		) {
-			TriangulateEdgeFan(center, e, cell.TerrainTypeIndex);
+			TriangulateEdgeFan(center, e, cell.Model.TerrainType);
 
 			if (cell.Model.HasRoads) {
 				Vector2 interpolators = GetRoadInterpolators(direction, cell);
@@ -301,8 +301,8 @@ namespace TrenchWarfare {
 				Vector3.Lerp(center, e.v5, 0.5f)
 			);
 			
-			TriangulateEdgeStrip(m, color1, cell.TerrainTypeIndex, e, color1, cell.TerrainTypeIndex);
-			TriangulateEdgeFan(center, m, cell.TerrainTypeIndex);
+			TriangulateEdgeStrip(m, color1, cell.Model.TerrainType, e, color1, cell.Model.TerrainType);
+			TriangulateEdgeFan(center, m, cell.Model.TerrainType);
 
 			if (!cell.IsUnderwater && !cell.Model.HasRoadThroughEdge(direction)) {
 				features.AddFeature(cell, (center + e.v1 + e.v5) * (1f / 3f));
@@ -317,8 +317,8 @@ namespace TrenchWarfare {
 
 			m.v3.y = e.v3.y;
 
-			TriangulateEdgeStrip(m, color1, cell.TerrainTypeIndex, e, color1, cell.TerrainTypeIndex);
-			TriangulateEdgeFan(center, m, cell.TerrainTypeIndex);
+			TriangulateEdgeStrip(m, color1, cell.Model.TerrainType, e, color1, cell.Model.TerrainType);
+			TriangulateEdgeFan(center, m, cell.Model.TerrainType);
 
 			if (!cell.IsUnderwater) {
 				bool reversed = cell.Model.HasIncomingRiver;
@@ -373,7 +373,7 @@ namespace TrenchWarfare {
 
 			m.v3.y = center.y = e.v3.y;
 
-			TriangulateEdgeStrip(m, color1, cell.TerrainTypeIndex, e, color1, cell.TerrainTypeIndex);
+			TriangulateEdgeStrip(m, color1, cell.Model.TerrainType, e, color1, cell.Model.TerrainType);
 
 			terrain.AddTriangle(centerL, m.v1, m.v2);
 			terrain.AddQuad(centerL, center, m.v2, m.v3);
@@ -386,7 +386,7 @@ namespace TrenchWarfare {
 			terrain.AddTriangleColor(color1);
 
 			Vector3 types;
-			types.x = types.y = types.z = cell.TerrainTypeIndex;
+			types.x = types.y = types.z = (int)cell.Model.TerrainType;
 			terrain.AddTriangleTerrainTypes(types);
 			terrain.AddQuadTerrainTypes(types);
 			terrain.AddQuadTerrainTypes(types);
@@ -467,8 +467,8 @@ namespace TrenchWarfare {
 				TriangulateEdgeTerraces(e1, cell, e2, neighbor, cell.Model.HasRoadThroughEdge(direction));
 			} else {
 				TriangulateEdgeStrip(
-					e1, color1, cell.TerrainTypeIndex,
-					e2, color2, neighbor.TerrainTypeIndex,
+					e1, color1, cell.Model.TerrainType,
+					e2, color2, neighbor.Model.TerrainType,
 					cell.Model.HasRoadThroughEdge(direction));
 			}
 
@@ -503,8 +503,8 @@ namespace TrenchWarfare {
 			EdgeVertices e2 = EdgeVertices.TerraceLerp(begin, end, 1);
 			Color c2 = HexMetrics.TerraceLerp(color1, color2, 1);
 
-			float t1 = beginCell.TerrainTypeIndex;
-			float t2 = endCell.TerrainTypeIndex;
+			var t1 = beginCell.Model.TerrainType;
+			var t2 = endCell.Model.TerrainType;
 
 			TriangulateEdgeStrip(begin, color1, t1, e2, c2, t2, hasRoad);
 
@@ -573,9 +573,9 @@ namespace TrenchWarfare {
 				terrain.AddTriangleColor(color1, color2, color3);
 
 				Vector3 types;
-				types.x = bottomCell.TerrainTypeIndex;
-				types.y = leftCell.TerrainTypeIndex;
-				types.z = rightCell.TerrainTypeIndex;
+				types.x = (int)bottomCell.Model.TerrainType;
+				types.y = (int)leftCell.Model.TerrainType;
+				types.z = (int)rightCell.Model.TerrainType;
 				terrain.AddTriangleTerrainTypes(types);
 			}
 
@@ -593,9 +593,9 @@ namespace TrenchWarfare {
 			Color c4 = HexMetrics.TerraceLerp(color1, color3, 1);
 
 			Vector3 types;
-			types.x = beginCell.TerrainTypeIndex;
-			types.y = leftCell.TerrainTypeIndex;
-			types.z = rightCell.TerrainTypeIndex;
+			types.x = (int)beginCell.Model.TerrainType;
+			types.y = (int)leftCell.Model.TerrainType;
+			types.z = (int)rightCell.Model.TerrainType;
 
 			terrain.AddTriangle(begin, v3, v4);
 			terrain.AddTriangleColor(beginCell.Color, c3, c4);	
@@ -635,9 +635,9 @@ namespace TrenchWarfare {
 			Color boundaryColor = Color.Lerp(color1, color3, b);
 
 			Vector3 types;
-			types.x = beginCell.TerrainTypeIndex;
-			types.y = leftCell.TerrainTypeIndex;
-			types.z = rightCell.TerrainTypeIndex;
+			types.x = (int)beginCell.Model.TerrainType;
+			types.y = (int)leftCell.Model.TerrainType;
+			types.z = (int)rightCell.Model.TerrainType;
 
 			TriangulateBoundaryTriangle(
 				begin, color1, left, color2, boundary, boundaryColor, types
@@ -670,9 +670,9 @@ namespace TrenchWarfare {
 			Color boundaryColor = Color.Lerp(color1, color2, b);
 
 			Vector3 types;
-			types.x = beginCell.TerrainTypeIndex;
-			types.y = leftCell.TerrainTypeIndex;
-			types.z = rightCell.TerrainTypeIndex;
+			types.x = (int)beginCell.Model.TerrainType;
+			types.y = (int)leftCell.Model.TerrainType;
+			types.z = (int)rightCell.Model.TerrainType;
 
 			TriangulateBoundaryTriangle(
 				right, color3, begin, color1, boundary, boundaryColor, types
@@ -719,7 +719,7 @@ namespace TrenchWarfare {
 			terrain.AddTriangleTerrainTypes(types);
 		}
 
-		void TriangulateEdgeFan (Vector3 center, EdgeVertices edge, float type) {
+		void TriangulateEdgeFan (Vector3 center, EdgeVertices edge, CellTerrain type) {
 			terrain.AddTriangle(center, edge.v1, edge.v2);
 			terrain.AddTriangle(center, edge.v2, edge.v3);
 			terrain.AddTriangle(center, edge.v3, edge.v4);
@@ -731,7 +731,7 @@ namespace TrenchWarfare {
 			terrain.AddTriangleColor(color1);
 
 			Vector3 types;
-			types.x = types.y = types.z = type;
+			types.x = types.y = types.z = (int)type;
 			terrain.AddTriangleTerrainTypes(types);
 			terrain.AddTriangleTerrainTypes(types);
 			terrain.AddTriangleTerrainTypes(types);
@@ -739,8 +739,8 @@ namespace TrenchWarfare {
 		}
 
 		void TriangulateEdgeStrip (
-			EdgeVertices e1, Color c1, float type1,
-			EdgeVertices e2, Color c2, float type2,
+			EdgeVertices e1, Color c1, CellTerrain type1,
+			EdgeVertices e2, Color c2, CellTerrain type2,
 			bool hasRoad = false
 		) {
 			terrain.AddQuad(e1.v1, e1.v2, e2.v1, e2.v2);
@@ -753,8 +753,8 @@ namespace TrenchWarfare {
 			terrain.AddQuadColor(c1, c2);
 
 			Vector3 types;
-			types.x = types.z = type1;
-			types.y = type2;
+			types.x = types.z = (int)type1;
+			types.y = (int)type2;
 			terrain.AddQuadTerrainTypes(types);
 			terrain.AddQuadTerrainTypes(types);
 			terrain.AddQuadTerrainTypes(types);

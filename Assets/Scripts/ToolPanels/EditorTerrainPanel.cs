@@ -1,4 +1,5 @@
 using TrenchWarfare.ToolPanels.State;
+using TrenchWarfare.Domain.Enums;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +13,7 @@ namespace TrenchWarfare.ToolPanels {
         }
 
         public void SetTerrain(int terraint) {
-            state.TerrainSelected = (Terrain)terraint;
+            state.TerrainSelected = (CellTerrain)terraint;
         }
 
         public void SetElevation(float elevation) {
@@ -26,35 +27,35 @@ namespace TrenchWarfare.ToolPanels {
         private void InitToggles() {
             var gameObjectName = "";
             switch(state.TerrainSelected) {
-                case Terrain.Plain: {
+                case CellTerrain.Plain: {
                     gameObjectName = "Plain Toggle";
                     break;
                 }
-                case Terrain.Wood: {
+                case CellTerrain.Wood: {
                     gameObjectName = "Wood Toggle";
                     break;
                 }
-                case Terrain.Marsh: {
+                case CellTerrain.Marsh: {
                     gameObjectName = "Marsh Toggle";
                     break;
                 }
-                case Terrain.Sand: {
+                case CellTerrain.Sand: {
                     gameObjectName = "Sand Toggle";
                     break;
                 }
-                case Terrain.Hills: {
+                case CellTerrain.Hills: {
                     gameObjectName = "Hills Toggle";
                     break;
                 }
-                case Terrain.Mountains: {
+                case CellTerrain.Mountains: {
                     gameObjectName = "Mountains Toggle";
                     break;
                 }
-                case Terrain.Snow: {
+                case CellTerrain.Snow: {
                     gameObjectName = "Snow Toggle";
                     break;
                 }
-                case Terrain.Water: {
+                case CellTerrain.Water: {
                     gameObjectName = "Water Toggle";
                     break;
                 }

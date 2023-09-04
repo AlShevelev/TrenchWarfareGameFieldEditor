@@ -26,6 +26,9 @@ namespace TrenchWarfare.Domain.Map {
 		public bool[] Roads;
 		public bool HasRoads { get => Roads.Any(i => i); }
 
+		private CellTerrain _terrainType;
+		public CellTerrain TerrainType { get => _terrainType; set => _terrainType = value; }
+
         public CellModel() {
 			Roads = new bool[6];
         }

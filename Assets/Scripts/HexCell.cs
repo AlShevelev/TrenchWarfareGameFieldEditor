@@ -15,20 +15,7 @@ namespace TrenchWarfare {
 
 		public Color Color {
 			get {
-				return HexMetrics.colors[terrainTypeIndex];
-			}
-		}
-
-		int terrainTypeIndex;
-		public int TerrainTypeIndex {
-			get {
-				return terrainTypeIndex;
-			}
-			set {
-				if (terrainTypeIndex != value) {
-					terrainTypeIndex = value;
-					Refresh();
-				}
+				return HexMetrics.colors[(int)_model.TerrainType];
 			}
 		}
 
@@ -187,6 +174,13 @@ namespace TrenchWarfare {
 		void Awake () {
 			_model = new CellModel();
 		}
+
+		public void UpdateTerrainType(CellTerrain terrainType) {
+			if (_model.TerrainType != terrainType) {
+				_model.TerrainType = terrainType;
+				Refresh();
+			}
+		}
 		
 		public HexCell GetNeighbor (HexDirection direction) {
 			return neighbors[(int)direction];
@@ -338,7 +332,7 @@ namespace TrenchWarfare {
 		}
 
 		public void Save (BinaryWriter writer) {
-			writer.Write((byte)terrainTypeIndex);
+			writer.Write((byte)_model.TerrainType);
 			writer.Write((byte)(elevation + 127));
 			writer.Write((byte)waterLevel);
 			writer.Write((byte)urbanLevel);
@@ -356,7 +350,7 @@ namespace TrenchWarfare {
 		}
 
 		public void Load (BinaryReader reader) {
-			terrainTypeIndex = reader.ReadByte();
+			_model.TerrainType = (CellTerrain)reader.ReadByte();
 			elevation = reader.ReadByte() - 127;
 			RefreshPosition();
 			waterLevel = reader.ReadByte();
