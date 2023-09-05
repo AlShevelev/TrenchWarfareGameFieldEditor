@@ -153,7 +153,7 @@ namespace TrenchWarfare {
 
 			cell.uiRect = label.rectTransform;
 
-			cell.Elevation = 0;
+			cell.UpdateElevation(0);
 
 			AddCellToChunk(x, z, cell);
 		}

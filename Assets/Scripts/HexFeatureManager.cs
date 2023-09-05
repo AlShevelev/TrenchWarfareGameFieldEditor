@@ -28,7 +28,7 @@ namespace TrenchWarfare {
 		public void AddFeature (HexCell cell, Vector3 position) {
 			HexHash hash = HexMetrics.SampleHashGrid(position);
 			
-			Transform prefab = PickPrefab(urbanCollections, cell.UrbanLevel, hash.a, hash.d);
+			Transform prefab = PickPrefab(urbanCollections, cell.Model.UrbanLevel, hash.a, hash.d);
 
 			if (prefab != null) {
 				Transform instance = Instantiate(prefab);
@@ -59,7 +59,7 @@ namespace TrenchWarfare {
 			EdgeVertices near, HexCell nearCell,
 			EdgeVertices far, HexCell farCell
 		) {
-			if (nearCell.Walled != farCell.Walled) {
+			if (nearCell.Model.Walled != farCell.Model.Walled) {
 				AddWallSegment(near.v1, far.v1, near.v2, far.v2);
 				AddWallSegment(near.v2, far.v2, near.v3, far.v3);
 				AddWallSegment(near.v3, far.v3, near.v4, far.v4);
@@ -72,28 +72,28 @@ namespace TrenchWarfare {
 			Vector3 c2, HexCell cell2,
 			Vector3 c3, HexCell cell3
 		) {
-			if (cell1.Walled) {
-				if (cell2.Walled) {
-					if (!cell3.Walled) {
+			if (cell1.Model.Walled) {
+				if (cell2.Model.Walled) {
+					if (!cell3.Model.Walled) {
 						AddWallSegment(c3, cell3, c1, cell1, c2, cell2);
 					}
 				}
-				else if (cell3.Walled) {
+				else if (cell3.Model.Walled) {
 					AddWallSegment(c2, cell2, c3, cell3, c1, cell1);
 				}
 				else {
 					AddWallSegment(c1, cell1, c2, cell2, c3, cell3);
 				}
 			}
-			else if (cell2.Walled) {
-				if (cell3.Walled) {
+			else if (cell2.Model.Walled) {
+				if (cell3.Model.Walled) {
 					AddWallSegment(c1, cell1, c2, cell2, c3, cell3);
 				}
 				else {
 					AddWallSegment(c2, cell2, c3, cell3, c1, cell1);
 				}
 			}
-			else if (cell3.Walled) {
+			else if (cell3.Model.Walled) {
 				AddWallSegment(c3, cell3, c1, cell1, c2, cell2);
 			}
 		}

@@ -29,6 +29,24 @@ namespace TrenchWarfare.Domain.Map {
 		private CellTerrain _terrainType;
 		public CellTerrain TerrainType { get => _terrainType; set => _terrainType = value; }
 
+		public HexDirection RiverBeginOrEndDirection {
+			get => HasIncomingRiver ? IncomingRiver : OutgoingRiver;
+		}
+
+		int _elevation = int.MinValue;
+		public int Elevation { get => _elevation; set => _elevation = value; }
+
+		int _waterLevel;
+		public int WaterLevel { get => _waterLevel; set => _waterLevel = value; }
+
+		public bool IsUnderwater { get => _waterLevel > _elevation; }
+
+		int _urbanLevel;
+		public int UrbanLevel { get => _urbanLevel; set => _urbanLevel = value; }
+
+        bool _walled;
+		public bool Walled { get => _walled; set => _walled = value; }
+
         public CellModel() {
 			Roads = new bool[6];
         }

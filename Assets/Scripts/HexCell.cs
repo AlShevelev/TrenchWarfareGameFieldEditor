@@ -26,30 +26,6 @@ namespace TrenchWarfare {
 
 		public HexGridChunk chunk;
 
-		int elevation = int.MinValue;
-		public int Elevation {
-			get {
-				return elevation;
-			}
-			set {
-				// if (elevation == value) {
-				// 	return;
-				// }
-
-				elevation = value;
-				RefreshPosition();
-				ValidateRivers();
-
-				for (int i = 0; i < _model.Roads.Length; i++) {
-					if (_model.Roads[i] && GetElevationDifference((HexDirection)i) > 1) {
-						SetRoad(i, false);
-					}
-				}
-
-				Refresh();
-			}
-		}
-
 		public Vector3 Position {
 			get {
 				return transform.localPosition;
@@ -57,92 +33,19 @@ namespace TrenchWarfare {
 		}
 
 		public float StreamBedY {
-			get {
-				return (elevation + HexMetrics.streamBedElevationOffset) *	HexMetrics.elevationStep;
-			}
+			get	=> (_model.Elevation + HexMetrics.streamBedElevationOffset) * HexMetrics.elevationStep;
 		}
 
 		public float RiverSurfaceY {
 			get {
 				return
-					(elevation + HexMetrics.waterElevationOffset) *
+					(_model.Elevation + HexMetrics.waterElevationOffset) *
 					HexMetrics.elevationStep;
-			}
-		}
-
-		public HexDirection RiverBeginOrEndDirection {
-			get => _model.HasIncomingRiver ? _model.IncomingRiver : _model.OutgoingRiver;
-		}
-
-		int waterLevel;
-		public int WaterLevel {
-			get {
-				return waterLevel;
-			}
-			set {
-				if (waterLevel == value) {
-					return;
-				}
-				waterLevel = value;
-				ValidateRivers();
-				Refresh();
-			}
-		}
-
-		public bool IsUnderwater {
-			get {
-				return waterLevel > elevation;
 			}
 		}
 
 		public float WaterSurfaceY {
-			get {
-				return
-					(waterLevel + HexMetrics.waterElevationOffset) *
-					HexMetrics.elevationStep;
-			}
-		}
-
-		int urbanLevel;
-
-		public int UrbanLevel {
-			get {
-				return urbanLevel;
-			}
-			set {
-				if (urbanLevel != value) {
-					urbanLevel = value;
-					RefreshSelfOnly();
-				}
-			}
-		}
-
-        private UnitType _unit;
-
-        public UnitType unit {
-            get {
-                return _unit;
-            }
-            set {
-                if (_unit != value) {
-                    _unit = value;
-                    RefreshSelfOnly();
-                }
-            }
-        }
-
-        bool walled;
-
-		public bool Walled {
-			get {
-				return walled;
-			}
-			set {
-				if (walled != value) {
-					walled = value;
-					Refresh();
-				}
-			}
+			get => 	(_model.WaterLevel + HexMetrics.waterElevationOffset) *	HexMetrics.elevationStep;
 		}
 
 		public HexUnit Unit { get; set; }
@@ -175,6 +78,38 @@ namespace TrenchWarfare {
 			_model = new CellModel();
 		}
 
+		public void UpdateWalled(bool walled) {
+			_model.Walled = walled;
+			Refresh();
+		}
+
+		public void UpdateUrbanLevel(int urbanLevel) {
+			_model.UrbanLevel = urbanLevel;
+			RefreshSelfOnly();
+		}
+
+		public void UpdateWaterLevel(int waterLevel) {
+			_model.WaterLevel = waterLevel;
+
+			ValidateRivers();
+			Refresh();
+		}
+
+		public void UpdateElevation(int elevation) {
+			_model.Elevation = elevation;
+
+			RefreshPosition();
+			ValidateRivers();
+
+			for (int i = 0; i < _model.Roads.Length; i++) {
+				if (_model.Roads[i] && GetElevationDifference((HexDirection)i) > 1) {
+					SetRoad(i, false);
+				}
+			}
+
+			Refresh();
+		}
+
 		public void UpdateTerrainType(CellTerrain terrainType) {
 			if (_model.TerrainType != terrainType) {
 				_model.TerrainType = terrainType;
@@ -193,13 +128,13 @@ namespace TrenchWarfare {
 
 		public HexEdgeType GetEdgeType (HexDirection direction) {
 			return HexMetrics.GetEdgeType(
-				elevation, neighbors[(int)direction].elevation
+				_model.Elevation, neighbors[(int)direction].Model.Elevation
 			);
 		}
 
 		public HexEdgeType GetEdgeType (HexCell otherCell) {
 			return HexMetrics.GetEdgeType(
-				elevation, otherCell.elevation
+				_model.Elevation, otherCell.Model.Elevation
 			);
 		}
 
@@ -306,13 +241,14 @@ namespace TrenchWarfare {
 		}
 
 		public int GetElevationDifference (HexDirection direction) {
-			int difference = elevation - GetNeighbor(direction).elevation;
+			int difference = _model.Elevation - GetNeighbor(direction).Model.Elevation;
 			return difference >= 0 ? difference : -difference;
 		}
 
 		bool IsValidRiverDestination (HexCell neighbor) {
 			return neighbor && (
-				elevation >= neighbor.elevation || waterLevel == neighbor.elevation
+				_model.Elevation >= neighbor.Model.Elevation ||
+				_model.WaterLevel == neighbor.Model.Elevation
 			);
 		}
 
@@ -333,10 +269,10 @@ namespace TrenchWarfare {
 
 		public void Save (BinaryWriter writer) {
 			writer.Write((byte)_model.TerrainType);
-			writer.Write((byte)(elevation + 127));
-			writer.Write((byte)waterLevel);
-			writer.Write((byte)urbanLevel);
-			writer.Write(walled);
+			writer.Write((byte)(_model.Elevation + 127));
+			writer.Write((byte)_model.WaterLevel);
+			writer.Write((byte)_model.UrbanLevel);
+			writer.Write(_model.Walled);
 
 			writer.Write(_model.HasIncomingRiver);
 			writer.Write((byte)_model.IncomingRiver);
@@ -351,12 +287,12 @@ namespace TrenchWarfare {
 
 		public void Load (BinaryReader reader) {
 			_model.TerrainType = (CellTerrain)reader.ReadByte();
-			elevation = reader.ReadByte() - 127;
+			_model.Elevation = reader.ReadByte() - 127;
 			RefreshPosition();
-			waterLevel = reader.ReadByte();
-			urbanLevel = reader.ReadByte();
+			_model.WaterLevel = reader.ReadByte();
+			_model.UrbanLevel = reader.ReadByte();
 
-			walled = reader.ReadBoolean();
+			_model.Walled = reader.ReadBoolean();
 
 			_model.HasIncomingRiver = reader.ReadBoolean();
 			_model.IncomingRiver = (HexDirection)reader.ReadByte();
@@ -399,7 +335,7 @@ namespace TrenchWarfare {
 
 		void RefreshPosition () {
 			Vector3 position = transform.localPosition;
-			position.y = elevation * HexMetrics.elevationStep;
+			position.y = _model.Elevation * HexMetrics.elevationStep;
 			position.y +=
 				(HexMetrics.SampleNoise(position).y * 2f - 1f) *
 				HexMetrics.elevationPerturbStrength;

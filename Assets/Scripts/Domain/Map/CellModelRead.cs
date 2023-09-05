@@ -21,7 +21,19 @@ namespace TrenchWarfare.Domain.Map {
 
         bool HasRoadThroughEdge (HexDirection direction);
 
+		HexDirection RiverBeginOrEndDirection {	get; }
+
         CellTerrain TerrainType { get; }
+
+		int Elevation { get; }
+
+        int WaterLevel { get; }
+
+        bool IsUnderwater { get; }
+
+        int UrbanLevel { get; }
+
+		bool Walled { get; }
     }
 }
 

@@ -85,15 +85,15 @@ namespace TrenchWarfare {
 			if (cell) {
 				if(state.ActiveTool == Tools.Tool.Terrain) {
 					if (state.TerrainSelected == CellTerrain.Water) {
-                        cell.WaterLevel = state.WaterLevel;
+                        cell.UpdateWaterLevel(state.WaterLevel);
                     } else {
                         cell.UpdateTerrainType(state.TerrainSelected);
-                        cell.Elevation = state.TerrainElevation;
+                        cell.UpdateElevation(state.TerrainElevation);
                     }
                 }
 
                 if (state.ActiveTool == Tools.Tool.Urban) {
-					cell.UrbanLevel = state.UrbanLevel;		
+					cell.UpdateUrbanLevel(state.UrbanLevel);
 				}
 
 				if(state.ActiveTool == Tools.Tool.Rivers && !state.RiversIsOn) {
@@ -105,7 +105,7 @@ namespace TrenchWarfare {
 				}
 				
 				if(state.ActiveTool == Tools.Tool.Walls) {
-					cell.Walled = state.WallsIsOn;
+					cell.UpdateWalled(state.WallsIsOn);
 				}
 
 				if (isDrag) {
