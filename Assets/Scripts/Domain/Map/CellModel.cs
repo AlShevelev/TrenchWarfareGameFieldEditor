@@ -4,57 +4,62 @@ using TrenchWarfare.Domain.Enums;
 
 namespace TrenchWarfare.Domain.Map {
     public class CellModel: CellModelRead {
-		bool _hasIncomingRiver;
-        public bool HasIncomingRiver { get => _hasIncomingRiver; set => _hasIncomingRiver = value; }
+		bool hasIncomingRiver;
+        public bool HasIncomingRiver { get => hasIncomingRiver; set => hasIncomingRiver = value; }
 
-		bool _hasOutgoingRiver;
-		public bool HasOutgoingRiver { get => _hasOutgoingRiver; set => _hasOutgoingRiver = value; }
+		bool hasOutgoingRiver;
+		public bool HasOutgoingRiver { get => hasOutgoingRiver; set => hasOutgoingRiver = value; }
 
         // In the case of an outgoing river, this indicates where it's going. 
 		// And for an incoming river, this indicates where it's coming from.
-		HexDirection _incomingRiver;
-		public HexDirection IncomingRiver { get => _incomingRiver; set => _incomingRiver = value; }
+		HexDirection incomingRiver;
+		public HexDirection IncomingRiver { get => incomingRiver; set => incomingRiver = value; }
 
-        HexDirection _outgoingRiver;
-		public HexDirection OutgoingRiver { get => _outgoingRiver; set => _outgoingRiver = value; }
+        HexDirection outgoingRiver;
+		public HexDirection OutgoingRiver { get => outgoingRiver; set => outgoingRiver = value; }
 
-		public bool HasRiver { get => _hasIncomingRiver || _hasOutgoingRiver; }
+		public bool HasRiver { get => hasIncomingRiver || hasOutgoingRiver; }
 
-		public bool HasRiverBeginOrEnd { get => _hasIncomingRiver != _hasOutgoingRiver; }
+		public bool HasRiverBeginOrEnd { get => hasIncomingRiver != hasOutgoingRiver; }
 
 		// The cell has a road in a certain direction
-		public bool[] Roads;
-		public bool HasRoads { get => Roads.Any(i => i); }
+		bool[] roads;
+		public bool[] Roads { get => roads; }
+		public bool HasRoads { get => roads.Any(i => i); }
 
-		private CellTerrain _terrainType;
-		public CellTerrain TerrainType { get => _terrainType; set => _terrainType = value; }
+		private CellTerrain terrainType;
+		public CellTerrain TerrainType { get => terrainType; set => terrainType = value; }
 
 		public HexDirection RiverBeginOrEndDirection {
 			get => HasIncomingRiver ? IncomingRiver : OutgoingRiver;
 		}
 
-		int _elevation = int.MinValue;
-		public int Elevation { get => _elevation; set => _elevation = value; }
+		int elevation = int.MinValue;
+		public int Elevation { get => elevation; set => elevation = value; }
 
-		int _waterLevel;
-		public int WaterLevel { get => _waterLevel; set => _waterLevel = value; }
+		int waterLevel;
+		public int WaterLevel { get => waterLevel; set => waterLevel = value; }
 
-		public bool IsUnderwater { get => _waterLevel > _elevation; }
+		public bool IsUnderwater { get => waterLevel > elevation; }
 
-		int _urbanLevel;
-		public int UrbanLevel { get => _urbanLevel; set => _urbanLevel = value; }
+		int urbanLevel;
+		public int UrbanLevel { get => urbanLevel; set => urbanLevel = value; }
 
-        bool _walled;
-		public bool Walled { get => _walled; set => _walled = value; }
+        bool walled;
+		public bool Walled { get => walled; set => walled = value; }
+
+		CellModelRead[] neighbors;
+		public CellModelRead[] Neighbors { get => neighbors; }
 
         public CellModel() {
-			Roads = new bool[6];
+			roads = new bool[6];
+			neighbors = new CellModel[6];
         }
 
 		public bool HasRiverThroughEdge (HexDirection direction) {
 			return
-				_hasIncomingRiver && _incomingRiver == direction ||
-				_hasOutgoingRiver && _outgoingRiver == direction;
+				hasIncomingRiver && incomingRiver == direction ||
+				hasOutgoingRiver && outgoingRiver == direction;
 		}
 
 		public bool HasRoadThroughEdge (HexDirection direction) {

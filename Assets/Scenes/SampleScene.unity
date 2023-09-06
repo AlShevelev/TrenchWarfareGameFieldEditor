@@ -5944,6 +5944,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 747036155}
   m_CullTransparentMesh: 1
+--- !u!1 &748669779
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 748669781}
+  - component: {fileID: 748669780}
+  m_Layer: 0
+  m_Name: ModelRegistry
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &748669780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 748669779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16eeb0748699342b784b56bbe3f26af0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &748669781
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 748669779}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 537.53143, y: 366.1911, z: 0.46069336}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &767691415
 GameObject:
   m_ObjectHideFlags: 0
@@ -13144,10 +13188,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cellPrefab: {fileID: 8068252324898280809, guid: 6265b28b045b54f94b4fcbcce2fa58cb, type: 3}
   cellLabelPrefab: {fileID: 6865423294138240699, guid: ee378f2f513b546ada61d38d3b6dfe50, type: 3}
-  cellCountX: 20
-  cellCountZ: 15
   noiseSource: {fileID: 2800000, guid: 5dbdfa238414245329bc42439af9356a, type: 3}
   chunkPrefab: {fileID: 3512286599030952394, guid: 0a92a8ff0ab7d4725afd69a435571d7d, type: 3}
+  registry: {fileID: 748669780}
   seed: 1234
   colors:
   - {r: 0.850451, g: 0.8773585, b: 0, a: 0}

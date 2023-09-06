@@ -2,7 +2,7 @@
 using TrenchWarfare.Domain.Enums;
 
 namespace TrenchWarfare.Domain.Map {
-    public interface CellModelRead {
+    public interface CellModelRead: Model {
         bool HasIncomingRiver { get; }
 
         bool HasOutgoingRiver { get; }
@@ -15,6 +15,7 @@ namespace TrenchWarfare.Domain.Map {
 
 		bool HasRiverBeginOrEnd { get; }
 
+        bool[] Roads { get; }
         bool HasRoads { get; }
 
         bool HasRiverThroughEdge (HexDirection direction);
@@ -34,6 +35,8 @@ namespace TrenchWarfare.Domain.Map {
         int UrbanLevel { get; }
 
 		bool Walled { get; }
+
+        CellModelRead[] Neighbors { get; }
     }
 }
 

@@ -5,78 +5,78 @@ using TrenchWarfare.Domain.Units;
 
 namespace TrenchWarfare.ToolPanels.State {
     public class EditorState : MonoBehaviour, EditorStateRead {
-        private Tool _activeTool = Tool.Terrain;
+        private Tool activeTool = Tool.Terrain;
         public Tool ActiveTool {
-            get => _activeTool;
-            set => _activeTool = value;
+            get => activeTool;
+            set => activeTool = value;
         }
 
-        private CellTerrain _terrainSelected = CellTerrain.Plain;
+        private CellTerrain terrainSelected = CellTerrain.Plain;
         public CellTerrain TerrainSelected {
-            get => _terrainSelected;
-            set => _terrainSelected = value;
+            get => terrainSelected;
+            set => terrainSelected = value;
         }
 
-        private int _terrainElevation = 0;
+        private int terrainElevation = 0;
         public int TerrainElevation {
-            get => _terrainElevation;
-            set => _terrainElevation = value;
+            get => terrainElevation;
+            set => terrainElevation = value;
         }
 
         public readonly Range terrainElevationMinMax = 0..3;
 
-        private int _brushSize = 0;
+        private int brushSize = 0;
         public int BrushSize {
-            get => _brushSize;
-            set => _brushSize = value;
+            get => brushSize;
+            set => brushSize = value;
         }
 
         public readonly Range brushSizeMinMax = 0..4;
         
-        private int _waterLevel = 1;
+        private int waterLevel = 1;
         public int WaterLevel {
-            get => _waterLevel;
+            get => waterLevel;
         }
 
-        private bool _riversIsOn = false;
+        private bool riversIsOn = false;
         public bool RiversIsOn {
-            get => _riversIsOn;
-            set => _riversIsOn = value;
+            get => riversIsOn;
+            set => riversIsOn = value;
         }
 
-        private bool _roadsIsOn = false;
+        private bool roadsIsOn = false;
         public bool RoadsIsOn {
-            get => _roadsIsOn;
-            set => _roadsIsOn = value;
+            get => roadsIsOn;
+            set => roadsIsOn = value;
         }
 
-        private bool _wallsIsOn = false;
+        private bool wallsIsOn = false;
         public bool WallsIsOn {
-            get => _wallsIsOn;
-            set => _wallsIsOn = value;
+            get => wallsIsOn;
+            set => wallsIsOn = value;
         }
 
-        private int _urbanLevel = 0;
+        private int urbanLevel = 0;
         public int UrbanLevel {
-            get => _urbanLevel;
-            set => _urbanLevel = value;
+            get => urbanLevel;
+            set => urbanLevel = value;
         }
 
         public readonly Range urbanLevelMinMax = 0..3;
 
-        private bool _labelsIsOn = false;
+        private bool labelsIsOn = false;
         public bool LabelsIsOn {
-            get => _labelsIsOn;
-            set => _labelsIsOn = value;
+            get => labelsIsOn;
+            set => labelsIsOn = value;
         }
 
-        private UnitInfo _unitInfo = new UnitInfo(
+        private UnitModel unitInfo = new UnitModel(
             UnitType.ArmoredCar,
             Nation.AustriaHungary
         );
-        public UnitInfo UnitInfo {
-            get => _unitInfo;
-            set => _unitInfo = value;
+        public UnitModel UnitInfo {
+            get => unitInfo;
+            set => unitInfo = value;
         }
     }
 }

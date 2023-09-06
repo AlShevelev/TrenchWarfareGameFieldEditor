@@ -4,7 +4,7 @@ using TrenchWarfare.Domain.Units;
 
 namespace TrenchWarfare.UI {
 	public static class UnitSpritesInfo {
-    	public static string GetUnitSprite(UnitInfo unitInfo) {
+    	public static string GetUnitSprite(UnitModel unitInfo) {
 			switch (unitInfo.Type) {
 				case UnitType.ArmoredCar: return "Unit Armored car";
 				case UnitType.Artillery: return "Unit Artillery";
@@ -71,7 +71,7 @@ namespace TrenchWarfare.UI {
 			};
 		}
 
-		public static string GetBannerSprite(UnitInfo unitInfo) {
+		public static string GetBannerSprite(UnitModel unitInfo) {
             return unitInfo.Nation switch {
                 Nation.AustriaHungary => "Banner Austro-Hungaria",
                 Nation.Belgium => "Banner Belgium",
@@ -98,7 +98,7 @@ namespace TrenchWarfare.UI {
             };
         }
 
-		public static string GetHealthSprite(UnitInfo unitInfo) {
+		public static string GetHealthSprite(UnitModel unitInfo) {
 			var relativeHealth = unitInfo.Health / unitInfo.MaxHealth;
 
 			if (relativeHealth <= 0.05f)
@@ -142,11 +142,11 @@ namespace TrenchWarfare.UI {
 			return "Unit Health 100";
 		}
 
-		public static string GetQuantitySprite(UnitInfo unitInfo) {
+		public static string GetQuantitySprite(UnitModel unitInfo) {
 			return "Unit Quantity 1";
 		}
 
-		public static string GetRankSprite(UnitInfo unitInfo) {
+		public static string GetRankSprite(UnitModel unitInfo) {
 			if (unitInfo.IsLand) {
                 return unitInfo.ExperienceRank switch {
                     UnitExperienceRank.Rookies => null,
@@ -168,7 +168,7 @@ namespace TrenchWarfare.UI {
             }
 		}
 
-		public static string GetBoost1Sprite(UnitInfo unitInfo) {
+		public static string GetBoost1Sprite(UnitModel unitInfo) {
             if (unitInfo.IsLand) {
                 return unitInfo.Boost1 switch {
                     UnitBoost.Attack => "Unit Land Boost 1 Attack",
@@ -190,7 +190,7 @@ namespace TrenchWarfare.UI {
             }
         }
 
-		public static string GetBoost2Sprite(UnitInfo unitInfo) {
+		public static string GetBoost2Sprite(UnitModel unitInfo) {
             if (unitInfo.IsLand) {
                 return unitInfo.Boost2 switch {
                     UnitBoost.Attack => "Unit Land Boost 2 Attack",
@@ -212,7 +212,7 @@ namespace TrenchWarfare.UI {
             }
         }
 
-		public static string GetBoost3Sprite(UnitInfo unitInfo) {
+		public static string GetBoost3Sprite(UnitModel unitInfo) {
             if (unitInfo.IsLand) {
                 return unitInfo.Boost3 switch {
                     UnitBoost.Attack => "Unit Land Boost 3 Attack",

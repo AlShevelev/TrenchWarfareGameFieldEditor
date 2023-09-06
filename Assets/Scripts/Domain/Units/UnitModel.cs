@@ -2,60 +2,60 @@
 using TrenchWarfare.Domain.Enums;
 
 namespace TrenchWarfare.Domain.Units {
-    public class UnitInfo {
-        private UnitType _type;
+    public class UnitModel : Model {
+        private UnitType type;
 
-        private Nation _nation;
+        private Nation nation;
 
         /// <summary>
         /// [0, 1]
         /// </summary>
-        private float _fatigue;
+        private float fatigue;
 
-        private float _health;
+        private float health;
 
-        private float _movementPoints;
+        private float movementPoints;
 
-        private UnitExperienceRank _experienceRank;
+        private UnitExperienceRank experienceRank;
 
         // for experience rank calculation
-        private int _tookPartInBattles;
+        private int tookPartInBattles;
 
-        private UnitBoost _boost1;
-        private UnitBoost _boost2;
-        private UnitBoost _boost3;
+        private UnitBoost boost1;
+        private UnitBoost boost2;
+        private UnitBoost boost3;
 
-        public UnitType Type { get => _type; set => _type = value; }
+        public UnitType Type { get => type; set => type = value; }
 
-        public Nation Nation { get => _nation; set => _nation = value; }
+        public Nation Nation { get => nation; set => nation = value; }
 
-        public float Fatigue { get => _fatigue; set => _fatigue = value; }
+        public float Fatigue { get => fatigue; set => fatigue = value; }
 
-        public float Health { get => _health; set => _health = value; }
+        public float Health { get => health; set => health = value; }
 
-        public float MovementPoints { get => _movementPoints; set => _movementPoints = value; }
+        public float MovementPoints { get => movementPoints; set => movementPoints = value; }
 
         public UnitExperienceRank ExperienceRank {
-            get => _experienceRank; set => _experienceRank = value;
+            get => experienceRank; set => experienceRank = value;
         }
 
         public int TookPartInBattles {
-            get => _tookPartInBattles; set => _tookPartInBattles = value;
+            get => tookPartInBattles; set => tookPartInBattles = value;
         }
 
         public UnitBoost Boost1 {
-            get => _boost1; set => _boost1 = value;
+            get => boost1; set => boost1 = value;
         }
         public UnitBoost Boost2 {
-            get => _boost2; set => _boost2 = value;
+            get => boost2; set => boost2 = value;
         }
         public UnitBoost Boost3 {
-            get => _boost3; set => _boost3 = value;
+            get => boost3; set => boost3 = value;
         }
 
         public float MaxHealth {
             get {
-                return _type switch {
+                return type switch {
                     UnitType.ArmoredCar => 8f,
                     UnitType.Artillery => 5f,
                     UnitType.Battleship => 50f,
@@ -74,7 +74,7 @@ namespace TrenchWarfare.Domain.Units {
 
         public float MaxMovementPoints {
             get {
-                return _type switch {
+                return type switch {
                     UnitType.ArmoredCar => 3f,
                     UnitType.Artillery => 1f,
                     UnitType.Battleship => 2f,
@@ -93,7 +93,7 @@ namespace TrenchWarfare.Domain.Units {
 
         public float Attack {
             get {
-                return _type switch {
+                return type switch {
                     UnitType.ArmoredCar => 3f,
                     UnitType.Artillery => 5f,
                     UnitType.Battleship => 12f,
@@ -112,7 +112,7 @@ namespace TrenchWarfare.Domain.Units {
 
         public float Defence {
             get {
-                return _type switch {
+                return type switch {
                     UnitType.ArmoredCar => 5f,
                     UnitType.Artillery => 1f,
                     UnitType.Battleship => 20f,
@@ -131,7 +131,7 @@ namespace TrenchWarfare.Domain.Units {
 
         public float DamageMin {
             get {
-                return _type switch {
+                return type switch {
                     UnitType.ArmoredCar => 3f,
                     UnitType.Artillery => 3f,
                     UnitType.Battleship => 14f,
@@ -150,7 +150,7 @@ namespace TrenchWarfare.Domain.Units {
 
         public float DamageMax {
             get {
-                return _type switch {
+                return type switch {
                     UnitType.ArmoredCar => 4f,
                     UnitType.Artillery => 6f,
                     UnitType.Battleship => 16f,
@@ -169,7 +169,7 @@ namespace TrenchWarfare.Domain.Units {
 
         public float CostInMoney {
             get {
-                return _type switch {
+                return type switch {
                     UnitType.ArmoredCar => 1f,
                     UnitType.Artillery => 1f,
                     UnitType.Battleship => 4f,
@@ -188,7 +188,7 @@ namespace TrenchWarfare.Domain.Units {
 
         public float CostInIndustryPoints {
             get {
-                return _type switch {
+                return type switch {
                     UnitType.ArmoredCar => 3f,
                     UnitType.Artillery => 3f,
                     UnitType.Battleship => 12f,
@@ -207,7 +207,7 @@ namespace TrenchWarfare.Domain.Units {
 
         public bool IsLand {
             get {
-                return _type switch {
+                return type switch {
                     UnitType.ArmoredCar => true,
                     UnitType.Artillery => true,
                     UnitType.Battleship => false,
@@ -226,7 +226,7 @@ namespace TrenchWarfare.Domain.Units {
 
         public int NeedCityLevelToBuild {
             get {
-                return _type switch {
+                return type switch {
                     UnitType.ArmoredCar => 0,
                     UnitType.Artillery => 0,
                     UnitType.Battleship => 0,
@@ -245,7 +245,7 @@ namespace TrenchWarfare.Domain.Units {
 
         public int NeedFactoryLevelToBuild {
             get {
-                return _type switch {
+                return type switch {
                     UnitType.ArmoredCar => 3,
                     UnitType.Artillery => 2,
                     UnitType.Battleship => 0,
@@ -264,7 +264,7 @@ namespace TrenchWarfare.Domain.Units {
 
         public int NeedNavalBaseLevelToBuild {
             get {
-                return _type switch {
+                return type switch {
                     UnitType.ArmoredCar => 0,
                     UnitType.Artillery => 0,
                     UnitType.Battleship => 3,
@@ -281,24 +281,24 @@ namespace TrenchWarfare.Domain.Units {
             }
         }
 
-        public UnitInfo(
+        public UnitModel(
             UnitType type,
             Nation nation
         ) {
-            _type = type;
-            _nation = nation;
-            _fatigue = 0f;
-            _health = MaxHealth;
-            _movementPoints = MaxMovementPoints;
-            _experienceRank = UnitExperienceRank.Rookies;
-            _tookPartInBattles = 0;
-            _boost1 = UnitBoost.None;
-            _boost2 = UnitBoost.None;
-            _boost3 = UnitBoost.None;
+            this.type = type;
+            this.nation = nation;
+            fatigue = 0f;
+            health = MaxHealth;
+            movementPoints = MaxMovementPoints;
+            experienceRank = UnitExperienceRank.Rookies;
+            tookPartInBattles = 0;
+            boost1 = UnitBoost.None;
+            boost2 = UnitBoost.None;
+            boost3 = UnitBoost.None;
         }
 
 
-        public UnitInfo(
+        public UnitModel(
             UnitType type,
             Nation nation,
             float fatigue,
@@ -310,20 +310,20 @@ namespace TrenchWarfare.Domain.Units {
             UnitBoost boost2,
             UnitBoost boost3
         ) {
-            _type = type;
-            _nation = nation;
-            _fatigue = fatigue;
-            _health = health;
-            _movementPoints = movementPoints;
-            _experienceRank = experienceRank;
-            _tookPartInBattles = tookPartInBattles;
-            _boost1 = boost1;
-            _boost2 = boost2;
-            _boost3 = boost3;
+            this.type = type;
+            this.nation = nation;
+            this.fatigue = fatigue;
+            this.health = health;
+            this.movementPoints = movementPoints;
+            this.experienceRank = experienceRank;
+            this.tookPartInBattles = tookPartInBattles;
+            this.boost1 = boost1;
+            this.boost2 = boost2;
+            this.boost3 = boost3;
         }
 
-        public UnitInfo Copy(Func<UnitInfo, UnitInfo> update) {
-            return update((UnitInfo)MemberwiseClone());
+        public UnitModel Copy(Func<UnitModel, UnitModel> update) {
+            return update((UnitModel)MemberwiseClone());
         }
 
         public int GetBattlesForExperienceRank(UnitExperienceRank unitExperienceRank) {

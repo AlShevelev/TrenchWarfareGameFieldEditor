@@ -6,6 +6,7 @@ using System.IO;
 using TrenchWarfare.UI;
 using TrenchWarfare.Domain.Enums;
 using TrenchWarfare.Domain.Map;
+using TrenchWarfare.Utility;
 
 namespace TrenchWarfare {
 	public class HexGrid : MonoBehaviour {
@@ -15,6 +16,8 @@ namespace TrenchWarfare {
 		public Texture2D noiseSource;
 
 		public HexGridChunk chunkPrefab;
+
+		public ModelRegistry registry;
 
 		public int seed;
 
@@ -123,7 +126,8 @@ namespace TrenchWarfare {
 			position.y = 0f;
 			position.z = z * (HexMetrics.outerRadius * 1.5f);
 
-			HexCell cell = cells[i] = Instantiate<HexCell>(cellPrefab);		
+			HexCell cell = cells[i] = Instantiate<HexCell>(cellPrefab);
+			cell.AttachModelRegistry(registry);
 			cell.transform.localPosition = position;
 			var coordinates = HexCoordinates.FromOffsetCoordinates(x, z);
 			cell.coordinates = coordinates;

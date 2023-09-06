@@ -7,7 +7,7 @@ namespace TrenchWarfare.UI {
         public static void AddSprites(
             GameObject parent,
             SpriteAtlas atlas,
-            UnitInfo unitInfo) {
+            UnitModel unitInfo) {
 
 			var unitSpriteComponent = parent.transform.Find("Unit").GetComponent<SpriteRenderer>();
 			unitSpriteComponent.sprite = atlas.GetSprite(UnitSpritesInfo.GetUnitSprite(unitInfo));

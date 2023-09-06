@@ -6,19 +6,19 @@ using TrenchWarfare.Domain.Map.Conditions;
 namespace TrenchWarfare.Domain.Map {
     public class GridModel {
 
-        MapConditions _conditions;
-        public MapConditions Conditions { get => _conditions; }
+        MapConditions conditions;
+        public MapConditions Conditions { get => conditions; }
 
         // map size (width & height)
-        private int _cellCountX, _cellCountZ;
-        public int CellCountX { get => _cellCountX; }
-        public int CellCountZ { get => _cellCountZ; }
+        private int cellCountX, cellCountZ;
+        public int CellCountX { get => cellCountX; }
+        public int CellCountZ { get => cellCountZ; }
 
         public GridModel(int cellCountX, int cellCountZ) {
-            _cellCountX = cellCountX;
-            _cellCountZ = cellCountZ;
+            this.cellCountX = cellCountX;
+            this.cellCountZ = cellCountZ;
 
-            _conditions = new MapConditions();
+            conditions = new MapConditions();
         }
     }
 }

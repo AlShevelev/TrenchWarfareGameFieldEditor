@@ -13,7 +13,7 @@ namespace TrenchWarfare.UI {
 		/// </summary>
 		private int cellCountZ = 0;
 
-		private UnitInfo unitInfo;
+		private UnitModel unitInfo;
 
 		public HexCell Location {
 			get {
@@ -33,7 +33,7 @@ namespace TrenchWarfare.UI {
 			UnitSpritesCalculator.AddSprites(gameObject, atlas, unitInfo);
 		}
 
-		public void AttachUnitInfo(UnitInfo unitInfo) {
+		public void AttachUnitInfo(UnitModel unitInfo) {
 			this.unitInfo = unitInfo;
 		}
 
