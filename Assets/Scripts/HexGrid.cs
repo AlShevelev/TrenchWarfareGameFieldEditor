@@ -7,6 +7,7 @@ using TrenchWarfare.UI;
 using TrenchWarfare.Domain.Enums;
 using TrenchWarfare.Domain.Map;
 using TrenchWarfare.Utility;
+using TrenchWarfare.Domain.Units;
 
 namespace TrenchWarfare {
 	public class HexGrid : MonoBehaviour {
@@ -129,7 +130,7 @@ namespace TrenchWarfare {
 
 			// We must connect cells
 			if (x > 0) {
-				cell.SetNeighbor(HexDirection.W, model.GetCell(i - 1));// $$1
+				cell.SetNeighbor(HexDirection.W, model.GetCell(i - 1));
 			}
 			if (z > 0) {
 				if ((z & 1) == 0) {
@@ -216,14 +217,21 @@ namespace TrenchWarfare {
 			model.Conditions.LoadFromBinary(reader);
 		}
 
-		public void AddUnit (HexUnit unit, HexCell location) {
-			unit.Init(model.CellCountZ);
-			unit.transform.SetParent(transform, false);
-			unit.Location = location;
+		public void AddUnit (HexCell cell, UnitModel unitModel) {
+			if (cell && !cell.Unit) {
+				var unit = Instantiate(unitPrefab);
+				unit.AttachUnitInfo(unitModel);
+
+				unit.Init(model.CellCountZ);
+				unit.transform.SetParent(transform, false);
+				unit.Location = cell;
+			}
 		}
 
-		public void RemoveUnit (HexUnit unit) {
-			unit.Die();
+		public void RemoveUnit (HexCell cell) {
+			if (cell && cell.Unit) {
+				cell.Unit.Die();
+			}
 		}
 	}
 }

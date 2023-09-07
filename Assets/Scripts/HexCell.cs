@@ -45,7 +45,7 @@ namespace TrenchWarfare {
 			get => 	(model.WaterLevel + HexMetrics.waterElevationOffset) *	HexMetrics.elevationStep;
 		}
 
-		public HexUnit Unit { get; set; }
+		public HexUnit Unit { get; set; }// $$1
 
 		void Awake () {
 			model = new CellModel();

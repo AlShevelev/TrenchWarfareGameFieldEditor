@@ -234,19 +234,12 @@ namespace TrenchWarfare {
 
 		void CreateUnit () {
 			HexCell cell = GetCellUnderCursor();
-			if (cell && !cell.Unit) {
-				var prefab = Instantiate(hexGrid.unitPrefab);
-				prefab.AttachUnitInfo(state.UnitInfo);
-
-				hexGrid.AddUnit(prefab, cell);
-			}
+			hexGrid.AddUnit(cell, state.UnitInfo);
 		}
 
 		void DestroyUnit () {
 			HexCell cell = GetCellUnderCursor();
-			if (cell && cell.Unit) {
-				hexGrid.RemoveUnit(cell.Unit);
-			}
+			hexGrid.RemoveUnit(cell);
 		}
 	}
 }
