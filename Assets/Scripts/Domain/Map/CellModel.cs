@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TrenchWarfare.Domain.Enums;
 
@@ -24,7 +25,7 @@ namespace TrenchWarfare.Domain.Map {
 
 		// The cell has a road in a certain direction
 		bool[] roads;
-		public bool[] Roads { get => roads; }
+		public IEnumerable<bool> Roads { get => roads; }
 		public bool HasRoads { get => roads.Any(i => i); }
 
 		private CellTerrain terrainType;
@@ -49,7 +50,7 @@ namespace TrenchWarfare.Domain.Map {
 		public bool Walled { get => walled; set => walled = value; }
 
 		CellModelRead[] neighbors;
-		public CellModelRead[] Neighbors { get => neighbors; }
+		public IEnumerable<CellModelRead> Neighbors { get => neighbors; }
 
         public CellModel() {
 			roads = new bool[6];
@@ -63,7 +64,19 @@ namespace TrenchWarfare.Domain.Map {
 		}
 
 		public bool HasRoadThroughEdge (HexDirection direction) {
-			return Roads[(int)direction];
+			return roads[(int)direction];
+		}
+
+		public void SetRoadThroughEdge (HexDirection direction, bool value) {
+			roads[(int)direction] = value;
+		}
+
+		public CellModelRead GetNeighbor(HexDirection direction) {
+			return neighbors[(int)direction];
+		}
+
+		public void SetNeighbor(HexDirection direction, CellModelRead model) {
+			neighbors[(int)direction] = model;
 		}
     }
 }

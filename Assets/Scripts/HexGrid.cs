@@ -39,8 +39,6 @@ namespace TrenchWarfare {
 
 		GridModel model;
 
-		HexCell[] cells;
-
 		HexGridChunk[] chunks;
 
 		void Awake () {
@@ -88,7 +86,7 @@ namespace TrenchWarfare {
 		}
 		
 		void CreateCells () {
-			cells = new HexCell[model.CellCountZ * model.CellCountX];
+			model.InitCells(model.CellCountZ * model.CellCountX);
 
 			for (int z = 0, i = 0; z < model.CellCountZ; z++) {
 				for (int x = 0; x < model.CellCountX; x++) {
@@ -108,16 +106,17 @@ namespace TrenchWarfare {
 		public HexCell GetCell (Vector3 position) {
 			position = transform.InverseTransformPoint(position);
 			HexCoordinates coordinates = HexCell.FromPosition(position);
+
 			int index = coordinates.X + coordinates.Z * model.CellCountX + coordinates.Z / 2;
-			return cells[index];
+			return GetCell(index);
 		}	
 
 		public HexCell GetCell (int xOffset, int zOffset) {
-			return cells[xOffset + zOffset * model.CellCountX];
+			return GetCell(xOffset + zOffset * model.CellCountX);
 		}
 		
 		public HexCell GetCell (int cellIndex) {
-			return cells[cellIndex];
+			return registry.Get<HexCell>(model.GetCell(cellIndex));
 		}
 
 		void CreateCell (int x, int z, int i) {
@@ -126,26 +125,27 @@ namespace TrenchWarfare {
 			position.y = 0f;
 			position.z = z * (HexMetrics.outerRadius * 1.5f);
 
-			HexCell cell = cells[i] = Instantiate<HexCell>(cellPrefab);
+			HexCell cell = Instantiate<HexCell>(cellPrefab);
 			cell.AttachModelRegistry(registry);
+			model.SetCell(i, cell.Model);
 			cell.transform.localPosition = position;
 			var coordinates = HexCoordinates.FromOffsetCoordinates(x, z);
 			cell.coordinates = coordinates;
 
 			// We must connect cells
 			if (x > 0) {
-				cell.SetNeighbor(HexDirection.W, cells[i - 1]);
+				cell.SetNeighbor(HexDirection.W, model.GetCell(i - 1));// $$1
 			}
 			if (z > 0) {
 				if ((z & 1) == 0) {
-					cell.SetNeighbor(HexDirection.SE, cells[i - model.CellCountX]);
+					cell.SetNeighbor(HexDirection.SE, model.GetCell(i - model.CellCountX));
 					if (x > 0) {
-						cell.SetNeighbor(HexDirection.SW, cells[i - model.CellCountX - 1]);
+						cell.SetNeighbor(HexDirection.SW, model.GetCell(i - model.CellCountX - 1));
 					}				
 				} else {
-					cell.SetNeighbor(HexDirection.SW, cells[i - model.CellCountX]);
+					cell.SetNeighbor(HexDirection.SW, model.GetCell(i - model.CellCountX));
 					if (x < model.CellCountX - 1) {
-						cell.SetNeighbor(HexDirection.SE, cells[i - model.CellCountX + 1]);
+						cell.SetNeighbor(HexDirection.SE, model.GetCell(i - model.CellCountX + 1));
 					}				
 				}
 			}		
@@ -181,7 +181,7 @@ namespace TrenchWarfare {
 			if (x < 0 || x >= model.CellCountX) {
 				return null;
 			}
-			return cells[x + z * model.CellCountX];
+			return registry.Get<HexCell>(model.GetCell(x + z * model.CellCountX));
 		}
 
 		public void ShowUI (bool visible) {
@@ -194,8 +194,8 @@ namespace TrenchWarfare {
 			writer.Write(model.CellCountX);
 			writer.Write(model.CellCountZ);
 
-			for (int i = 0; i < cells.Length; i++) {
-				cells[i].Save(writer);
+			foreach(var cell in model.Cells) {
+				registry.Get<HexCell>(cell).Save(writer);
 			}
 
 			writer.Write(units.Count);
@@ -211,8 +211,9 @@ namespace TrenchWarfare {
 
 			CreateMap(reader.ReadInt32(), reader.ReadInt32());
 
-			for (int i = 0; i < cells.Length; i++) {
-				cells[i].Load(reader);
+
+			foreach(var cell in model.Cells) {
+				registry.Get<HexCell>(cell).Load(reader);
 			}
 
 			for (int i = 0; i < chunks.Length; i++) {

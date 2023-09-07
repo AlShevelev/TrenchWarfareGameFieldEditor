@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -82,9 +83,10 @@ namespace TrenchWarfare {
 			RefreshPosition();
 			ValidateRivers();
 
-			for (int i = 0; i < model.Roads.Length; i++) {
-				if (model.Roads[i] && GetElevationDifference((HexDirection)i) > 1) {
-					SetRoad(i, false);
+			var directions = HexDirections.All;
+			foreach(var direction in directions) {
+				if (model.HasRoadThroughEdge(direction) && GetElevationDifference(direction) > 1) {
+					SetRoad(direction, false);
 				}
 			}
 
@@ -99,17 +101,17 @@ namespace TrenchWarfare {
 		}
 		
 		public HexCell GetNeighbor (HexDirection direction) {
-			return modelRegistry.Get<HexCell>(model.Neighbors[(int)direction]);
+			return modelRegistry.Get<HexCell>(model.GetNeighbor(direction));
 		}
 
-		public void SetNeighbor (HexDirection direction, HexCell cell) {
-			model.Neighbors[(int)direction] = cell.Model;
-			cell.Model.Neighbors[(int)direction.Opposite()] = model;
+		public void SetNeighbor (HexDirection direction, CellModelRead cell) {
+			model.SetNeighbor(direction, cell);
+			cell.SetNeighbor(direction.Opposite(), model);
 		}
 
 		public HexEdgeType GetEdgeType (HexDirection direction) {
 			return HexMetrics.GetEdgeType(
-				model.Elevation, model.Neighbors[(int)direction].Elevation
+				model.Elevation, model.GetNeighbor(direction).Elevation
 			);
 		}
 
@@ -171,7 +173,7 @@ namespace TrenchWarfare {
 			neighbor.model.HasIncomingRiver = true;
 			neighbor.model.IncomingRiver = direction.Opposite();
 
-			SetRoad((int)direction, false);
+			SetRoad(direction, false);
 		}
 
 		void RefreshSelfOnly () {
@@ -186,10 +188,10 @@ namespace TrenchWarfare {
 			if (chunk) {
 				chunk.Refresh();
 
-				for (int i = 0; i < model.Neighbors.Length; i++) {
-					HexCell neighbor = modelRegistry.Get<HexCell>(model.Neighbors[i]);
-					if (neighbor != null && neighbor.chunk != chunk) {
-						neighbor.chunk.Refresh();
+				foreach (var neighbor in model.Neighbors) {
+					HexCell neighborCell = modelRegistry.Get<HexCell>(neighbor);
+					if (neighborCell != null && neighborCell.chunk != chunk) {
+						neighborCell.chunk.Refresh();
 					}
 				}
 
@@ -200,26 +202,28 @@ namespace TrenchWarfare {
 		}
 
 		public void AddRoad (HexDirection direction) {
-			if (!model.Roads[(int)direction] && !model.HasRiverThroughEdge(direction) &&
+			if (!model.HasRoadThroughEdge(direction) && !model.HasRiverThroughEdge(direction) &&
 				GetElevationDifference(direction) <= 1) {
-				SetRoad((int)direction, true);
+				SetRoad(direction, true);
 			}
 		}
 
 		public void RemoveRoads () {
-			for (int i = 0; i < model.Neighbors.Length; i++) {
-				if (model.Roads[i]) {
-					SetRoad(i, false);
+			var directions = HexDirections.All;
+
+			foreach(var direction in directions) {
+				if (model.HasRoadThroughEdge(direction)) {
+					SetRoad(direction, false);
 				}
 			}
 		}
 
-		void SetRoad (int index, bool state) {
-			model.Roads[index] = state;
+		void SetRoad (HexDirection direction, bool state) {
+			model.SetRoadThroughEdge(direction, state);
 
-			var neighbor = modelRegistry.Get<HexCell>(model.Neighbors[index]);
+			var neighbor = modelRegistry.Get<HexCell>(model.GetNeighbor(direction));
 
-			neighbor.Model.Roads[(int)((HexDirection)index).Opposite()] = state;
+			neighbor.Model.SetRoadThroughEdge(direction.Opposite(), state);
 			neighbor.RefreshSelfOnly();
 
 			RefreshSelfOnly();
@@ -265,8 +269,9 @@ namespace TrenchWarfare {
 			writer.Write(model.HasOutgoingRiver);
 			writer.Write((byte)model.OutgoingRiver);
 
-			for (int i = 0; i < model.Roads.Length; i++) {
-				writer.Write(model.Roads[i]);
+			var directions = HexDirections.All;
+			foreach(var direction in directions) {
+				writer.Write(model.HasRoadThroughEdge(direction));
 			}
 		}
 
@@ -285,8 +290,9 @@ namespace TrenchWarfare {
 			model.HasOutgoingRiver = reader.ReadBoolean();
 			model.OutgoingRiver = (HexDirection)reader.ReadByte();
 
-			for (int i = 0; i < model.Roads.Length; i++) {
-				model.Roads[i] = reader.ReadBoolean();
+			var directions = HexDirections.All;
+			foreach(var direction in directions) {
+				model.SetRoadThroughEdge(direction, reader.ReadBoolean());
 			}
 		}
 

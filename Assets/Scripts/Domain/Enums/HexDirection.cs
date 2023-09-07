@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace TrenchWarfare.Domain.Enums {
     public enum HexDirection {
 		NE,
@@ -8,7 +11,10 @@ namespace TrenchWarfare.Domain.Enums {
 		NW
 	}
 
-	public static class HexDirectionExtensions {
+	public static class HexDirections {
+		public static IEnumerable<HexDirection> All {
+			get => (HexDirection[])Enum.GetValues(typeof(HexDirection));
+		}
 
 		public static HexDirection Opposite (this HexDirection direction) {
 			return (int)direction < 3 ? (direction + 3) : (direction - 3);

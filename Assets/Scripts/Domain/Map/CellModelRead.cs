@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using TrenchWarfare.Domain.Enums;
 
 namespace TrenchWarfare.Domain.Map {
@@ -15,12 +16,8 @@ namespace TrenchWarfare.Domain.Map {
 
 		bool HasRiverBeginOrEnd { get; }
 
-        bool[] Roads { get; }
+        IEnumerable<bool> Roads { get; }
         bool HasRoads { get; }
-
-        bool HasRiverThroughEdge (HexDirection direction);
-
-        bool HasRoadThroughEdge (HexDirection direction);
 
 		HexDirection RiverBeginOrEndDirection {	get; }
 
@@ -36,7 +33,17 @@ namespace TrenchWarfare.Domain.Map {
 
 		bool Walled { get; }
 
-        CellModelRead[] Neighbors { get; }
+        bool HasRiverThroughEdge (HexDirection direction);
+
+        bool HasRoadThroughEdge (HexDirection direction);
+
+		void SetRoadThroughEdge (HexDirection direction, bool value);
+
+        public IEnumerable<CellModelRead> Neighbors { get; }
+
+		CellModelRead GetNeighbor(HexDirection direction);
+
+		void SetNeighbor(HexDirection direction, CellModelRead model);
     }
 }
 
