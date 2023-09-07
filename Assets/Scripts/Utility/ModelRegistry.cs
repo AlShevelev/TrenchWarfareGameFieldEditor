@@ -31,5 +31,9 @@ namespace TrenchWarfare.Utility {
                 return null;
             }
         }
+
+        public void Clear() {
+            registry.Clear();
+        }
     }
 }

@@ -10,20 +10,24 @@ using TrenchWarfare.Utility;
 
 namespace TrenchWarfare {
 	public class HexGrid : MonoBehaviour {
+		int chunkCountX, chunkCountZ;
+
+		GridModel model;
+
+		HexGridChunk[] chunks;
+
 		public HexCell cellPrefab;
 		public Text cellLabelPrefab;
+		public HexGridChunk chunkPrefab;
+		public HexUnit unitPrefab;
 
 		public Texture2D noiseSource;
-
-		public HexGridChunk chunkPrefab;
 
 		public ModelRegistry registry;
 
 		public int seed;
 
 		public Color[] colors;
-
-		public HexUnit unitPrefab;
 
         public int CellCountX {
 			get => model == null ? HexMetrics.defaultCellCountX : model.CellCountX;
@@ -32,14 +36,6 @@ namespace TrenchWarfare {
         public int CellCountZ {
 			get => model == null ? HexMetrics.defaultCellCountZ : model.CellCountZ;
 		}
-
-		int chunkCountX, chunkCountZ;
-
-		List<HexUnit> units = new List<HexUnit>();
-
-		GridModel model;
-
-		HexGridChunk[] chunks;
 
 		void Awake () {
 			HexMetrics.noiseSource = noiseSource;
@@ -56,10 +52,9 @@ namespace TrenchWarfare {
 				return;
 			}
 
+			registry.Clear();
 			model = new GridModel(sizeX, sizeZ);
 
-			// Clearing an old map
-			ClearUnits();
 			if (chunks != null) {
 				for (int i = 0; i < chunks.Length; i++) {
 					Destroy(chunks[i].gameObject);
@@ -198,17 +193,10 @@ namespace TrenchWarfare {
 				registry.Get<HexCell>(cell).Save(writer);
 			}
 
-			writer.Write(units.Count);
-			for (int i = 0; i < units.Count; i++) {
-				units[i].Save(writer);
-			}
-
 			model.Conditions.SaveToBinary(writer);
 		}
 
 		public void Load (BinaryReader reader) {
-			ClearUnits();
-
 			CreateMap(reader.ReadInt32(), reader.ReadInt32());
 
 
@@ -228,23 +216,13 @@ namespace TrenchWarfare {
 			model.Conditions.LoadFromBinary(reader);
 		}
 
-		void ClearUnits () {
-			for (int i = 0; i < units.Count; i++) {
-				units[i].Die();
-			}
-			units.Clear();
-		}
-
 		public void AddUnit (HexUnit unit, HexCell location) {
-			units.Add(unit);
-
 			unit.Init(model.CellCountZ);
 			unit.transform.SetParent(transform, false);
 			unit.Location = location;
 		}
 
 		public void RemoveUnit (HexUnit unit) {
-			units.Remove(unit);
 			unit.Die();
 		}
 	}
