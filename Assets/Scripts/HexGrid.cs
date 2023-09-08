@@ -218,19 +218,17 @@ namespace TrenchWarfare {
 		}
 
 		public void AddUnit (HexCell cell, UnitModel unitModel) {
-			if (cell && !cell.Unit) {
+			if (cell && cell.Model.Unit == null) {
 				var unit = Instantiate(unitPrefab);
-				unit.AttachUnitInfo(unitModel);
 
-				unit.Init(model.CellCountZ);
+				unit.Init(model.CellCountZ, unitModel, cell, registry);
 				unit.transform.SetParent(transform, false);
-				unit.Location = cell;
 			}
 		}
 
 		public void RemoveUnit (HexCell cell) {
-			if (cell && cell.Unit) {
-				cell.Unit.Die();
+			if (cell && cell.Model.Unit != null) {
+				registry.Get<HexUnit>(cell.Model.Unit).Die();
 			}
 		}
 	}

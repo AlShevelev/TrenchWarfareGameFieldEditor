@@ -1,29 +1,30 @@
-﻿using UnityEngine;
+﻿using System;
 using System.Collections.Generic;
 using TrenchWarfare.Domain;
+using UnityEngine;
 
 namespace TrenchWarfare.Utility {
     public class ModelRegistry : MonoBehaviour {
-        Dictionary<Model, MonoBehaviour> registry;
+        Dictionary<Guid, MonoBehaviour> registry;
 
         private void Awake() {
-            registry = new Dictionary<Model, MonoBehaviour>();
+            registry = new Dictionary<Guid, MonoBehaviour>();
         }
 
-        public void Register(Model model, MonoBehaviour gameObject) {
-            registry[model] = gameObject;
+        public void Register(IModel model, MonoBehaviour gameObject) {
+            registry[model.Id] = gameObject;
         }
 
-        public void Unregister(Model model) {
-            registry.Remove(model);
+        public void Unregister(IModel model) {
+            registry.Remove(model.Id);
         }
 
-        public T Get<T>(Model model) where T: MonoBehaviour {
+        public T Get<T>(IModel model) where T: MonoBehaviour {
             if (model == null) {
                 return null;
             }
 
-            var value = registry[model];
+            var value = registry[model.Id];
 
             if (value != null) {
                 return (T)value;

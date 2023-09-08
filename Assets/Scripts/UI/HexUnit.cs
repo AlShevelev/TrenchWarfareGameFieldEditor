@@ -3,61 +3,64 @@ using UnityEngine.U2D;
 using System.IO;
 using TrenchWarfare.Domain.Units;
 using TrenchWarfare.Domain.Map;
+using TrenchWarfare.Utility;
 
 namespace TrenchWarfare.UI {
 	public class HexUnit : MonoBehaviour {
-		HexCell location;
-
 		/// <summary>
 		/// Z-size of a map
 		/// </summary>
-		private int cellCountZ = 0;
+		int cellCountZ = 0;
 
-		private UnitModel unitInfo;
+		ModelRegistry registry;
 
-		public HexCell Location {
-			get {
-				return location;
-			}
-			set {
-				location = value;
-				value.Unit = this;
-
-				transform.localPosition = getPosition(value);
-			}
-		}
+		UnitModel model;
+		public UnitModelExternal Model { get => model; }
 
 		public SpriteAtlas atlas;
 
 		void Start() {
-			UnitSpritesCalculator.AddSprites(gameObject, atlas, unitInfo);
+			UnitSpritesCalculator.AddSprites(gameObject, atlas, model);
 		}
 
-		public void AttachUnitInfo(UnitModel unitInfo) {
-			this.unitInfo = unitInfo;
+        private void OnDestroy() {
+            registry.Unregister(model);
+        }
+
+        public void Init(
+			int cellCountZ,
+            UnitModel model,
+            HexCell cell,
+            ModelRegistry registry
+		) {
+			this.cellCountZ = cellCountZ;
+			this.model = model;
+			this.registry = registry;
+
+			model.Cell = cell.Model;
+			cell.AddUnit(model);
+
+			transform.localPosition = getPosition(cell);
+
+			registry.Register(model, this);
 		}
 
 		public void ValidateLocation() {
-			transform.localPosition = getPosition(location);
+			transform.localPosition = getPosition(GetCell());
 		}
 
 		public void Die() {
-			location.Unit = null;
+			GetCell().RemoveUnit();
 			Destroy(gameObject);
 		}
 
 		public void Save(BinaryWriter writer) {
-			location.coordinates.Save(writer);
+			//location.coordinates.Save(writer);
 		}
 
 		public static void Load(BinaryReader reader, HexGrid grid) {
 			HexCoordinates coordinates = HexCoordinates.Load(reader);
 			// grid.AddUnit(Instantiate(unitPrefab), grid.GetCell(coordinates));
-		}
-
-		public void Init(int cellCountZ) {
-			this.cellCountZ = cellCountZ;
-
 		}
 
 		private Vector3 getPosition(HexCell cell) {
@@ -72,6 +75,10 @@ namespace TrenchWarfare.UI {
 
 
 			return result;
+		}
+
+		private HexCell GetCell() {
+			return registry.Get<HexCell>(model.Cell);
 		}
 
 	}

@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using TrenchWarfare.Domain.Enums;
+using TrenchWarfare.Domain.Units;
 
 namespace TrenchWarfare.Domain.Map {
-    public interface CellModelRead: Model {
+    public interface CellModelExternal: IModel {
+        UnitModelExternal Unit { get; }
+
         bool HasIncomingRiver { get; }
 
         bool HasOutgoingRiver { get; }
@@ -39,11 +42,11 @@ namespace TrenchWarfare.Domain.Map {
 
 		void SetRoadThroughEdge (HexDirection direction, bool value);
 
-        public IEnumerable<CellModelRead> Neighbors { get; }
+        public IEnumerable<CellModelExternal> Neighbors { get; }
 
-		CellModelRead GetNeighbor(HexDirection direction);
+		CellModelExternal GetNeighbor(HexDirection direction);
 
-		void SetNeighbor(HexDirection direction, CellModelRead model);
+		void SetNeighbor(HexDirection direction, CellModelExternal model);
     }
 }
 

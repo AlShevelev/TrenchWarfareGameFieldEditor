@@ -234,7 +234,7 @@ namespace TrenchWarfare {
 
 		void CreateUnit () {
 			HexCell cell = GetCellUnderCursor();
-			hexGrid.AddUnit(cell, state.UnitInfo);
+			hexGrid.AddUnit(cell, state.UnitInfo.Copy(i => i));
 		}
 
 		void DestroyUnit () {

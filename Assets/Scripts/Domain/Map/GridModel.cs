@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using TrenchWarfare.Domain.Enums;
+﻿using System.Collections.Generic;
 using TrenchWarfare.Domain.Map.Conditions;
 
-namespace TrenchWarfare.Domain.Map {
-    public class GridModel {
+namespace TrenchWarfare.Domain.Map
+{
+    public class GridModel: Model {
 
         MapConditions conditions;
         public MapConditions Conditions { get => conditions; }
@@ -15,10 +13,10 @@ namespace TrenchWarfare.Domain.Map {
         public int CellCountX { get => cellCountX; }
         public int CellCountZ { get => cellCountZ; }
 
-        CellModelRead[] cells;
-        public IEnumerable<CellModelRead> Cells { get => cells; }
+        CellModelExternal[] cells;
+        public IEnumerable<CellModelExternal> Cells { get => cells; }
 
-        public GridModel(int cellCountX, int cellCountZ) {
+        public GridModel(int cellCountX, int cellCountZ): base() {
             this.cellCountX = cellCountX;
             this.cellCountZ = cellCountZ;
 
@@ -26,14 +24,14 @@ namespace TrenchWarfare.Domain.Map {
         }
 
         public void InitCells(int quantity) {
-            cells = new CellModelRead[quantity];
+            cells = new CellModelExternal[quantity];
         }
 
-        public CellModelRead GetCell(int index) {
+        public CellModelExternal GetCell(int index) {
             return cells[index];
         }
 
-        public void SetCell(int index, CellModelRead model) {
+        public void SetCell(int index, CellModelExternal model) {
             cells[index] = model;
         }
     }

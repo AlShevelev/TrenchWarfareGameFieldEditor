@@ -1,19 +1,18 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using TrenchWarfare.Domain.Enums;
 using TrenchWarfare.Domain.Map;
 using TrenchWarfare.UI;
 using TrenchWarfare.Utility;
+using TrenchWarfare.Domain.Units;
 
-namespace TrenchWarfare {
-	public class HexCell : MonoBehaviour {
-		ModelRegistry modelRegistry;
+namespace TrenchWarfare
+{
+    public class HexCell : MonoBehaviour {
+		ModelRegistry registry;
 
 		CellModel model;
-		public CellModelRead Model { get => model; }
+		public CellModelExternal Model { get => model; }
 
 		public HexCoordinates coordinates;
 
@@ -45,19 +44,25 @@ namespace TrenchWarfare {
 			get => 	(model.WaterLevel + HexMetrics.waterElevationOffset) *	HexMetrics.elevationStep;
 		}
 
-		public HexUnit Unit { get; set; }// $$1
-
 		void Awake () {
 			model = new CellModel();
 		}
 
         private void OnDestroy() {
-            modelRegistry.Unregister(model);
+            registry.Unregister(model);
         }
 
+		public void AddUnit(UnitModelExternal unit) {
+			model.Unit = unit;
+		}
+
+		public void RemoveUnit() {
+			model.Unit = null;
+		}
+
         public void AttachModelRegistry(ModelRegistry registry) {
-			modelRegistry = registry;
-			modelRegistry.Register(model, this);
+			this.registry = registry;
+			this.registry.Register(model, this);
 		}
 
 		public void UpdateWalled(bool walled) {
@@ -101,10 +106,10 @@ namespace TrenchWarfare {
 		}
 		
 		public HexCell GetNeighbor (HexDirection direction) {
-			return modelRegistry.Get<HexCell>(model.GetNeighbor(direction));
+			return registry.Get<HexCell>(model.GetNeighbor(direction));
 		}
 
-		public void SetNeighbor (HexDirection direction, CellModelRead cell) {
+		public void SetNeighbor (HexDirection direction, CellModelExternal cell) {
 			model.SetNeighbor(direction, cell);
 			cell.SetNeighbor(direction.Opposite(), model);
 		}
@@ -179,8 +184,8 @@ namespace TrenchWarfare {
 		void RefreshSelfOnly () {
 			chunk.Refresh();
 
-			if (Unit) {
-				Unit.ValidateLocation();
+			if (model.Unit != null) {
+				registry.Get<HexUnit>(model.Unit).ValidateLocation();
 			}
 		}
 
@@ -189,14 +194,14 @@ namespace TrenchWarfare {
 				chunk.Refresh();
 
 				foreach (var neighbor in model.Neighbors) {
-					HexCell neighborCell = modelRegistry.Get<HexCell>(neighbor);
+					HexCell neighborCell = registry.Get<HexCell>(neighbor);
 					if (neighborCell != null && neighborCell.chunk != chunk) {
 						neighborCell.chunk.Refresh();
 					}
 				}
 
-				if (Unit) {
-					Unit.ValidateLocation();
+				if (model.Unit != null) {
+					registry.Get<HexUnit>(model.Unit).ValidateLocation();
 				}
 			}
 		}
@@ -221,7 +226,7 @@ namespace TrenchWarfare {
 		void SetRoad (HexDirection direction, bool state) {
 			model.SetRoadThroughEdge(direction, state);
 
-			var neighbor = modelRegistry.Get<HexCell>(model.GetNeighbor(direction));
+			var neighbor = registry.Get<HexCell>(model.GetNeighbor(direction));
 
 			neighbor.Model.SetRoadThroughEdge(direction.Opposite(), state);
 			neighbor.RefreshSelfOnly();

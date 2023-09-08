@@ -1,57 +1,49 @@
 ﻿using System;
 using TrenchWarfare.Domain.Enums;
+using TrenchWarfare.Domain.Map;
 
 namespace TrenchWarfare.Domain.Units {
-    public class UnitModel : Model {
-        private UnitType type;
-
-        private Nation nation;
-
-        /// <summary>
-        /// [0, 1]
-        /// </summary>
-        private float fatigue;
-
-        private float health;
-
-        private float movementPoints;
+    public class UnitModel : Model, UnitModelExternal {
+        CellModelExternal cell;
+        public CellModelExternal Cell { get => cell; set => cell = value; }
 
         private UnitExperienceRank experienceRank;
 
         // for experience rank calculation
         private int tookPartInBattles;
 
-        private UnitBoost boost1;
-        private UnitBoost boost2;
-        private UnitBoost boost3;
-
+        private UnitType type;
         public UnitType Type { get => type; set => type = value; }
 
+        private Nation nation;
         public Nation Nation { get => nation; set => nation = value; }
 
+        /// <summary>
+        /// [0, 1]
+        /// </summary>
+        private float fatigue;
         public float Fatigue { get => fatigue; set => fatigue = value; }
 
+        private float health;
         public float Health { get => health; set => health = value; }
 
+        private float movementPoints;
         public float MovementPoints { get => movementPoints; set => movementPoints = value; }
 
         public UnitExperienceRank ExperienceRank {
             get => experienceRank; set => experienceRank = value;
         }
 
-        public int TookPartInBattles {
-            get => tookPartInBattles; set => tookPartInBattles = value;
-        }
+        public int TookPartInBattles { get => tookPartInBattles; set => tookPartInBattles = value; }
 
-        public UnitBoost Boost1 {
-            get => boost1; set => boost1 = value;
-        }
-        public UnitBoost Boost2 {
-            get => boost2; set => boost2 = value;
-        }
-        public UnitBoost Boost3 {
-            get => boost3; set => boost3 = value;
-        }
+        private UnitBoost boost1;
+        public UnitBoost Boost1 { get => boost1; set => boost1 = value; }
+
+        private UnitBoost boost2;
+        public UnitBoost Boost2 { get => boost2; set => boost2 = value; }
+
+        private UnitBoost boost3;
+        public UnitBoost Boost3 { get => boost3; set => boost3 = value; }
 
         public float MaxHealth {
             get {
@@ -284,7 +276,7 @@ namespace TrenchWarfare.Domain.Units {
         public UnitModel(
             UnitType type,
             Nation nation
-        ) {
+        ): base() {
             this.type = type;
             this.nation = nation;
             fatigue = 0f;
@@ -309,7 +301,7 @@ namespace TrenchWarfare.Domain.Units {
             UnitBoost boost1,
             UnitBoost boost2,
             UnitBoost boost3
-        ) {
+        ): base() {
             this.type = type;
             this.nation = nation;
             this.fatigue = fatigue;
@@ -323,7 +315,9 @@ namespace TrenchWarfare.Domain.Units {
         }
 
         public UnitModel Copy(Func<UnitModel, UnitModel> update) {
-            return update((UnitModel)MemberwiseClone());
+            var copy = update((UnitModel)MemberwiseClone());
+            copy.Id = NewId();
+            return copy;
         }
 
         public int GetBattlesForExperienceRank(UnitExperienceRank unitExperienceRank) {

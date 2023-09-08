@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using TrenchWarfare.Domain.Enums;
+using TrenchWarfare.Domain.Units;
 
 namespace TrenchWarfare.Domain.Map {
-    public class CellModel: CellModelRead {
+    public class CellModel: Model, CellModelExternal {
+		UnitModelExternal unit = null;
+		public UnitModelExternal Unit { get => unit; set => unit = value; }
+
 		bool hasIncomingRiver;
         public bool HasIncomingRiver { get => hasIncomingRiver; set => hasIncomingRiver = value; }
 
@@ -49,10 +53,10 @@ namespace TrenchWarfare.Domain.Map {
         bool walled;
 		public bool Walled { get => walled; set => walled = value; }
 
-		CellModelRead[] neighbors;
-		public IEnumerable<CellModelRead> Neighbors { get => neighbors; }
+		CellModelExternal[] neighbors;
+		public IEnumerable<CellModelExternal> Neighbors { get => neighbors; }
 
-        public CellModel() {
+        public CellModel(): base() {
 			roads = new bool[6];
 			neighbors = new CellModel[6];
         }
@@ -71,11 +75,11 @@ namespace TrenchWarfare.Domain.Map {
 			roads[(int)direction] = value;
 		}
 
-		public CellModelRead GetNeighbor(HexDirection direction) {
+		public CellModelExternal GetNeighbor(HexDirection direction) {
 			return neighbors[(int)direction];
 		}
 
-		public void SetNeighbor(HexDirection direction, CellModelRead model) {
+		public void SetNeighbor(HexDirection direction, CellModelExternal model) {
 			neighbors[(int)direction] = model;
 		}
     }
