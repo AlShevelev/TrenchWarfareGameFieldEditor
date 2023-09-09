@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using TrenchWarfare.Domain.Map.Conditions;
 
-namespace TrenchWarfare.Domain.Map
-{
-    public class GridModel: Model {
+namespace TrenchWarfare.Domain.Map {
+    public class GridModel: Model, GridModelExternal {
 
         MapConditions conditions;
-        public MapConditions Conditions { get => conditions; }
+        public MapConditionsExternal Conditions { get => conditions; }
 
         // map size (width & height)
         private int cellCountX, cellCountZ;

@@ -1,7 +1,10 @@
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using TrenchWarfare.Domain.Enums;
 using TrenchWarfare.ToolPanels.State;
+using TrenchWarfare.Utility;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,6 +21,10 @@ namespace TrenchWarfare.ToolPanels {
 
         void Start() {
             GetToolToggle(state.ActiveTool).isOn = true;
+
+            GetToolToggle(Tool.Units).interactable = false;
+            GetToolToggle(Tool.Urban).interactable = false;
+
             start = false;
         }
 
@@ -40,6 +47,11 @@ namespace TrenchWarfare.ToolPanels {
             }
         }
 
+        public void OnNationsSet(IEnumerable<Nation> nations) {
+            GetToolToggle(Tool.Units).interactable = nations.IsNotEmpty();
+            GetToolToggle(Tool.Urban).interactable = nations.IsNotEmpty();
+         }
+
         private Toggle GetToolToggle(Tool tool) {
             String gameObjectName = GetToolToggleGameObjectName(tool);
             return GetComponent<Toggle>(gameObjectName);
@@ -50,6 +62,7 @@ namespace TrenchWarfare.ToolPanels {
                 case Tool.Terrain: return "Terrain Toggle";
                 case Tool.Rivers: return "Rivers Toggle";
                 case Tool.Roads: return "Roads Toggle";
+                case Tool.Units: return "Units Toggle";
                 case Tool.Walls: return "Walls Toggle";
                 case Tool.Urban: return "Urban Toggle";
                 case Tool.System: return "System Toggle";

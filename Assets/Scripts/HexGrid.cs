@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
@@ -8,12 +6,14 @@ using TrenchWarfare.Domain.Enums;
 using TrenchWarfare.Domain.Map;
 using TrenchWarfare.Utility;
 using TrenchWarfare.Domain.Units;
+using TrenchWarfare.Domain.Map.Conditions;
 
 namespace TrenchWarfare {
-	public class HexGrid : MonoBehaviour {
+    public class HexGrid : MonoBehaviour {
 		int chunkCountX, chunkCountZ;
 
 		GridModel model;
+		public GridModelExternal Model { get => model; }
 
 		HexGridChunk[] chunks;
 
@@ -194,7 +194,7 @@ namespace TrenchWarfare {
 				registry.Get<HexCell>(cell).Save(writer);
 			}
 
-			model.Conditions.SaveToBinary(writer);
+			((MapConditions)(model.Conditions)).SaveToBinary(writer);
 		}
 
 		public void Load (BinaryReader reader) {
@@ -214,7 +214,7 @@ namespace TrenchWarfare {
 				HexUnit.Load(reader, this);
 			}
 
-			model.Conditions.LoadFromBinary(reader);
+			((MapConditions)(model.Conditions)).LoadFromBinary(reader);
 		}
 
 		public void AddUnit (HexCell cell, UnitModel unitModel) {

@@ -1,5 +1,4 @@
 using System.Text;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using TrenchWarfare.Domain.Map.Conditions.Dto;
@@ -7,8 +6,9 @@ using TrenchWarfare.Domain.Enums;
 using UnityEngine;
 
 namespace TrenchWarfare.Domain.Map.Conditions {
-    public class MapConditions {
-        public MapConditionsDto conditions;
+    public class MapConditions: MapConditionsExternal {
+        MapConditionsDto conditions;
+        public MapConditionsDto Conditions { get => conditions; }
 
         public void LoadFromBinary(BinaryReader reader) {
             conditions = new MapConditionsDto();
@@ -69,14 +69,12 @@ namespace TrenchWarfare.Domain.Map.Conditions {
             }
         }
 
-        // TODO get rid of it when the saving/loading is ready
-        //public void ImportFromJson(string rawData) {
-        //    conditions = JsonUtility.FromJson<MapConditionsDto>(rawData);
-        //}
+        public void ImportFromJson(string rawData) {
+            conditions = JsonUtility.FromJson<MapConditionsDto>(rawData);
+        }
 
-        // TODO get rid of it when the saving/loading is ready
-        //public string ExportToJson() {
-        //    return JsonUtility.ToJson(conditions);
-        //}
+        public string ExportToJson() {
+            return JsonUtility.ToJson(conditions);
+        }
     }
 }

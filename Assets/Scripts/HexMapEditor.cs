@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -5,8 +6,10 @@ using Tools = TrenchWarfare.ToolPanels;
 using TrenchWarfare.ToolPanels.State;
 using System;
 using System.IO;
+using System.Linq;
 using TrenchWarfare.Domain.Enums;
 using TrenchWarfare.Domain.Map;
+using TrenchWarfare.ToolPanels;
 
 namespace TrenchWarfare {
 	public class HexMapEditor : MonoBehaviour {
@@ -158,10 +161,11 @@ namespace TrenchWarfare {
 		}
 
 		public void Save() {
-			Debug.Log(Application.persistentDataPath);
+			string path = EditorUtility.SaveFilePanel("Save map", "", "map1.map", "map");
 
-			string fileName = nameInput.text;
-			string path = Path.Combine(Application.persistentDataPath, fileName);
+			if (path.Length == 0) {		// Cancel button
+				return;
+			}
 
 			using(BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.Create))) {
 				writer.Write(0);			// Header (format version - 0)
@@ -170,11 +174,14 @@ namespace TrenchWarfare {
 		}
 
 		public void Load() {
-			string fileName = nameInput.text;
-			string path = Path.Combine(Application.persistentDataPath, fileName);
+			string path = EditorUtility.OpenFilePanel("Load map", "", "map");
+
+			if (path.Length == 0) {		// Cancel button
+				return;
+			}
 
 			if(!File.Exists(path)) {
-				Debug.LogWarning("File not found: "+fileName);
+				EditorUtility.DisplayDialog("File not found", "Map file not found: " + path, "OK");
 				return;
 			}
 
@@ -189,33 +196,51 @@ namespace TrenchWarfare {
 					Debug.LogWarning("Unknown map format " + header);
 				}
 			}
+
+			var conditions = hexGrid.Model.Conditions;			
+			state.Nations = conditions.Conditions.nations.Select(i => i.code);
+
+			transform.Find("Menu Panel")
+				.GetComponent<EditorMenuPanel>()
+				.OnNationsSet(state.Nations);
 		}
 
-		// // TODO get rid of it when the saving/loading is ready
-		//public void ExportMetadata() {
-		//	string fileName = metadataNameInput.text;
-		//	string path = Path.Combine(Application.persistentDataPath, fileName);
+		public void ExportMetadata() {
+			string path = EditorUtility.SaveFilePanel("Export map metadata", "", "map1.map.json", "map.json");
 
-		//	string rawData = mapConditions.ExportToJson();
-		//	File.WriteAllText(path, rawData);
-		//}
+			if (path.Length == 0) {		// Cancel button
+				return;
+			}
 
-		// TODO get rid of it when the saving/loading is ready
-		//public void ImportMetadata() {
-		//	string fileName = metadataNameInput.text;
-		//	string path = Path.Combine(Application.persistentDataPath, fileName);
+			string rawData = hexGrid.Model.Conditions.ExportToJson();
+			File.WriteAllText(path, rawData);
+		}
 
-		//	if(!File.Exists(path)) {
-		//		Debug.LogWarning("File not found: "+fileName);
-		//		return;
-		//	}
+		public void ImportMetadata() {
+			string path = EditorUtility.OpenFilePanel("Import map metadata", "", "map.json");
 
-		//	 string rawData = File.ReadAllText(path);
+			if (path.Length == 0) {		// Cancel button
+				return;
+			}
 
-		//	 mapConditions.ImportFromJson(rawData);
-		//}
+			if (!File.Exists(path)) {
+				EditorUtility.DisplayDialog("Metadata not found", "Metadata file not found: " + path, "OK");
+				return;
+			}
 
-        public void ShowGrid(bool visible) {
+			string rawData = File.ReadAllText(path);
+
+			var conditions = hexGrid.Model.Conditions;
+			conditions.ImportFromJson(rawData);
+			
+			state.Nations = conditions.Conditions.nations.Select(i => i.code);
+
+			transform.Find("Menu Panel")
+				.GetComponent<EditorMenuPanel>()
+				.OnNationsSet(state.Nations);
+		}
+
+		public void ShowGrid(bool visible) {
             if (visible) {
                 terrainMaterial.EnableKeyword(GRID_ENABLE_FLAG);
             } else {

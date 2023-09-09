@@ -1,6 +1,8 @@
 using System;
+using System.Linq;
 using TrenchWarfare.Domain.Enums;
 using TrenchWarfare.ToolPanels.State;
+using TrenchWarfare.Utility;
 using UnityEngine.UI;
 
 namespace TrenchWarfare.ToolPanels {
@@ -13,7 +15,7 @@ namespace TrenchWarfare.ToolPanels {
             var sourceUnit = state.UnitInfo;
 
             InitDropdown("Type", (int)sourceUnit.Type);
-            InitDropdown("Nation", (int)sourceUnit.Nation);
+            InitNationDropdown();
             InitDropdown("Experience Rank", (int)sourceUnit.ExperienceRank);
             InitDropdown("Boost 1", (int)sourceUnit.Boost1);
             InitDropdown("Boost 2", (int)sourceUnit.Boost2);
@@ -30,7 +32,11 @@ namespace TrenchWarfare.ToolPanels {
         }
 
         public void SetNation(int value) {
-            state.UnitInfo = state.UnitInfo.Copy(i => { i.Nation = (Nation)value; return i;});
+            state.UnitInfo = state.UnitInfo.Copy(i =>
+            {
+                i.Nation = state.Nations.GetByIndex(value);
+                return i;
+            });
         }
 
         public void SetExperienceRank(int value) {
@@ -226,6 +232,15 @@ namespace TrenchWarfare.ToolPanels {
                 )
             );
 
+        }
+
+       protected void InitNationDropdown() {
+            var dropdown = GetComponent<Dropdown>("Nation");
+
+            dropdown.ClearOptions();
+            dropdown.AddOptions(state.Nations.Select(i => i.ToString()).ToList());
+            
+            dropdown.value = state.Nations.IndexOf(i => i == state.UnitInfo.Nation);
         }
     }
 }
