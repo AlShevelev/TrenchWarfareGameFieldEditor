@@ -39,17 +39,21 @@ namespace TrenchWarfare {
 			UpdateLevelsVisibility();
 		}
 
-		void Update () {
+        void Update () {
 			if (!EventSystem.current.IsPointerOverGameObject()) {
+				if (Input.GetMouseButtonUp(0)) {
+					HandleTap(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
+				}
+
 				if (Input.GetMouseButton(0)) {
-					HandleInput(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
+					HandleDrag();
 					return;
 				}
 			}
 			previousCell = null;
 		}
 
-		void HandleInput (bool shiftPressed) {
+		void HandleDrag() {
 			HexCell currentCell = GetCellUnderCursor();
 			if (currentCell) {
 				if (previousCell && previousCell != currentCell) {
@@ -58,13 +62,32 @@ namespace TrenchWarfare {
 				else {
 					isDrag = false;
 				}			
-				EditCells(currentCell, shiftPressed);
+				EditCells(currentCell);
 				previousCell = currentCell;
 			}
 			else {
 				previousCell = null;
 			}
 		}
+
+		void HandleTap(bool shiftPressed) {
+			HexCell cell = GetCellUnderCursor();
+
+			if (state.ActiveTool == Tools.Tool.Units) {
+				if (shiftPressed) {
+					DestroyUnit(cell);
+				} else {
+					CreateUnit(cell);
+				}
+
+				return;
+			}
+
+			if (state.ActiveTool == Tools.Tool.Urban) {
+				cell.UpdateUrbanLevel(state.UrbanLevel);
+			}
+		}
+
 
 		void ValidateDrag (HexCell currentCell) {
 			for (
@@ -95,10 +118,6 @@ namespace TrenchWarfare {
                     }
                 }
 
-                if (state.ActiveTool == Tools.Tool.Urban) {
-					cell.UpdateUrbanLevel(state.UrbanLevel);
-				}
-
 				if(state.ActiveTool == Tools.Tool.Rivers && !state.RiversIsOn) {
 					cell.RemoveRiver();
 				}
@@ -126,19 +145,7 @@ namespace TrenchWarfare {
 			}
 		}
 
-		void EditCells (HexCell center, bool shiftPressed) {
-			// todo Units panel will be used in the next commits
-			if (state.ActiveTool == Tools.Tool.Units) {
-				if (shiftPressed) {
-					DestroyUnit();
-				} else {
-					CreateUnit();
-				}
-
-				return;
-			}
-
-
+		void EditCells (HexCell center) {
 			int centerX = center.coordinates.X;
 			int centerZ = center.coordinates.Z;
 
@@ -257,13 +264,11 @@ namespace TrenchWarfare {
 			return null;
 		}
 
-		void CreateUnit () {
-			HexCell cell = GetCellUnderCursor();
+		void CreateUnit (HexCell cell) {
 			hexGrid.AddUnit(cell, state.UnitInfo.Copy(i => i));
 		}
 
-		void DestroyUnit () {
-			HexCell cell = GetCellUnderCursor();
+		void DestroyUnit (HexCell cell) {
 			hexGrid.RemoveUnit(cell);
 		}
 	}

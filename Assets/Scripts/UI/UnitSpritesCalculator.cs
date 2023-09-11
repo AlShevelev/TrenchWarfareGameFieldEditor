@@ -7,43 +7,45 @@ namespace TrenchWarfare.UI {
         public static void AddSprites(
             GameObject parent,
             SpriteAtlas atlas,
-            UnitModel unitInfo) {
+            ArmyModel army) {
+
+			var unit = army.DisplayUnit;
 
 			var unitSpriteComponent = parent.transform.Find("Unit").GetComponent<SpriteRenderer>();
-			unitSpriteComponent.sprite = atlas.GetSprite(UnitSpritesInfo.GetUnitSprite(unitInfo));
+			unitSpriteComponent.sprite = atlas.GetSprite(UnitSpritesInfo.GetUnitSprite(unit));
 
-			if (unitInfo.MovementPoints == 0f) {
+			if (unit.MovementPoints == 0f) {
 				unitSpriteComponent.color = new Color(0.5f, 0.5f, 0.5f, 1f);
 			}
 
 			parent.transform.Find("Health").GetComponent<SpriteRenderer>().sprite =
-				atlas.GetSprite(UnitSpritesInfo.GetHealthSprite(unitInfo));
+				atlas.GetSprite(UnitSpritesInfo.GetHealthSprite(unit));
 
 			parent.transform.Find("Banner").GetComponent<SpriteRenderer>().sprite =
-				atlas.GetSprite(UnitSpritesInfo.GetBannerSprite(unitInfo));
+				atlas.GetSprite(UnitSpritesInfo.GetBannerSprite(unit));
 
 			parent.transform.Find("Quantity").GetComponent<SpriteRenderer>().sprite =
-				atlas.GetSprite(UnitSpritesInfo.GetQuantitySprite(unitInfo));
+				atlas.GetSprite(UnitSpritesInfo.GetQuantitySprite(army));
 
-			var rankSprite = UnitSpritesInfo.GetRankSprite(unitInfo);
+			var rankSprite = UnitSpritesInfo.GetRankSprite(unit);
 			if (rankSprite != null) {
 				parent.transform.Find("Rank").GetComponent<SpriteRenderer>().sprite =
 					atlas.GetSprite(rankSprite);
 			}
 
-			var boost1Sprite = UnitSpritesInfo.GetBoost1Sprite(unitInfo);
+			var boost1Sprite = UnitSpritesInfo.GetBoost1Sprite(unit);
 			if (boost1Sprite != null) {
 				parent.transform.Find("Boost1").GetComponent<SpriteRenderer>().sprite =
 					atlas.GetSprite(boost1Sprite);
 			}
 
-			var boost2Sprite = UnitSpritesInfo.GetBoost2Sprite(unitInfo);
+			var boost2Sprite = UnitSpritesInfo.GetBoost2Sprite(unit);
 			if (boost2Sprite != null) {
 				parent.transform.Find("Boost2").GetComponent<SpriteRenderer>().sprite =
 					atlas.GetSprite(boost2Sprite);
 			}
 
-			var boost3Sprite = UnitSpritesInfo.GetBoost3Sprite(unitInfo);
+			var boost3Sprite = UnitSpritesInfo.GetBoost3Sprite(unit);
 			if (boost3Sprite != null) {
 				parent.transform.Find("Boost3").GetComponent<SpriteRenderer>().sprite =
 					atlas.GetSprite(boost3Sprite);

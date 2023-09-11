@@ -6,8 +6,8 @@ using TrenchWarfare.Domain.Units;
 
 namespace TrenchWarfare.Domain.Map {
     public class CellModel: Model, CellModelExternal {
-		UnitModelExternal unit = null;
-		public UnitModelExternal Unit { get => unit; set => unit = value; }
+		ArmyModelExternal army = null;
+		public ArmyModelExternal Army { get => army; set => army = value; }
 
 		bool hasIncomingRiver;
         public bool HasIncomingRiver { get => hasIncomingRiver; set => hasIncomingRiver = value; }

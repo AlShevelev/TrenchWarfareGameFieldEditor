@@ -6,7 +6,7 @@ using TrenchWarfare.Domain.Map;
 using TrenchWarfare.Utility;
 
 namespace TrenchWarfare.UI {
-	public class HexUnit : MonoBehaviour {
+	public class HexArmy : MonoBehaviour {
 		/// <summary>
 		/// Z-size of a map
 		/// </summary>
@@ -14,44 +14,62 @@ namespace TrenchWarfare.UI {
 
 		ModelRegistry registry;
 
-		UnitModel model;
-		public UnitModelExternal Model { get => model; }
+		ArmyModel model;
+		public ArmyModelExternal Model { get => model; }
 
 		public SpriteAtlas atlas;
-
-		void Start() {
-			UnitSpritesCalculator.AddSprites(gameObject, atlas, model);
-		}
 
         private void OnDestroy() {
             registry.Unregister(model);
         }
 
-        public void Init(
+        public void AddUnit(
 			int cellCountZ,
-            UnitModel model,
+            UnitModel unitModel,
             HexCell cell,
             ModelRegistry registry
 		) {
+			if (model != null && !model.CanAdd) {
+				return;
+			}
+
 			this.cellCountZ = cellCountZ;
-			this.model = model;
-			this.registry = registry;
 
-			model.Cell = cell.Model;
-			cell.AddUnit(model);
+			if (model == null) {
+				model = new ArmyModel(unitModel);
+				this.registry = registry;
 
-			transform.localPosition = getPosition(cell);
+				model.Cell = cell.Model;
+				cell.UpdateArmy(model);
 
-			registry.Register(model, this);
+				transform.localPosition = getPosition(cell);
+
+				registry.Register(model, this);
+
+			} else {
+				model.AddUnit(unitModel);
+			}
+
+			RefreshSprites();
 		}
 
 		public void ValidateLocation() {
 			transform.localPosition = getPosition(GetCell());
 		}
 
-		public void Die() {
-			GetCell().RemoveUnit();
-			Destroy(gameObject);
+		public void RemoveLastUnit() {
+			if (model == null) {
+				return;
+			}
+
+			var isNotEmpty = model.RemoveLastUnit();
+
+			if (isNotEmpty) {
+				RefreshSprites();
+			} else {
+				GetCell().RemoveArmy();
+				Destroy(gameObject);
+			}
 		}
 
 		public void Save(BinaryWriter writer) {
@@ -61,6 +79,10 @@ namespace TrenchWarfare.UI {
 		public static void Load(BinaryReader reader, HexGrid grid) {
 			HexCoordinates coordinates = HexCoordinates.Load(reader);
 			// grid.AddUnit(Instantiate(unitPrefab), grid.GetCell(coordinates));
+		}
+
+		private void RefreshSprites() {
+			UnitSpritesCalculator.AddSprites(gameObject, atlas, model);
 		}
 
 		private Vector3 getPosition(HexCell cell) {

@@ -3,10 +3,7 @@ using TrenchWarfare.Domain.Enums;
 using TrenchWarfare.Domain.Map;
 
 namespace TrenchWarfare.Domain.Units {
-    public class UnitModel : Model, UnitModelExternal {
-        CellModelExternal cell;
-        public CellModelExternal Cell { get => cell; set => cell = value; }
-
+    public class UnitModel: Model, UnitModelExternal {
         private UnitExperienceRank experienceRank;
 
         // for experience rank calculation

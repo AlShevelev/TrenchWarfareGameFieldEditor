@@ -20,7 +20,7 @@ namespace TrenchWarfare {
 		public HexCell cellPrefab;
 		public Text cellLabelPrefab;
 		public HexGridChunk chunkPrefab;
-		public HexUnit unitPrefab;
+		public HexArmy unitPrefab;
 
 		public Texture2D noiseSource;
 
@@ -211,24 +211,33 @@ namespace TrenchWarfare {
 
 			int unitCount = reader.ReadInt32();
 			for (int i = 0; i < unitCount; i++) {
-				HexUnit.Load(reader, this);
+				HexArmy.Load(reader, this);
 			}
 
 			((MapConditions)(model.Conditions)).LoadFromBinary(reader);
 		}
 
 		public void AddUnit (HexCell cell, UnitModel unitModel) {
-			if (cell && cell.Model.Unit == null) {
-				var unit = Instantiate(unitPrefab);
-
-				unit.Init(model.CellCountZ, unitModel, cell, registry);
-				unit.transform.SetParent(transform, false);
+			if (cell == null) {
+				return;
 			}
+
+			if (cell.Model.Army == null) {
+				var army = Instantiate(unitPrefab);
+
+				army.AddUnit(model.CellCountZ, unitModel, cell, registry);
+				army.transform.SetParent(transform, false);
+
+			} else {
+				var army = registry.Get<HexArmy>(cell.Model.Army);
+				army.AddUnit(model.CellCountZ, unitModel, cell, registry);
+			}
+
 		}
 
 		public void RemoveUnit (HexCell cell) {
-			if (cell && cell.Model.Unit != null) {
-				registry.Get<HexUnit>(cell.Model.Unit).Die();
+			if (cell && cell.Model.Army != null) {
+				registry.Get<HexArmy>(cell.Model.Army).RemoveLastUnit();
 			}
 		}
 	}

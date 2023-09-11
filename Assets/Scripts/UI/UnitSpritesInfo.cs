@@ -1,6 +1,7 @@
 ﻿using System;
 using TrenchWarfare.Domain.Enums;
 using TrenchWarfare.Domain.Units;
+using UnityEditor.PackageManager;
 
 namespace TrenchWarfare.UI {
 	public static class UnitSpritesInfo {
@@ -142,8 +143,14 @@ namespace TrenchWarfare.UI {
 			return "Unit Health 100";
 		}
 
-		public static string GetQuantitySprite(UnitModel unitInfo) {
-			return "Unit Quantity 1";
+		public static string GetQuantitySprite(ArmyModel army) {
+            return army.Quantity switch {
+                1 => "Unit Quantity 1",
+                2 => "Unit Quantity 2",
+                3 => "Unit Quantity 3",
+                4 => "Unit Quantity 4",
+                _ => throw new NotImplementedException(),
+            };
 		}
 
 		public static string GetRankSprite(UnitModel unitInfo) {

@@ -52,12 +52,12 @@ namespace TrenchWarfare
             registry.Unregister(model);
         }
 
-		public void AddUnit(UnitModelExternal unit) {
-			model.Unit = unit;
+		public void UpdateArmy(ArmyModelExternal army) {
+			model.Army = army;
 		}
 
-		public void RemoveUnit() {
-			model.Unit = null;
+		public void RemoveArmy() {
+			model.Army = null;
 		}
 
         public void AttachModelRegistry(ModelRegistry registry) {
@@ -184,8 +184,8 @@ namespace TrenchWarfare
 		void RefreshSelfOnly () {
 			chunk.Refresh();
 
-			if (model.Unit != null) {
-				registry.Get<HexUnit>(model.Unit).ValidateLocation();
+			if (model.Army != null) {
+				registry.Get<HexArmy>(model.Army).ValidateLocation();
 			}
 		}
 
@@ -200,8 +200,8 @@ namespace TrenchWarfare
 					}
 				}
 
-				if (model.Unit != null) {
-					registry.Get<HexUnit>(model.Unit).ValidateLocation();
+				if (model.Army != null) {
+					registry.Get<HexArmy>(model.Army).ValidateLocation();
 				}
 			}
 		}

@@ -4,8 +4,6 @@ using TrenchWarfare.Domain.Map;
 
 namespace TrenchWarfare.Domain.Units {
     public interface UnitModelExternal: IModel {
-        CellModelExternal Cell { get; }
-
         UnitType Type { get; }
 
         Nation Nation { get; }

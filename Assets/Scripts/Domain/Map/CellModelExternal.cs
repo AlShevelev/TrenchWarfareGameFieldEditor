@@ -5,7 +5,7 @@ using TrenchWarfare.Domain.Units;
 
 namespace TrenchWarfare.Domain.Map {
     public interface CellModelExternal: IModel {
-        UnitModelExternal Unit { get; }
+        ArmyModelExternal Army { get; }
 
         bool HasIncomingRiver { get; }
 
