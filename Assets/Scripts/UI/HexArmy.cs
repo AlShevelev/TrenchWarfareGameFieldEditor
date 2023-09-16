@@ -33,6 +33,10 @@ namespace TrenchWarfare.UI {
 				return;
 			}
 
+			if (!unitModel.CanPlace(cell.Model)) {
+				return;
+			}
+
 			this.cellCountZ = cellCountZ;
 
 			if (model == null) {

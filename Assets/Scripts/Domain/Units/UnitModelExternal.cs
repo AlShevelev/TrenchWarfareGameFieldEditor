@@ -52,6 +52,8 @@ namespace TrenchWarfare.Domain.Units {
         int NeedNavalBaseLevelToBuild { get; }
 
         int GetBattlesForExperienceRank(UnitExperienceRank unitExperienceRank);
+
+        bool CanPlace(CellModelExternal cellModel);
     }
 }
 

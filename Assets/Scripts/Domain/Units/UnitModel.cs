@@ -327,5 +327,72 @@ namespace TrenchWarfare.Domain.Units {
                 _ => throw new NotImplementedException()
             };
         }
+
+        public bool CanPlace(CellModelExternal cell) {
+            if (!IsLand && cell.IsUnderwater) {
+                return true;
+            }
+
+            if (IsLand && cell.IsUnderwater) {
+                return false;
+            }
+
+            switch(type) {
+                case UnitType.ArmoredCar: {
+                    return cell.TerrainType == CellTerrain.Plain ||
+                            cell.TerrainType == CellTerrain.Wood ||
+                            cell.TerrainType == CellTerrain.Sand ||
+                            cell.TerrainType == CellTerrain.Hills ||
+                            cell.TerrainType == CellTerrain.Snow;
+                }
+                case UnitType.Artillery: {
+                    return cell.TerrainType == CellTerrain.Plain ||
+                            cell.TerrainType == CellTerrain.Wood ||
+                            cell.TerrainType == CellTerrain.Sand ||
+                            cell.TerrainType == CellTerrain.Hills ||
+                            cell.TerrainType == CellTerrain.Snow;
+                }
+                case UnitType.Cavalry: {
+                    return cell.TerrainType == CellTerrain.Plain ||
+                            cell.TerrainType == CellTerrain.Wood ||
+                            cell.TerrainType == CellTerrain.Marsh ||
+                            cell.TerrainType == CellTerrain.Sand ||
+                            cell.TerrainType == CellTerrain.Hills ||
+                            cell.TerrainType == CellTerrain.Snow;
+                }
+                case UnitType.Infantry: {
+                    return cell.TerrainType == CellTerrain.Plain ||
+                            cell.TerrainType == CellTerrain.Wood ||
+                            cell.TerrainType == CellTerrain.Marsh ||
+                            cell.TerrainType == CellTerrain.Sand ||
+                            cell.TerrainType == CellTerrain.Hills ||
+                            cell.TerrainType == CellTerrain.Mountains ||
+                            cell.TerrainType == CellTerrain.Snow;
+                }
+                case UnitType.MachineGunnersCart: {
+                    return cell.TerrainType == CellTerrain.Plain ||
+                            cell.TerrainType == CellTerrain.Wood ||
+                            cell.TerrainType == CellTerrain.Sand ||
+                            cell.TerrainType == CellTerrain.Hills ||
+                            cell.TerrainType == CellTerrain.Snow;
+                }
+                case UnitType.MachineGuns: {
+                    return cell.TerrainType == CellTerrain.Plain ||
+                            cell.TerrainType == CellTerrain.Wood ||
+                            cell.TerrainType == CellTerrain.Marsh ||
+                            cell.TerrainType == CellTerrain.Sand ||
+                            cell.TerrainType == CellTerrain.Hills ||
+                            cell.TerrainType == CellTerrain.Snow;
+                }
+                case UnitType.Tank: {
+                    return cell.TerrainType == CellTerrain.Plain ||
+                            cell.TerrainType == CellTerrain.Wood ||
+                            cell.TerrainType == CellTerrain.Sand ||
+                            cell.TerrainType == CellTerrain.Hills ||
+                            cell.TerrainType == CellTerrain.Snow;
+                }
+                default: return false;
+            }
+        }
     }
 }
