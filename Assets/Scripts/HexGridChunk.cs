@@ -70,10 +70,6 @@ namespace TrenchWarfare {
 			for (HexDirection d = HexDirection.NE; d <= HexDirection.NW; d++) {
 				Triangulate(d, cell);
 			}
-
-			if (!cell.Model.IsUnderwater && !cell.Model.HasRiver && !cell.Model.HasRoads) {
-				features.AddFeature(cell, cell.Position);
-			}
 		}
 
 		void Triangulate (HexDirection direction, HexCell cell) {
@@ -99,10 +95,6 @@ namespace TrenchWarfare {
 			}
 			else {
 				TriangulateWithoutRiver(direction, cell, center, e);
-
-				if (!cell.Model.IsUnderwater && !cell.Model.HasRoadThroughEdge(direction)) {
-					features.AddFeature(cell, (center + e.v1 + e.v5) * (1f / 3f));
-				}
 			}
 
 			if (direction <= HexDirection.SE) {
@@ -303,10 +295,6 @@ namespace TrenchWarfare {
 			
 			TriangulateEdgeStrip(m, color1, cell.Model.TerrainType, e, color1, cell.Model.TerrainType);
 			TriangulateEdgeFan(center, m, cell.Model.TerrainType);
-
-			if (!cell.Model.IsUnderwater && !cell.Model.HasRoadThroughEdge(direction)) {
-				features.AddFeature(cell, (center + e.v1 + e.v5) * (1f / 3f));
-			}
 		}
 
 		void TriangulateWithRiverBeginOrEnd (HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e) {

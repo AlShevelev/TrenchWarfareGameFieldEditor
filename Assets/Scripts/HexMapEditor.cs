@@ -83,7 +83,7 @@ namespace TrenchWarfare {
 				return;
 			}
 
-			if (state.ActiveTool == Tools.Tool.Urban) {
+			if (state.ActiveTool == Tools.Tool.ProductionCenters) {
 				if (shiftPressed) {
 					DestroyProductionCenter(cell);
 				} else {

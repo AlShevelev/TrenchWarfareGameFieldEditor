@@ -53,9 +53,6 @@ namespace TrenchWarfare.Domain.Map {
 
 		public bool IsUnderwater { get => waterLevel > elevation; }
 
-		int urbanLevel;
-		public int UrbanLevel { get => urbanLevel; set => urbanLevel = value; }
-
         bool walled;
 		public bool Walled { get => walled; set => walled = value; }
 

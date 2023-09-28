@@ -4884,7 +4884,7 @@ GameObject:
   - component: {fileID: 574300470}
   - component: {fileID: 574300474}
   m_Layer: 5
-  m_Name: Urban Panel
+  m_Name: PC Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10961,7 +10961,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Urban
+  m_Text: Prod. centers
 --- !u!222 &1031429974
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -13336,7 +13336,7 @@ GameObject:
   - component: {fileID: 1241575401}
   - component: {fileID: 1241575402}
   m_Layer: 5
-  m_Name: Urban Toggle
+  m_Name: PC Toggle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

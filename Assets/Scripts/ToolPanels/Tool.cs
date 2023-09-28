@@ -5,7 +5,7 @@ namespace TrenchWarfare.ToolPanels {
         Roads,
         Units,
         Walls,
-        Urban,
+        ProductionCenters,
         System,
         SaveLoad,
      }

@@ -257,7 +257,9 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -732,36 +734,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a5d7c2e935a343e3bb87ba582695788, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  urbanCollections:
-  - prefabs:
-    - {fileID: 2541640195580711544, guid: ed5da7916f5c74a6e91872eeb7ebe1f8, type: 3}
-    - {fileID: 2003758218344524709, guid: adb3c73c66c30485b9dfe5eea08ae070, type: 3}
-  - prefabs:
-    - {fileID: 5655070671930321443, guid: 196970bc21a9b41e2a4ea76df13f1c44, type: 3}
-    - {fileID: 5087517200133704345, guid: ca7d173e908c145d884b8d2870b12dca, type: 3}
-  - prefabs:
-    - {fileID: 9159391462686981816, guid: 1dab19fbfd0be406e8603453b0eaa3ac, type: 3}
-    - {fileID: 1822641068678178149, guid: 7534160d43c4c489291851928d5be344, type: 3}
-  farmCollections:
-  - prefabs:
-    - {fileID: 5599497103175163063, guid: cc134d9f8205d48dcae90fbfe90481d6, type: 3}
-    - {fileID: 6922269541106174321, guid: b58eeb811a70c4d14b9d380863762ccd, type: 3}
-  - prefabs:
-    - {fileID: 7984510772412539902, guid: 125ac2eb00f1d4561b4d1642c874ac6d, type: 3}
-    - {fileID: 7139330912998671641, guid: d04eaa915aff3443da381673cb1fbaa5, type: 3}
-  - prefabs:
-    - {fileID: 6649245655586961011, guid: 6566815f357e04ddc96a9bf7eb5b19f8, type: 3}
-    - {fileID: 1356909260841133667, guid: 9093d3395a9c64cc292a9b72698c26f0, type: 3}
-  plantCollections:
-  - prefabs:
-    - {fileID: 7511906330910223023, guid: 3fb7f2e3743c943efbb9d1bd8b557a34, type: 3}
-    - {fileID: 3368032574762912877, guid: 323cc4b942c224895a87967ba7fbeea0, type: 3}
-  - prefabs:
-    - {fileID: 2659382014303468858, guid: 83c6a3815315640df9381e827213a864, type: 3}
-    - {fileID: 546273833180753977, guid: e9b2f6d8f2fde42759d7e3833acdc4ea, type: 3}
-  - prefabs:
-    - {fileID: 214946836783288693, guid: 0f130a3d95b3544a39ae40859a67a10c, type: 3}
-    - {fileID: 3661158238664609010, guid: ce6d3e7b87b294a3bb019218d2e47ba9, type: 3}
+  urbanCollections: []
   walls: {fileID: 6239407678798852726}
   bridge: {fileID: 5635156399099458040, guid: 8ce6588d3f9654d20a2921412bab51aa, type: 3}
 --- !u!1 &6821039048578408889
@@ -803,7 +776,7 @@ Transform:
   - {fileID: 7619178208403004967}
   - {fileID: 7283902079636419359}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3512286599030952394
 MonoBehaviour:

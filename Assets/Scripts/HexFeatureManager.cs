@@ -2,9 +2,6 @@ using UnityEngine;
 
 namespace TrenchWarfare {
 	public class HexFeatureManager : MonoBehaviour {
-
-		public HexFeatureCollection[] urbanCollections;
-
 		Transform container;
 
 		public HexMesh walls;
@@ -23,21 +20,6 @@ namespace TrenchWarfare {
 
 		public void Apply () {
 			walls.Apply();
-		}
-
-		public void AddFeature (HexCell cell, Vector3 position) {
-			HexHash hash = HexMetrics.SampleHashGrid(position);
-			
-			Transform prefab = PickPrefab(urbanCollections, cell.Model.UrbanLevel, hash.a, hash.d);
-
-			if (prefab != null) {
-				Transform instance = Instantiate(prefab);
-
-				position.y += instance.localScale.y * 0.5f;
-				instance.localPosition = HexMetrics.Perturb(position);
-				instance.localRotation = Quaternion.Euler(0f, 360f * hash.e, 0f);
-				instance.SetParent(container, false);
-			}
 		}
 
 		Transform PickPrefab (

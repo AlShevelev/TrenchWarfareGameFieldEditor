@@ -59,11 +59,6 @@ namespace TrenchWarfare.ToolPanels.State {
         bool wallsIsOn = false;
         public bool WallsIsOn { get => wallsIsOn; set => wallsIsOn = value; }
 
-        int urbanLevel = 0;
-        public int UrbanLevel { get => urbanLevel; set => urbanLevel = value; }
-
-        public readonly Range urbanLevelMinMax = 0..3;
-
         bool labelsIsOn = false;
         public bool LabelsIsOn { get => labelsIsOn; set => labelsIsOn = value; }
 

@@ -71,11 +71,6 @@ namespace TrenchWarfare
 			Refresh();
 		}
 
-		public void UpdateUrbanLevel(int urbanLevel) {
-			model.UrbanLevel = urbanLevel;
-			RefreshSelfOnly();
-		}
-
 		public void UpdateWaterLevel(int waterLevel) {
 			model.WaterLevel = waterLevel;
 
@@ -266,7 +261,6 @@ namespace TrenchWarfare
 			writer.Write((byte)model.TerrainType);
 			writer.Write((byte)(model.Elevation + 127));
 			writer.Write((byte)model.WaterLevel);
-			writer.Write((byte)model.UrbanLevel);
 			writer.Write(model.Walled);
 
 			writer.Write(model.HasIncomingRiver);
@@ -286,7 +280,6 @@ namespace TrenchWarfare
 			model.Elevation = reader.ReadByte() - 127;
 			RefreshPosition();
 			model.WaterLevel = reader.ReadByte();
-			model.UrbanLevel = reader.ReadByte();
 
 			model.Walled = reader.ReadBoolean();
 

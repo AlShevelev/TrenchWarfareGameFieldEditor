@@ -34,10 +34,6 @@ namespace TrenchWarfare.ToolPanels.State {
             get;
         }
 
-        int UrbanLevel {
-            get;
-        }
-
         bool LabelsIsOn {
             get;
         }
