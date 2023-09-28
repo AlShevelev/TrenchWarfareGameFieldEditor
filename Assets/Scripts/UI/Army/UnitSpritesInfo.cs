@@ -1,40 +1,39 @@
 ﻿using System;
 using TrenchWarfare.Domain.Enums;
 using TrenchWarfare.Domain.Units;
-using UnityEditor.PackageManager;
 
-namespace TrenchWarfare.UI {
-	public static class UnitSpritesInfo {
+namespace TrenchWarfare.UI.Army {
+    public static class UnitSpritesInfo {
     	public static string GetUnitSprite(UnitModel unitInfo) {
 			switch (unitInfo.Type) {
 				case UnitType.ArmoredCar: return "Unit Armored car";
 				case UnitType.Artillery: return "Unit Artillery";
 				case UnitType.Infantry: {
-                        return unitInfo.Nation switch {
-                            Nation.AustriaHungary => "Unit Infantry Austro-Hungary",
-                            Nation.Belgium => "Unit Infantry Belgia",
-                            Nation.Bulgaria => "Unit Infantry Bulgaria",
-                            Nation.China => "Unit Infantry China",
-                            Nation.France => "Unit Infantry France",
-                            Nation.Germany => "Unit Infantry Germany",
-                            Nation.GreatBritain => "Unit Infantry UK",
-                            Nation.Greece => "Unit Infantry Greece",
-                            Nation.Italy => "Unit Infantry Italy",
-                            Nation.Japan => "Unit Infantry Japan",
-                            Nation.Korea => "Unit Infantry Korea",
-                            Nation.Mexico => "Unit Infantry Mexico",
-                            Nation.Mongolia => "Unit Infantry Mongolia",
-                            Nation.Montenegro => "Unit Infantry Montenegro",
-                            Nation.Romania => "Unit Infantry Romania",
-                            Nation.Russia => "Unit Infantry Russia",
-                            Nation.Serbia => "Unit Infantry Serbia",
-                            Nation.Turkey => "Unit Infantry Turkey",
-                            Nation.USA => "Unit Infantry US",
-                            Nation.USNorth => "Unit Infantry US North",
-                            Nation.USSouth => "Unit Infantry US South",
-                            _ => throw new NotImplementedException(),
-                        };
+                    return unitInfo.Nation switch {
+                        Nation.AustriaHungary => "Unit Infantry Austro-Hungary",
+                        Nation.Belgium => "Unit Infantry Belgia",
+                        Nation.Bulgaria => "Unit Infantry Bulgaria",
+                        Nation.China => "Unit Infantry China",
+                        Nation.France => "Unit Infantry France",
+                        Nation.Germany => "Unit Infantry Germany",
+                        Nation.GreatBritain => "Unit Infantry UK",
+                        Nation.Greece => "Unit Infantry Greece",
+                        Nation.Italy => "Unit Infantry Italy",
+                        Nation.Japan => "Unit Infantry Japan",
+                        Nation.Korea => "Unit Infantry Korea",
+                        Nation.Mexico => "Unit Infantry Mexico",
+                        Nation.Mongolia => "Unit Infantry Mongolia",
+                        Nation.Montenegro => "Unit Infantry Montenegro",
+                        Nation.Romania => "Unit Infantry Romania",
+                        Nation.Russia => "Unit Infantry Russia",
+                        Nation.Serbia => "Unit Infantry Serbia",
+                        Nation.Turkey => "Unit Infantry Turkey",
+                        Nation.USA => "Unit Infantry US",
+                        Nation.USNorth => "Unit Infantry US North",
+                        Nation.USSouth => "Unit Infantry US South",
+                        _ => throw new NotImplementedException(),
                     };
+                };
 				case UnitType.Cavalry: {
                     return unitInfo.Nation switch {
                         Nation.AustriaHungary => "Unit Cavalry Austro-Hungaria",
@@ -73,7 +72,11 @@ namespace TrenchWarfare.UI {
 		}
 
 		public static string GetBannerSprite(UnitModel unitInfo) {
-            return unitInfo.Nation switch {
+            return GetBannerSprite(unitInfo.Nation);
+        }
+
+		public static string GetBannerSprite(Nation nation) {
+            return nation switch {
                 Nation.AustriaHungary => "Banner Austro-Hungaria",
                 Nation.Belgium => "Banner Belgium",
                 Nation.Bulgaria => "Banner Bulgaria",

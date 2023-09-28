@@ -2,9 +2,10 @@ using UnityEngine;
 using System.IO;
 using TrenchWarfare.Domain.Enums;
 using TrenchWarfare.Domain.Map;
-using TrenchWarfare.UI;
+using TrenchWarfare.UI.Army;
 using TrenchWarfare.Utility;
 using TrenchWarfare.Domain.Units;
+using TrenchWarfare.Domain.MapObjects;
 
 namespace TrenchWarfare
 {
@@ -56,8 +57,8 @@ namespace TrenchWarfare
 			model.Army = army;
 		}
 
-		public void RemoveArmy() {
-			model.Army = null;
+		public void UpdateProductionCenter(ProductionCenterModelExternal productionCenter) {
+			model.ProductionCenter = productionCenter;
 		}
 
         public void AttachModelRegistry(ModelRegistry registry) {

@@ -31,5 +31,10 @@ namespace TrenchWarfare.ToolPanels {
             var dropdown = GetComponent<Dropdown>(gameObjectName);
             dropdown.value = value;
         }
+
+        protected void InitInput(string gameObjectName, string value) {
+            var field = GetComponent<InputField>(gameObjectName);
+            field.text = value;
+        }
     }
 }

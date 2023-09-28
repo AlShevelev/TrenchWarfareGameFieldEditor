@@ -84,7 +84,11 @@ namespace TrenchWarfare {
 			}
 
 			if (state.ActiveTool == Tools.Tool.Urban) {
-				cell.UpdateUrbanLevel(state.UrbanLevel);
+				if (shiftPressed) {
+					DestroyProductionCenter(cell);
+				} else {
+					CreateProductionCenter(cell);
+				}
 			}
 		}
 
@@ -270,6 +274,14 @@ namespace TrenchWarfare {
 
 		void DestroyUnit (HexCell cell) {
 			hexGrid.RemoveUnit(cell);
+		}
+
+		void CreateProductionCenter (HexCell cell) {
+			hexGrid.AddProductionCenter(cell, state.ProductionCenter.Copy(i => i));
+		}
+
+		void DestroyProductionCenter (HexCell cell) {
+			hexGrid.RemoveProductionCenter(cell);
 		}
 	}
 }

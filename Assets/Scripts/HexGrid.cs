@@ -1,12 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
-using TrenchWarfare.UI;
+using TrenchWarfare.UI.Army;
 using TrenchWarfare.Domain.Enums;
 using TrenchWarfare.Domain.Map;
 using TrenchWarfare.Utility;
 using TrenchWarfare.Domain.Units;
 using TrenchWarfare.Domain.Map.Conditions;
+using TrenchWarfare.UI.ProductionCenter;
+using TrenchWarfare.Domain.MapObjects;
 
 namespace TrenchWarfare {
     public class HexGrid : MonoBehaviour {
@@ -20,7 +22,8 @@ namespace TrenchWarfare {
 		public HexCell cellPrefab;
 		public Text cellLabelPrefab;
 		public HexGridChunk chunkPrefab;
-		public HexArmy unitPrefab;
+        public HexArmy armyPrefab;
+		public HexProductionCenter productionCenterPrefab;
 
 		public Texture2D noiseSource;
 
@@ -148,7 +151,7 @@ namespace TrenchWarfare {
 
 			Text label = Instantiate<Text>(cellLabelPrefab);
 			label.rectTransform.anchoredPosition = new Vector2(position.x, position.z);
-			label.text = cell.coordinates.ToStringOnSeparateLines();
+			label.text = cell.coordinates.ToStringOnSeparateLines();// $$1
 			label.color = Color.cyan;
 
 			cell.uiRect = label.rectTransform;
@@ -223,7 +226,7 @@ namespace TrenchWarfare {
 			}
 
 			if (cell.Model.Army == null) {
-				var army = Instantiate(unitPrefab);
+				var army = Instantiate(armyPrefab);
 
 				army.AddUnit(model.CellCountZ, unitModel, cell, registry);
 				army.transform.SetParent(transform, false);
@@ -238,6 +241,27 @@ namespace TrenchWarfare {
 		public void RemoveUnit (HexCell cell) {
 			if (cell && cell.Model.Army != null) {
 				registry.Get<HexArmy>(cell.Model.Army).RemoveLastUnit();
+			}
+		}
+
+		public void AddProductionCenter (HexCell cell, ProductionCenterModel pcModel) {
+			if (cell == null) {
+				return;
+			}
+
+			if (cell.Model.ProductionCenter == null) {
+				var pc = Instantiate(productionCenterPrefab);
+
+				pc.Add(model.CellCountZ, pcModel, cell, registry);
+				pc.transform.SetParent(transform, false);
+
+			}
+
+		}
+
+		public void RemoveProductionCenter (HexCell cell) {
+			if (cell && cell.Model.ProductionCenter != null) {
+				registry.Get<HexProductionCenter>(cell.Model.ProductionCenter).Remove(cell);
 			}
 		}
 	}

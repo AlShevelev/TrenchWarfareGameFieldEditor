@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using TrenchWarfare.Domain.Enums;
+using TrenchWarfare.Domain.MapObjects;
 using TrenchWarfare.Domain.Units;
 
 namespace TrenchWarfare.Domain.Map {
     public interface CellModelExternal: IModel {
         ArmyModelExternal Army { get; }
+
+        ProductionCenterModelExternal ProductionCenter { get; }
 
         bool HasIncomingRiver { get; }
 

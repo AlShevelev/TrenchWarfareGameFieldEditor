@@ -2,7 +2,7 @@
 using UnityEngine.U2D;
 using TrenchWarfare.Domain.Units;
 
-namespace TrenchWarfare.UI {
+namespace TrenchWarfare.UI.Army {
     public static class UnitSpritesCalculator {
         public static void AddSprites(
             GameObject parent,

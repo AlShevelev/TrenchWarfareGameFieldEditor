@@ -5,7 +5,7 @@ using TrenchWarfare.Domain.Units;
 using TrenchWarfare.Domain.Map;
 using TrenchWarfare.Utility;
 
-namespace TrenchWarfare.UI {
+namespace TrenchWarfare.UI.Army {
 	public class HexArmy : MonoBehaviour {
 		/// <summary>
 		/// Z-size of a map
@@ -46,7 +46,7 @@ namespace TrenchWarfare.UI {
 				model.Cell = cell.Model;
 				cell.UpdateArmy(model);
 
-				transform.localPosition = getPosition(cell);
+				transform.localPosition = GetPosition(cell);
 
 				registry.Register(model, this);
 
@@ -58,7 +58,7 @@ namespace TrenchWarfare.UI {
 		}
 
 		public void ValidateLocation() {
-			transform.localPosition = getPosition(GetCell());
+			transform.localPosition = GetPosition(GetCell());
 		}
 
 		public void RemoveLastUnit() {
@@ -71,7 +71,7 @@ namespace TrenchWarfare.UI {
 			if (isNotEmpty) {
 				RefreshSprites();
 			} else {
-				GetCell().RemoveArmy();
+				GetCell().UpdateArmy(null);
 				Destroy(gameObject);
 			}
 		}
@@ -89,7 +89,7 @@ namespace TrenchWarfare.UI {
 			UnitSpritesCalculator.AddSprites(gameObject, atlas, model);
 		}
 
-		private Vector3 getPosition(HexCell cell) {
+		private Vector3 GetPosition(HexCell cell) {
 			var result = new Vector3(cell.Position.x, cell.Position.y, cell.Position.z);
 
 			result.y = HexMetrics.unitStartY + (cellCountZ - 1 - cell.coordinates.Z) * 0.01f;
@@ -106,6 +106,5 @@ namespace TrenchWarfare.UI {
 		private HexCell GetCell() {
 			return registry.Get<HexCell>(model.Cell);
 		}
-
 	}
 }
