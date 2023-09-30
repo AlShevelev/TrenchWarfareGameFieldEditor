@@ -90,6 +90,14 @@ namespace TrenchWarfare {
 					CreateProductionCenter(cell);
 				}
 			}
+
+			if (state.ActiveTool == Tools.Tool.TerrainModifiers) {
+				if (shiftPressed) {
+					DestroyTerrainModifier(cell);
+				} else {
+					CreateTerrainModifier(cell);
+				}
+			}
 		}
 
 
@@ -282,6 +290,14 @@ namespace TrenchWarfare {
 
 		void DestroyProductionCenter (HexCell cell) {
 			hexGrid.RemoveProductionCenter(cell);
+		}
+
+		void CreateTerrainModifier(HexCell cell) {
+			hexGrid.AddTerrainModifier(cell, state.TerrainModifier.Copy(i => i));
+		}
+
+		void DestroyTerrainModifier(HexCell cell) {
+			hexGrid.RemoveTerrainModifier(cell);
 		}
 	}
 }

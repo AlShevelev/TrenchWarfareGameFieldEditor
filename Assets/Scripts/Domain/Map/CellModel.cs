@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using TrenchWarfare.Domain.Enums;
 using TrenchWarfare.Domain.MapObjects;
 using TrenchWarfare.Domain.Units;
 
-namespace TrenchWarfare.Domain.Map {
+namespace TrenchWarfare.Domain.Map
+{
     public class CellModel: Model, CellModelExternal {
 		ArmyModelExternal army = null;
 		public ArmyModelExternal Army { get => army; set => army = value; }
@@ -13,6 +13,11 @@ namespace TrenchWarfare.Domain.Map {
 		ProductionCenterModelExternal productionCenter = null;
 		public ProductionCenterModelExternal ProductionCenter {
 			get => productionCenter; set => productionCenter = value;
+		}
+
+		TerrainModifierModelExternal terrainModifier;
+		public TerrainModifierModelExternal TerrainModifier {
+			get => terrainModifier; set => terrainModifier = value;
 		}
 
 		bool hasIncomingRiver;

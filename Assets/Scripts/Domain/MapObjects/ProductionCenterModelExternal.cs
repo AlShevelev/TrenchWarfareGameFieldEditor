@@ -2,8 +2,7 @@
 using TrenchWarfare.Domain.Enums;
 using TrenchWarfare.Domain.Map;
 
-namespace TrenchWarfare.Domain.MapObjects
-{
+namespace TrenchWarfare.Domain.MapObjects {
     public interface ProductionCenterModelExternal: IModel {
         CellModelExternal Cell { get; }
 

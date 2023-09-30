@@ -329,6 +329,13 @@ namespace TrenchWarfare.Domain.Units {
         }
 
         public bool CanPlace(CellModelExternal cell) {
+            if (cell.TerrainModifier != null &&
+                (cell.TerrainModifier.Modifier == TerrainModifierType.LandMine ||
+                cell.TerrainModifier.Modifier == TerrainModifierType.SeaMine)
+                ) {
+                return false;
+            }
+
             if (!IsLand && cell.IsUnderwater) {
                 return true;
             }

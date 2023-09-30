@@ -4,7 +4,6 @@ using TrenchWarfare.UI.Army;
 using TrenchWarfare.Utility;
 using UnityEngine;
 using UnityEngine.U2D;
-using UnityEngine.UIElements;
 
 namespace TrenchWarfare.UI.ProductionCenter {
     public class HexProductionCenter : MonoBehaviour {

@@ -6,6 +6,7 @@ namespace TrenchWarfare.ToolPanels {
         Units,
         Walls,
         ProductionCenters,
+        TerrainModifiers,
         System,
         SaveLoad,
      }

@@ -61,6 +61,10 @@ namespace TrenchWarfare
 			model.ProductionCenter = productionCenter;
 		}
 
+		public void UpdateTerrainModifier(TerrainModifierModelExternal terrainModifier) {
+			model.TerrainModifier = terrainModifier;
+		}
+
         public void AttachModelRegistry(ModelRegistry registry) {
 			this.registry = registry;
 			this.registry.Register(model, this);

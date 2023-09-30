@@ -1,11 +1,8 @@
 using System;
-using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
 using TrenchWarfare.Domain.Enums;
 using TrenchWarfare.ToolPanels.State;
 using TrenchWarfare.Utility;
-using UnityEngine;
 using UnityEngine.UI;
 
 namespace TrenchWarfare.ToolPanels {
@@ -65,6 +62,7 @@ namespace TrenchWarfare.ToolPanels {
                 case Tool.Units: return "Units Toggle";
                 case Tool.Walls: return "Walls Toggle";
                 case Tool.ProductionCenters: return "PC Toggle";
+                case Tool.TerrainModifiers: return "TM Toggle";
                 case Tool.System: return "System Toggle";
                 case Tool.SaveLoad: return "Files Toggle";
                 default: return "";

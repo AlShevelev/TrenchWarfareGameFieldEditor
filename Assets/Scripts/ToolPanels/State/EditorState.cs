@@ -77,5 +77,13 @@ namespace TrenchWarfare.ToolPanels.State {
             get => productionCenter;
             set => productionCenter = value;
         }
+
+        TerrainModifierModel terrainModifier = new TerrainModifierModel(
+            TerrainModifierType.AntiAirGun
+        );
+        public TerrainModifierModel TerrainModifier {
+            get => terrainModifier;
+            set => terrainModifier = value;
+        }
     }
 }

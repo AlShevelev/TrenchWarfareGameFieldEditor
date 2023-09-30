@@ -20,7 +20,9 @@ namespace TrenchWarfare.UI.Army {
 		public SpriteAtlas atlas;
 
         private void OnDestroy() {
-            registry.Unregister(model);
+			if (registry != null) {
+				registry.Unregister(model);
+			}
         }
 
         public void AddUnit(

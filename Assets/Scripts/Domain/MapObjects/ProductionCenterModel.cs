@@ -88,7 +88,9 @@ namespace TrenchWarfare.Domain.MapObjects {
                 return false;
             }
 
-            // no terrain modifiers
+            if (cell.TerrainModifier != null) {
+                return false;
+            }
 
             if (cell.IsUnderwater && type == ProductionCenterType.NavalBase) {
                 return true;

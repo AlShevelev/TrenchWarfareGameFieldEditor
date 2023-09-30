@@ -10,6 +10,8 @@ namespace TrenchWarfare.Domain.Map {
 
         ProductionCenterModelExternal ProductionCenter { get; }
 
+        TerrainModifierModelExternal TerrainModifier { get; }
+
         bool HasIncomingRiver { get; }
 
         bool HasOutgoingRiver { get; }

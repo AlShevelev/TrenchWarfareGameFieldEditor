@@ -9,6 +9,7 @@ using TrenchWarfare.Domain.Units;
 using TrenchWarfare.Domain.Map.Conditions;
 using TrenchWarfare.UI.ProductionCenter;
 using TrenchWarfare.Domain.MapObjects;
+using TrenchWarfare.UI.TerrainModifier;
 
 namespace TrenchWarfare {
     public class HexGrid : MonoBehaviour {
@@ -24,6 +25,7 @@ namespace TrenchWarfare {
 		public HexGridChunk chunkPrefab;
         public HexArmy armyPrefab;
 		public HexProductionCenter productionCenterPrefab;
+		public HexTerrainModifier terrainModifierPrefab;
 
 		public Texture2D noiseSource;
 
@@ -238,13 +240,13 @@ namespace TrenchWarfare {
 
 		}
 
-		public void RemoveUnit (HexCell cell) {
+		public void RemoveUnit(HexCell cell) {
 			if (cell && cell.Model.Army != null) {
 				registry.Get<HexArmy>(cell.Model.Army).RemoveLastUnit();
 			}
 		}
 
-		public void AddProductionCenter (HexCell cell, ProductionCenterModel pcModel) {
+		public void AddProductionCenter(HexCell cell, ProductionCenterModel pcModel) {
 			if (cell == null) {
 				return;
 			}
@@ -259,9 +261,30 @@ namespace TrenchWarfare {
 
 		}
 
-		public void RemoveProductionCenter (HexCell cell) {
+		public void RemoveProductionCenter(HexCell cell) {
 			if (cell && cell.Model.ProductionCenter != null) {
 				registry.Get<HexProductionCenter>(cell.Model.ProductionCenter).Remove(cell);
+			}
+		}
+
+		public void AddTerrainModifier(HexCell cell, TerrainModifierModel tmModel) {
+			if (cell == null) {
+				return;
+			}
+
+			if (cell.Model.TerrainModifier == null) {
+				var tm = Instantiate(terrainModifierPrefab);
+
+				tm.Add(model.CellCountZ, tmModel, cell, registry);
+				tm.transform.SetParent(transform, false);
+
+			}
+
+		}
+
+		public void RemoveTerrainModifier (HexCell cell) {
+			if (cell && cell.Model.TerrainModifier != null) {
+				registry.Get<HexTerrainModifier>(cell.Model.TerrainModifier).Remove(cell);
 			}
 		}
 	}
