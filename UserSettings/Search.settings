@@ -8,7 +8,7 @@ onBoardingDoNotAskAgain = true
 showPackageIndexes = false
 showStatusBar = false
 scopes = {
-	"last_search.3BE40471" = "ref:Assets/Scripts/HexFeatureManager.cs"
+	"last_search.3BE40471" = ""
 	"OpenInspectorPreview.3BE40471" = "0"
 	"currentGroup.3BE40471" = "all"
 }
@@ -62,8 +62,8 @@ providers = {
 objectSelectors = {
 }
 recentSearches = [
-	"ref:Assets/Scripts/HexFeatureManager.cs"
 	""
+	"ref:Assets/Scripts/HexFeatureManager.cs"
 	"ref:\"Assets/Material/Blue Feature.mat\""
 	"ref:Assets/Scripts/HexMapGenerator.cs"
 	"ref:\"Assets/Prefabs/UI/Nation Dropdown.prefab\""

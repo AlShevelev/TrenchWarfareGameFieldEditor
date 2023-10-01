@@ -734,9 +734,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a5d7c2e935a343e3bb87ba582695788, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  urbanCollections: []
   walls: {fileID: 6239407678798852726}
-  bridge: {fileID: 5635156399099458040, guid: 8ce6588d3f9654d20a2921412bab51aa, type: 3}
+  bridge: {fileID: 4061660776025202, guid: a9c899e0b66039040ab831fddc761839, type: 3}
 --- !u!1 &6821039048578408889
 GameObject:
   m_ObjectHideFlags: 0

@@ -344,6 +344,10 @@ namespace TrenchWarfare.Domain.Units {
                 return false;
             }
 
+            if (IsLand && cell.HasRiver && !cell.HasRoads) {
+                return false;
+            }
+
             switch(type) {
                 case UnitType.ArmoredCar: {
                     return cell.TerrainType == CellTerrain.Plain ||
