@@ -41,7 +41,7 @@ namespace TrenchWarfare {
 			EdgeVertices near, HexCell nearCell,
 			EdgeVertices far, HexCell farCell
 		) {
-			if (nearCell.Model.Walled != farCell.Model.Walled) {
+			if (nearCell.Model.Owner != farCell.Model.Owner) {
 				AddWallSegment(near.v1, far.v1, near.v2, far.v2);
 				AddWallSegment(near.v2, far.v2, near.v3, far.v3);
 				AddWallSegment(near.v3, far.v3, near.v4, far.v4);
@@ -54,29 +54,76 @@ namespace TrenchWarfare {
 			Vector3 c2, HexCell cell2,
 			Vector3 c3, HexCell cell3
 		) {
-			if (cell1.Model.Walled) {
-				if (cell2.Model.Walled) {
-					if (!cell3.Model.Walled) {
-						AddWallSegment(c3, cell3, c1, cell1, c2, cell2);
-					}
-				}
-				else if (cell3.Model.Walled) {
-					AddWallSegment(c2, cell2, c3, cell3, c1, cell1);
-				}
-				else {
-					AddWallSegment(c1, cell1, c2, cell2, c3, cell3);
-				}
+			if (cell1.Model.Owner != null && cell2.Model.Owner == null && cell3.Model.Owner == null) {
+				AddWallSegment(c1, c2, c3);
+				return;
 			}
-			else if (cell2.Model.Walled) {
-				if (cell3.Model.Walled) {
-					AddWallSegment(c1, cell1, c2, cell2, c3, cell3);
-				}
-				else {
-					AddWallSegment(c2, cell2, c3, cell3, c1, cell1);
-				}
+
+			if (cell1.Model.Owner == null && cell2.Model.Owner != null && cell3.Model.Owner == null) {
+				AddWallSegment(c2, c3, c1);
+				return;
 			}
-			else if (cell3.Model.Walled) {
-				AddWallSegment(c3, cell3, c1, cell1, c2, cell2);
+
+			if (cell1.Model.Owner == null && cell2.Model.Owner == null && cell3.Model.Owner != null) {
+				AddWallSegment(c3, c1, c2);
+				return;
+			}
+
+			if (cell1.Model.Owner != null && cell2.Model.Owner != null && cell3.Model.Owner == null) {
+				if (cell1.Model.Owner != cell2.Model.Owner) {
+					AddWallSegment(c2, c3, c1);
+				}
+
+				AddWallSegment(c3, c1, c2);
+				return;
+			}
+
+
+			if (cell1.Model.Owner != null && cell2.Model.Owner == null && cell3.Model.Owner != null) {
+				if (cell1.Model.Owner != cell3.Model.Owner) {
+					AddWallSegment(c1, c2, c3);
+				}
+
+				AddWallSegment(c2, c3, c1);
+				return;
+			}
+
+			if (cell1.Model.Owner == null && cell2.Model.Owner != null && cell3.Model.Owner != null) {
+				if (cell2.Model.Owner != cell3.Model.Owner) {
+					AddWallSegment(c2, c3, c1);
+				}
+
+				AddWallSegment(c1, c2, c3);
+				return;
+			}
+
+			if (cell1.Model.Owner != null && cell2.Model.Owner != null && cell3.Model.Owner != null) {
+				if (cell1.Model.Owner == cell2.Model.Owner && cell2.Model.Owner == cell3.Model.Owner) {
+					return;
+				}
+
+				if (cell1.Model.Owner == cell2.Model.Owner) {
+					AddWallSegment(c3, c1, c2);
+					return;
+				}
+
+				if (cell2.Model.Owner == cell3.Model.Owner) {
+					AddWallSegment(c1, c2, c3);
+					return;
+				}
+
+				if (cell1.Model.Owner == cell3.Model.Owner) {
+					AddWallSegment(c2, c3, c1);
+					return;
+				}
+
+
+				AddWallSegment(c1, c2, c3);
+
+				AddWallSegment(c2, c1, c3);
+
+				AddWallSegment(c3, c1, c2);
+				return;
 			}
 		}
 
@@ -132,11 +179,7 @@ namespace TrenchWarfare {
 			walls.AddQuadUnperturbed(t1, t2, v3, v4);
 		}
 
-		void AddWallSegment (
-			Vector3 pivot, HexCell pivotCell,
-			Vector3 left, HexCell leftCell,
-			Vector3 right, HexCell rightCell
-		) {
+		void AddWallSegment (Vector3 pivot, Vector3 left, Vector3 right) {
 			AddWallSegment(pivot, left, pivot, right);
 		}
 	}

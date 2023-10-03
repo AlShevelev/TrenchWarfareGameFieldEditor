@@ -56,8 +56,8 @@ namespace TrenchWarfare.ToolPanels.State {
         bool roadsIsOn = false;
         public bool RoadsIsOn { get => roadsIsOn; set => roadsIsOn = value; }
 
-        bool wallsIsOn = false;
-        public bool WallsIsOn { get => wallsIsOn; set => wallsIsOn = value; }
+        Nation? domainMation = null;
+        public Nation? DomainNation { get => domainMation; set => domainMation = value; }
 
         bool labelsIsOn = false;
         public bool LabelsIsOn { get => labelsIsOn; set => labelsIsOn = value; }

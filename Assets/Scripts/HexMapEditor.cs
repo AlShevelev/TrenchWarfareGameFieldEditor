@@ -138,8 +138,8 @@ namespace TrenchWarfare {
 					cell.RemoveRoads();
 				}
 				
-				if(state.ActiveTool == Tools.Tool.Walls) {
-					cell.UpdateWalled(state.WallsIsOn);
+				if(state.ActiveTool == Tools.Tool.Domains) {
+					cell.UpdateOwner(state.DomainNation);
 				}
 
 				if (isDrag) {

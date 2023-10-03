@@ -70,8 +70,8 @@ namespace TrenchWarfare
 			this.registry.Register(model, this);
 		}
 
-		public void UpdateWalled(bool walled) {
-			model.Walled = walled;
+		public void UpdateOwner(Nation? owner) {
+			model.Owner = owner;
 			Refresh();
 		}
 
@@ -265,7 +265,7 @@ namespace TrenchWarfare
 			writer.Write((byte)model.TerrainType);
 			writer.Write((byte)(model.Elevation + 127));
 			writer.Write((byte)model.WaterLevel);
-			writer.Write(model.Walled);
+			//writer.Write(model.Walled);
 
 			writer.Write(model.HasIncomingRiver);
 			writer.Write((byte)model.IncomingRiver);
@@ -285,7 +285,7 @@ namespace TrenchWarfare
 			RefreshPosition();
 			model.WaterLevel = reader.ReadByte();
 
-			model.Walled = reader.ReadBoolean();
+			//model.Walled = reader.ReadBoolean();
 
 			model.HasIncomingRiver = reader.ReadBoolean();
 			model.IncomingRiver = (HexDirection)reader.ReadByte();

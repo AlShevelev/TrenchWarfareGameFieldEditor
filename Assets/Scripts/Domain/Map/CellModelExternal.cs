@@ -37,7 +37,7 @@ namespace TrenchWarfare.Domain.Map {
 
         bool IsUnderwater { get; }
 
-		bool Walled { get; }
+        Nation? Owner { get; }
 
         bool HasRiverThroughEdge (HexDirection direction);
 

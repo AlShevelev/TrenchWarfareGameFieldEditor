@@ -2,11 +2,10 @@ using System.Linq;
 using TrenchWarfare.Domain.Enums;
 using TrenchWarfare.ToolPanels.State;
 using TrenchWarfare.Utility;
-using UnityEngine;
 using UnityEngine.UI;
 
 namespace TrenchWarfare.ToolPanels {
-    public class EditorUrbanPanel : EditorToolPanelBase {
+    public class EditorPCPanel : EditorToolPanelBase {
         public EditorState state;
 
         void Start() {

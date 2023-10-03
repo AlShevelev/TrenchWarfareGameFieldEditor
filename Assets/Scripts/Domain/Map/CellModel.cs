@@ -58,8 +58,8 @@ namespace TrenchWarfare.Domain.Map
 
 		public bool IsUnderwater { get => waterLevel > elevation; }
 
-        bool walled;
-		public bool Walled { get => walled; set => walled = value; }
+        Nation? owner;
+		public Nation? Owner { get => owner; set => owner = value; }
 
 		CellModelExternal[] neighbors;
 		public IEnumerable<CellModelExternal> Neighbors { get => neighbors; }

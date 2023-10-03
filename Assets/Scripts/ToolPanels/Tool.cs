@@ -4,7 +4,7 @@ namespace TrenchWarfare.ToolPanels {
         Rivers,
         Roads,
         Units,
-        Walls,
+        Domains,
         ProductionCenters,
         TerrainModifiers,
         System,

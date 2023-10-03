@@ -2,40 +2,24 @@ using TrenchWarfare.Domain.Enums;
 
 namespace TrenchWarfare.ToolPanels.State {
     public interface EditorStateRead {
-        Tool ActiveTool {
-            get;
-        }
+        Tool ActiveTool { get; }
 
-        CellTerrain TerrainSelected {
-            get;
-        }    
+        CellTerrain TerrainSelected { get; }    
 
-        int TerrainElevation {
-            get;
-        }
+        int TerrainElevation { get; }
 
-        int BrushSize {
-            get;
-        }
+        int BrushSize { get; }
         
         int WaterLevel {
             get;
         }
 
-        bool RiversIsOn {
-            get;
-        }
+        bool RiversIsOn { get; }
 
-        bool RoadsIsOn {
-            get;
-        }
+        bool RoadsIsOn { get; }
 
-        bool WallsIsOn {
-            get;
-        }
+        Nation? DomainNation { get; }
 
-        bool LabelsIsOn {
-            get;
-        }
+        bool LabelsIsOn { get; }
     }
 }

@@ -21,6 +21,7 @@ namespace TrenchWarfare.ToolPanels {
 
             GetToolToggle(Tool.Units).interactable = false;
             GetToolToggle(Tool.ProductionCenters).interactable = false;
+            GetToolToggle(Tool.Domains).interactable = false;
 
             start = false;
         }
@@ -45,8 +46,10 @@ namespace TrenchWarfare.ToolPanels {
         }
 
         public void OnNationsSet(IEnumerable<Nation> nations) {
-            GetToolToggle(Tool.Units).interactable = nations.IsNotEmpty();
-            GetToolToggle(Tool.ProductionCenters).interactable = nations.IsNotEmpty();
+            var enabled = nations.IsNotEmpty();
+            GetToolToggle(Tool.Units).interactable = enabled;
+            GetToolToggle(Tool.ProductionCenters).interactable = enabled;
+            GetToolToggle(Tool.Domains).interactable = enabled;
          }
 
         private Toggle GetToolToggle(Tool tool) {
@@ -60,7 +63,7 @@ namespace TrenchWarfare.ToolPanels {
                 case Tool.Rivers: return "Rivers Toggle";
                 case Tool.Roads: return "Roads Toggle";
                 case Tool.Units: return "Units Toggle";
-                case Tool.Walls: return "Walls Toggle";
+                case Tool.Domains: return "Domains Toggle";
                 case Tool.ProductionCenters: return "PC Toggle";
                 case Tool.TerrainModifiers: return "TM Toggle";
                 case Tool.System: return "System Toggle";
