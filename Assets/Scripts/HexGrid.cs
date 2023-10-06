@@ -192,7 +192,7 @@ namespace TrenchWarfare {
 		}
 
 		public void Save (BinaryWriter writer) {
-			writer.Write(model.CellCountX);
+			writer.Write(model.CellCountX);			// $$1
 			writer.Write(model.CellCountZ);
 
 			foreach(var cell in model.Cells) {
@@ -205,7 +205,6 @@ namespace TrenchWarfare {
 		public void Load (BinaryReader reader) {
 			CreateMap(reader.ReadInt32(), reader.ReadInt32());
 
-
 			foreach(var cell in model.Cells) {
 				registry.Get<HexCell>(cell).Load(reader);
 			}
@@ -214,10 +213,10 @@ namespace TrenchWarfare {
 				chunks[i].Refresh();
 			}
 
-			int unitCount = reader.ReadInt32();
-			for (int i = 0; i < unitCount; i++) {
-				HexArmy.Load(reader, this);
-			}
+			//int unitCount = reader.ReadInt32();
+			//for (int i = 0; i < unitCount; i++) {
+			//	HexArmy.Load(reader, this);
+			//}
 
 			((MapConditions)(model.Conditions)).LoadFromBinary(reader);
 		}

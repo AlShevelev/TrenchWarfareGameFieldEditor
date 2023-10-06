@@ -8,6 +8,7 @@ namespace TrenchWarfare.Domain.Units {
         public CellModelExternal Cell { get => cell; set => cell = value; }
 
         List<UnitModel> units;
+        public IEnumerable<UnitModelExternal> Units { get => units; }
 
         private const int maxUnits = 4;
 

@@ -5,9 +5,13 @@ using TrenchWarfare.Domain.Map;
 namespace TrenchWarfare.Domain.Units {
     public class UnitModel: Model, UnitModelExternal {
         private UnitExperienceRank experienceRank;
+        public UnitExperienceRank ExperienceRank {
+            get => experienceRank; set => experienceRank = value;
+        }
 
         // for experience rank calculation
         private int tookPartInBattles;
+        public int TookPartInBattles { get => tookPartInBattles; set => tookPartInBattles = value; }
 
         private UnitType type;
         public UnitType Type { get => type; set => type = value; }
@@ -26,12 +30,6 @@ namespace TrenchWarfare.Domain.Units {
 
         private float movementPoints;
         public float MovementPoints { get => movementPoints; set => movementPoints = value; }
-
-        public UnitExperienceRank ExperienceRank {
-            get => experienceRank; set => experienceRank = value;
-        }
-
-        public int TookPartInBattles { get => tookPartInBattles; set => tookPartInBattles = value; }
 
         private UnitBoost boost1;
         public UnitBoost Boost1 { get => boost1; set => boost1 = value; }

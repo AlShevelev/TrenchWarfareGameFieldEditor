@@ -4,8 +4,7 @@ using TrenchWarfare.Domain.Enums;
 using TrenchWarfare.Domain.MapObjects;
 using TrenchWarfare.Domain.Units;
 
-namespace TrenchWarfare.Domain.Map
-{
+namespace TrenchWarfare.Domain.Map {
     public class CellModel: Model, CellModelExternal {
 		ArmyModelExternal army = null;
 		public ArmyModelExternal Army { get => army; set => army = value; }
