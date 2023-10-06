@@ -5,11 +5,14 @@ using UnityEngine.EventSystems;
 using Tools = TrenchWarfare.ToolPanels;
 using TrenchWarfare.ToolPanels.State;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TrenchWarfare.Domain.Enums;
 using TrenchWarfare.Domain.Map;
 using TrenchWarfare.ToolPanels;
+using TrenchWarfare.SaveLoad;
+using TrenchWarfare.Domain.Game;
 
 namespace TrenchWarfare {
 	public class HexMapEditor : MonoBehaviour {
@@ -187,8 +190,9 @@ namespace TrenchWarfare {
 			}
 
 			using(BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.Create))) {
-				writer.Write(0);			// Header (format version - 0)
-				hexGrid.Save(writer);
+				Saver.Save(writer, hexGrid.Model, new GameState(0, new Dictionary<Nation, NationGameState>()));
+				//writer.Write(0);			// Header (format version - 0)
+				//hexGrid.Save(writer);
 			}
 		}
 
