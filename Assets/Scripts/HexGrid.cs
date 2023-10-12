@@ -10,6 +10,7 @@ using TrenchWarfare.Domain.Map.Conditions;
 using TrenchWarfare.UI.ProductionCenter;
 using TrenchWarfare.Domain.MapObjects;
 using TrenchWarfare.UI.TerrainModifier;
+using Unity.VisualScripting;
 
 namespace TrenchWarfare {
     public class HexGrid : MonoBehaviour {
@@ -58,8 +59,12 @@ namespace TrenchWarfare {
 				return;
 			}
 
+			InitMap(new GridModel(sizeX, sizeZ));
+		}
+
+		public void InitMap (GridModel gridModel) {
 			registry.Clear();
-			model = new GridModel(sizeX, sizeZ);
+			model = gridModel;
 
 			if (chunks != null) {
 				for (int i = 0; i < chunks.Length; i++) {
@@ -82,54 +87,48 @@ namespace TrenchWarfare {
 				for (int x = 0; x < chunkCountX; x++) {
 					HexGridChunk chunk = chunks[i++] = Instantiate(chunkPrefab);
 					chunk.transform.SetParent(transform);
-				}
-			}
-		}
+                }
+            }
+        }
 		
 		void CreateCells () {
-			model.InitCells(model.CellCountZ * model.CellCountX);
+			if (model.Cells == null) {
+				model.InitCells(model.CellCountZ * model.CellCountX);
+			}
 
 			for (int z = 0, i = 0; z < model.CellCountZ; z++) {
 				for (int x = 0; x < model.CellCountX; x++) {
-					CreateCell(x, z, i++);
+					var cellModel = (CellModel)model.GetCell(i);
+
+					CreateCell(x, z, i++, cellModel);
+				}
+			}
+
+			for (int z = 0, i = 0; z < model.CellCountZ; z++) {
+				for (int x = 0; x < model.CellCountX; x++) {
+					var cellModel = (CellModel)model.GetCell(i);
+					var cell = registry.Get<HexCell>(cellModel);
+
+					cell.UpdateElevation(cellModel.Elevation);
 				}
 			}
 		}
 
-		void OnEnable () {
-			if (!HexMetrics.noiseSource) {
-				HexMetrics.noiseSource = noiseSource;
-				HexMetrics.InitializeHashGrid(seed);
-				HexMetrics.colors = colors;
-			}
-		}
-			
-		public HexCell GetCell (Vector3 position) {
-			position = transform.InverseTransformPoint(position);
-			HexCoordinates coordinates = HexCell.FromPosition(position);
-
-			int index = coordinates.X + coordinates.Z * model.CellCountX + coordinates.Z / 2;
-			return GetCell(index);
-		}	
-
-		public HexCell GetCell (int xOffset, int zOffset) {
-			return GetCell(xOffset + zOffset * model.CellCountX);
-		}
-		
-		public HexCell GetCell (int cellIndex) {
-			return registry.Get<HexCell>(model.GetCell(cellIndex));
-		}
-
-		void CreateCell (int x, int z, int i) {
+		void CreateCell (int x, int z, int i, CellModel cellModel) {
 			Vector3 position;
 			position.x = (x + z * 0.5f - z / 2) * (HexMetrics.innerRadius * 2f);
 			position.y = 0f;
 			position.z = z * (HexMetrics.outerRadius * 1.5f);
 
 			HexCell cell = Instantiate<HexCell>(cellPrefab);
+			if (cellModel != null) {
+				cell.SetModel(cellModel);
+			}
+
 			cell.AttachModelRegistry(registry);
 			model.SetCell(i, cell.Model);
 			cell.transform.localPosition = position;
+
 			var coordinates = HexCoordinates.FromOffsetCoordinates(x, z);
 			cell.coordinates = coordinates;
 
@@ -158,8 +157,6 @@ namespace TrenchWarfare {
 
 			cell.uiRect = label.rectTransform;
 
-			cell.UpdateElevation(0);
-
 			AddCellToChunk(x, z, cell);
 		}
 
@@ -171,6 +168,30 @@ namespace TrenchWarfare {
 			int localX = x - chunkX * HexMetrics.chunkSizeX;
 			int localZ = z - chunkZ * HexMetrics.chunkSizeZ;
 			chunk.AddCell(localX + localZ * HexMetrics.chunkSizeX, cell);
+		}
+
+		void OnEnable () {
+			if (!HexMetrics.noiseSource) {
+				HexMetrics.noiseSource = noiseSource;
+				HexMetrics.InitializeHashGrid(seed);
+				HexMetrics.colors = colors;
+			}
+		}
+			
+		public HexCell GetCell (Vector3 position) {
+			position = transform.InverseTransformPoint(position);
+			HexCoordinates coordinates = HexCell.FromPosition(position);
+
+			int index = coordinates.X + coordinates.Z * model.CellCountX + coordinates.Z / 2;
+			return GetCell(index);
+		}	
+
+		public HexCell GetCell (int xOffset, int zOffset) {
+			return GetCell(xOffset + zOffset * model.CellCountX);
+		}
+		
+		public HexCell GetCell (int cellIndex) {
+			return registry.Get<HexCell>(model.GetCell(cellIndex));
 		}
 
 		public HexCell GetCell (HexCoordinates coordinates) {
@@ -192,7 +213,7 @@ namespace TrenchWarfare {
 		}
 
 		public void Save (BinaryWriter writer) {
-			writer.Write(model.CellCountX);			// $$1
+			writer.Write(model.CellCountX);
 			writer.Write(model.CellCountZ);
 
 			foreach(var cell in model.Cells) {
@@ -219,6 +240,18 @@ namespace TrenchWarfare {
 			//}
 
 			((MapConditions)(model.Conditions)).LoadFromBinary(reader);
+		}
+
+		public void Init (GridModel model) {        // $$2
+			InitMap(model);
+
+			//foreach (var cell in model.Cells) {
+			//	registry.Get<HexCell>(cell).Init((CellModel)cell);
+			//}
+
+			for (int i = 0; i < chunks.Length; i++) {
+				chunks[i].Refresh();
+			}
 		}
 
 		public void AddUnit (HexCell cell, UnitModel unitModel) {

@@ -8,7 +8,13 @@ using UnityEngine;
 namespace TrenchWarfare.Domain.Map.Conditions {
     public class MapConditions: MapConditionsExternal {
         MapConditionsDto conditions;
-        public MapConditionsDto Conditions { get => conditions; }
+        public MapConditionsDto Conditions { get => conditions; set => conditions = value; }
+
+        public MapConditions() { }
+
+        public MapConditions(MapConditionsDto conditions): this() {
+            this.conditions = conditions;
+        }
 
         public void LoadFromBinary(BinaryReader reader) {
             conditions = new MapConditionsDto();

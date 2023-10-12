@@ -73,7 +73,11 @@ namespace TrenchWarfare {
 		}
 
 		void Triangulate (HexDirection direction, HexCell cell) {
-			Vector3 center = cell.Position;
+			//if (cell == null) {
+			//	return;
+			//}
+
+			Vector3 center = cell.Position;		// $$0
 			EdgeVertices e = new EdgeVertices(
 				center + HexMetrics.GetFirstSolidCorner(direction),
 				center + HexMetrics.GetSecondSolidCorner(direction)

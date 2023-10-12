@@ -12,7 +12,7 @@ namespace TrenchWarfare
     public class HexCell : MonoBehaviour {
 		ModelRegistry registry;
 
-		CellModel model;
+		CellModel model = null;
 		public CellModelExternal Model { get => model; }
 
 		public HexCoordinates coordinates;
@@ -46,7 +46,9 @@ namespace TrenchWarfare
 		}
 
 		void Awake () {
-			model = new CellModel();
+			if (model == null) {
+				model = new CellModel();
+			}
 		}
 
         private void OnDestroy() {
@@ -297,6 +299,10 @@ namespace TrenchWarfare
 			foreach(var direction in directions) {
 				model.SetRoadThroughEdge(direction, reader.ReadBoolean());
 			}
+		}
+
+		public void SetModel (CellModel model) {
+			this.model = model;
 		}
 
 		public static HexCoordinates FromPosition (Vector3 position) {

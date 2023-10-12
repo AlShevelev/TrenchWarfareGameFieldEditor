@@ -49,7 +49,7 @@ namespace TrenchWarfare.Domain.Map {
 			get => HasIncomingRiver ? IncomingRiver : OutgoingRiver;
 		}
 
-		int elevation = int.MinValue;
+		int elevation = 0;
 		public int Elevation { get => elevation; set => elevation = value; }
 
 		int waterLevel;

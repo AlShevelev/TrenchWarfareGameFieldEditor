@@ -60,10 +60,7 @@ namespace TrenchWarfare.SaveLoad {
 				writer.Write(cell.HasRoadThroughEdge(direction));   // bool (6 values)
 			}
 
-            byte owner = SaveLoadConstants.BYTE_NULL;
-            if (cell.Owner != null) {
-                owner = (byte)cell.Owner;
-            }
+            byte owner = cell.Owner != null ? (byte)cell.Owner : SaveLoadConstants.BYTE_NULL;
             writer.Write(owner);
 
             writer.Write(cell.Army != null);            // bool
@@ -75,7 +72,7 @@ namespace TrenchWarfare.SaveLoad {
             }
 
             if (cell.ProductionCenter != null) {
-                SavePC(writer, cell.ProductionCenter);
+                SaveProductionCenter(writer, cell.ProductionCenter);
             }
 
             if (cell.TerrainModifier != null) {
@@ -111,7 +108,7 @@ namespace TrenchWarfare.SaveLoad {
             }
         }
 
-        static void SavePC(BinaryWriter writer, ProductionCenterModelExternal pc) {
+        static void SaveProductionCenter(BinaryWriter writer, ProductionCenterModelExternal pc) {
             writer.Write((byte)pc.Type);
             writer.Write((byte)pc.Level);
             writer.Write((byte)pc.Nation);

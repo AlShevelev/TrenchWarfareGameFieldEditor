@@ -5,14 +5,16 @@ namespace TrenchWarfare.Domain.Map {
     public class GridModel: Model, GridModelExternal {
 
         MapConditions conditions;
-        public MapConditionsExternal Conditions { get => conditions; }
+        public MapConditionsExternal Conditions {
+            get => conditions; set => conditions = (MapConditions)value;
+        }
 
         // map size (width & height)
         private int cellCountX, cellCountZ;
         public int CellCountX { get => cellCountX; }
         public int CellCountZ { get => cellCountZ; }
 
-        CellModelExternal[] cells;
+        CellModelExternal[] cells = null;
         public IEnumerable<CellModelExternal> Cells { get => cells; }
 
         public GridModel(int cellCountX, int cellCountZ): base() {
