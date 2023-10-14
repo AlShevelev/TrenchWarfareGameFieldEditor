@@ -106,10 +106,19 @@ namespace TrenchWarfare {
 
 			for (int z = 0, i = 0; z < model.CellCountZ; z++) {
 				for (int x = 0; x < model.CellCountX; x++) {
-					var cellModel = (CellModel)model.GetCell(i);
+					var cellModel = (CellModel)model.GetCell(i++);
+
 					var cell = registry.Get<HexCell>(cellModel);
 
 					cell.UpdateElevation(cellModel.Elevation);
+
+					if (cellModel != null) {
+						if (cellModel.TerrainModifier != null) {
+							RestoreTerrainModifier(cell, (TerrainModifierModel)cellModel.TerrainModifier);
+						}
+
+						// create other child GO here
+					}
 				}
 			}
 		}
@@ -242,7 +251,7 @@ namespace TrenchWarfare {
 			((MapConditions)(model.Conditions)).LoadFromBinary(reader);
 		}
 
-		public void Init (GridModel model) {        // $$2
+		public void Restore(GridModel model) {
 			InitMap(model);
 
 			//foreach (var cell in model.Cells) {
@@ -307,17 +316,22 @@ namespace TrenchWarfare {
 			if (cell.Model.TerrainModifier == null) {
 				var tm = Instantiate(terrainModifierPrefab);
 
-				tm.Add(model.CellCountZ, tmModel, cell, registry);
+				tm.AddTerrainModifier(model.CellCountZ, tmModel, cell, registry);
 				tm.transform.SetParent(transform, false);
-
 			}
-
 		}
 
 		public void RemoveTerrainModifier (HexCell cell) {
 			if (cell && cell.Model.TerrainModifier != null) {
 				registry.Get<HexTerrainModifier>(cell.Model.TerrainModifier).Remove(cell);
 			}
+		}
+
+		public void RestoreTerrainModifier(HexCell cell, TerrainModifierModel tmModel) {
+			var tm = Instantiate(terrainModifierPrefab);
+
+			tm.RestoreTerrainModifier(model.CellCountZ, tmModel, cell, registry);
+			tm.transform.SetParent(transform, false);
 		}
 	}
 }

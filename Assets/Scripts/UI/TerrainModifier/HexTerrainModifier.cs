@@ -19,7 +19,7 @@ namespace TrenchWarfare.UI.TerrainModifier {
 
         public SpriteAtlas atlas;
 
-        public void Add(
+        public void AddTerrainModifier(
 			int cellCountZ,
             TerrainModifierModel tmModel,
             HexCell cell,
@@ -39,6 +39,25 @@ namespace TrenchWarfare.UI.TerrainModifier {
             this.registry = registry;
             model.Cell = cell.Model;
             cell.UpdateTerrainModifier(model);
+
+            transform.localPosition = GetPosition(cell);
+
+            registry.Register(model, this);
+
+            SetSprites();
+        }
+
+        public void RestoreTerrainModifier(
+			int cellCountZ,
+            TerrainModifierModel tmModel,
+            HexCell cell,
+            ModelRegistry registry
+		) {
+            this.cellCountZ = cellCountZ;
+
+            model = tmModel;
+            this.registry = registry;
+            model.Cell = cell.Model;
 
             transform.localPosition = GetPosition(cell);
 

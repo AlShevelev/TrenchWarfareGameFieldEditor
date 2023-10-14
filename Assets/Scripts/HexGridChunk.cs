@@ -77,7 +77,7 @@ namespace TrenchWarfare {
 			//	return;
 			//}
 
-			Vector3 center = cell.Position;		// $$0
+			Vector3 center = cell.Position;
 			EdgeVertices e = new EdgeVertices(
 				center + HexMetrics.GetFirstSolidCorner(direction),
 				center + HexMetrics.GetSecondSolidCorner(direction)

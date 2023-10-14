@@ -14,7 +14,7 @@ namespace TrenchWarfare.Domain.Map {
 			get => productionCenter; set => productionCenter = value;
 		}
 
-		TerrainModifierModelExternal terrainModifier;
+		TerrainModifierModelExternal terrainModifier = null;
 		public TerrainModifierModelExternal TerrainModifier {
 			get => terrainModifier; set => terrainModifier = value;
 		}

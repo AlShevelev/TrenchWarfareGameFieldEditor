@@ -10,7 +10,7 @@ namespace TrenchWarfare.Domain.MapObjects {
         CellModelExternal cell = null;
         public CellModelExternal Cell { get => cell; set => cell = value; }
 
-        public TerrainModifierModel(TerrainModifierType modifier) {
+        public TerrainModifierModel(TerrainModifierType modifier): base() {
             this.modifier = modifier;
         }
 

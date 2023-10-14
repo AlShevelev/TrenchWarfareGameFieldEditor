@@ -9,6 +9,7 @@ using TrenchWarfare.Domain.Map.Conditions;
 using TrenchWarfare.Domain.Map.Conditions.Dto;
 using TrenchWarfare.Domain.MapObjects;
 using TrenchWarfare.Domain.Units;
+using UnityEngine;
 
 namespace TrenchWarfare.SaveLoad {
     public static class Loader {

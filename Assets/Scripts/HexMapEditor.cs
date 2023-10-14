@@ -210,7 +210,7 @@ namespace TrenchWarfare {
 
 			using (BinaryReader reader = new BinaryReader(File.OpenRead(path))) {
 				var loaded = Loader.Load(reader);
-				hexGrid.Init(loaded.Item1);	// $$1
+				hexGrid.Restore(loaded.Item1);
 				mainCamera.setStartZoomAndPosition();
 			}
 
