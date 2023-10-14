@@ -21,7 +21,7 @@ namespace TrenchWarfare {
 
 			cells = new HexCell[HexMetrics.chunkSizeX * HexMetrics.chunkSizeZ];
 
-			ShowUI(true);
+			ShowUI(false);
 		}
 		
 		public void AddCell (int index, HexCell cell) {
