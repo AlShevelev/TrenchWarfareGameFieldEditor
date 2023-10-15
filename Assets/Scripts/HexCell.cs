@@ -263,44 +263,6 @@ namespace TrenchWarfare
 			}
 		}
 
-		public void Save (BinaryWriter writer) {
-			writer.Write((byte)model.TerrainType);
-			writer.Write((byte)(model.Elevation + 127));
-			writer.Write((byte)model.WaterLevel);
-			//writer.Write(model.Walled);
-
-			writer.Write(model.HasIncomingRiver);
-			writer.Write((byte)model.IncomingRiver);
-
-			writer.Write(model.HasOutgoingRiver);
-			writer.Write((byte)model.OutgoingRiver);
-
-			var directions = HexDirections.All;
-			foreach(var direction in directions) {
-				writer.Write(model.HasRoadThroughEdge(direction));
-			}
-		}
-
-		public void Load (BinaryReader reader) {
-			model.TerrainType = (CellTerrain)reader.ReadByte();
-			model.Elevation = reader.ReadByte() - 127;
-			RefreshPosition();
-			model.WaterLevel = reader.ReadByte();
-
-			//model.Walled = reader.ReadBoolean();
-
-			model.HasIncomingRiver = reader.ReadBoolean();
-			model.IncomingRiver = (HexDirection)reader.ReadByte();
-
-			model.HasOutgoingRiver = reader.ReadBoolean();
-			model.OutgoingRiver = (HexDirection)reader.ReadByte();
-
-			var directions = HexDirections.All;
-			foreach(var direction in directions) {
-				model.SetRoadThroughEdge(direction, reader.ReadBoolean());
-			}
-		}
-
 		public void SetModel (CellModel model) {
 			this.model = model;
 		}

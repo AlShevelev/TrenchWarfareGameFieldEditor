@@ -191,8 +191,6 @@ namespace TrenchWarfare {
 
 			using(BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.Create))) {
 				Saver.Save(writer, hexGrid.Model, new GameState(0, new Dictionary<Nation, NationGameState>()));
-				//writer.Write(0);			// Header (format version - 0)
-				//hexGrid.Save(writer);
 			}
 		}
 
@@ -213,18 +211,6 @@ namespace TrenchWarfare {
 				hexGrid.Restore(loaded.Item1);
 				mainCamera.setStartZoomAndPosition();
 			}
-
-			//using (BinaryReader reader = new BinaryReader(File.OpenRead(path))) {
-			//	int header = reader.ReadInt32();
-
-			//	if (header == 0) {			// Format version checking
-			//		hexGrid.Load(reader);
-			//		mainCamera.setStartZoomAndPosition();
-			//	}
-			//	else {
-			//		Debug.LogWarning("Unknown map format " + header);
-			//	}
-			//}
 
 			var conditions = hexGrid.Model.Conditions;			
 			state.Nations = conditions.Conditions.nations.Select(i => i.code);
