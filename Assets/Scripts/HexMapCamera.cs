@@ -35,11 +35,6 @@ namespace TrenchWarfare {
 				AdjustZoom(zoomDelta);
 			}
 
-			float rotationDelta = Input.GetAxis("Rotation");
-			if (rotationDelta != 0f) {
-				AdjustRotation(rotationDelta);
-			}
-
 			float xDelta = Input.GetAxis("Horizontal");
 			float zDelta = Input.GetAxis("Vertical");
 			if (xDelta != 0f || zDelta != 0f) {
@@ -83,17 +78,6 @@ namespace TrenchWarfare {
 
 		private float getMaxZPosition() {
 			return (grid.CellCountZ - 1) * (1.5f * HexMetrics.outerRadius);
-		}
-
-		void AdjustRotation (float delta) {
-			rotationAngle += delta * rotationSpeed * Time.deltaTime;
-			if (rotationAngle < 0f) {
-				rotationAngle += 360f;
-			}
-			else if (rotationAngle >= 360f) {
-				rotationAngle -= 360f;
-			}
-			transform.localRotation = Quaternion.Euler(0f, rotationAngle, 0f);
 		}
 
 		public void setStartZoomAndPosition() {
