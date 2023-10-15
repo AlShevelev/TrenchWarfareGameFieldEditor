@@ -203,7 +203,7 @@ namespace TrenchWarfare
 				}
 
 				if (model.Army != null) {
-					registry.Get<HexArmy>(model.Army).ValidateLocation();
+					registry.Get<HexArmy>(model.Army)?.ValidateLocation();
 				}
 			}
 		}

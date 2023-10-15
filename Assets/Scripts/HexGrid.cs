@@ -127,7 +127,9 @@ namespace TrenchWarfare {
 							);
 						}
 
-						// create other child GO here
+						if (cellModel.Army != null) {
+							RestoreArmy(cell, (ArmyModel)cellModel.Army);
+						}
 					}
 				}
 			}
@@ -297,6 +299,13 @@ namespace TrenchWarfare {
 			}
 		}
 
+		void RestoreArmy (HexCell cell, ArmyModel armyModel) {
+			var army = Instantiate(armyPrefab);
+
+			army.RestoreArmy(model.CellCountZ, armyModel, cell, registry);
+			army.transform.SetParent(transform, false);
+		}
+
 		public void AddProductionCenter(HexCell cell, ProductionCenterModel pcModel) {
 			if (cell == null) {
 				return;
@@ -318,7 +327,7 @@ namespace TrenchWarfare {
 			}
 		}
 
-		public void RestoreProductionCenter(HexCell cell, ProductionCenterModel pcModel) {
+		void RestoreProductionCenter(HexCell cell, ProductionCenterModel pcModel) {
 			var pc = Instantiate(productionCenterPrefab);
 
 			pc.RestoreProductionCenter(model.CellCountZ, pcModel, cell, registry);
@@ -344,7 +353,7 @@ namespace TrenchWarfare {
 			}
 		}
 
-		public void RestoreTerrainModifier(HexCell cell, TerrainModifierModel tmModel) {
+		void RestoreTerrainModifier(HexCell cell, TerrainModifierModel tmModel) {
 			var tm = Instantiate(terrainModifierPrefab);
 
 			tm.RestoreTerrainModifier(model.CellCountZ, tmModel, cell, registry);

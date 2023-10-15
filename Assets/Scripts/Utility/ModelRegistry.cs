@@ -24,13 +24,11 @@ namespace TrenchWarfare.Utility {
                 return null;
             }
 
-            var value = registry[model.Id];
-
-            if (value != null) {
-                return (T)value;
-            } else {
+            if (!registry.ContainsKey(model.Id)) {
                 return null;
             }
+
+            return (T)registry[model.Id];
         }
 
         public void Clear() {

@@ -59,6 +59,25 @@ namespace TrenchWarfare.UI.Army {
 			RefreshSprites();
 		}
 
+        public void RestoreArmy(
+			int cellCountZ,
+            ArmyModel armyModel,
+            HexCell cell,
+            ModelRegistry registry
+		) {
+			this.cellCountZ = cellCountZ;
+
+			model = armyModel;
+			this.registry = registry;
+			model.Cell = cell.Model;
+
+			transform.localPosition = GetPosition(cell);
+
+			registry.Register(model, this);
+
+			RefreshSprites();
+		}
+
 		public void ValidateLocation() {
 			transform.localPosition = GetPosition(GetCell());
 		}
