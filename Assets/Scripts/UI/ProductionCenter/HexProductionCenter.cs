@@ -25,7 +25,7 @@ namespace TrenchWarfare.UI.ProductionCenter {
             }
         }
 
-        public void Add(
+        public void AddProductionCenter(
 			int cellCountZ,
             ProductionCenterModel pcModel,
             HexCell cell,
@@ -45,6 +45,25 @@ namespace TrenchWarfare.UI.ProductionCenter {
             this.registry = registry;
             model.Cell = cell.Model;
             cell.UpdateProductionCenter(model);
+
+            transform.localPosition = GetPosition(cell);
+
+            registry.Register(model, this);
+
+            SetSprites();
+        }
+
+        public void RestoreProductionCenter(
+			int cellCountZ,
+            ProductionCenterModel pcModel,
+            HexCell cell,
+            ModelRegistry registry
+		) {
+            this.cellCountZ = cellCountZ;
+
+            model = pcModel;
+            this.registry = registry;
+            model.Cell = cell.Model;
 
             transform.localPosition = GetPosition(cell);
 

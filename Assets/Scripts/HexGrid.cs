@@ -114,7 +114,17 @@ namespace TrenchWarfare {
 
 					if (cellModel != null) {
 						if (cellModel.TerrainModifier != null) {
-							RestoreTerrainModifier(cell, (TerrainModifierModel)cellModel.TerrainModifier);
+							RestoreTerrainModifier(
+								cell,
+								(TerrainModifierModel)cellModel.TerrainModifier
+							);
+						}
+
+						if (cellModel.ProductionCenter != null) {
+							RestoreProductionCenter(
+								cell,
+								(ProductionCenterModel)cellModel.ProductionCenter
+							);
 						}
 
 						// create other child GO here
@@ -295,7 +305,7 @@ namespace TrenchWarfare {
 			if (cell.Model.ProductionCenter == null) {
 				var pc = Instantiate(productionCenterPrefab);
 
-				pc.Add(model.CellCountZ, pcModel, cell, registry);
+				pc.AddProductionCenter(model.CellCountZ, pcModel, cell, registry);
 				pc.transform.SetParent(transform, false);
 
 			}
@@ -306,6 +316,13 @@ namespace TrenchWarfare {
 			if (cell && cell.Model.ProductionCenter != null) {
 				registry.Get<HexProductionCenter>(cell.Model.ProductionCenter).Remove(cell);
 			}
+		}
+
+		public void RestoreProductionCenter(HexCell cell, ProductionCenterModel pcModel) {
+			var pc = Instantiate(productionCenterPrefab);
+
+			pc.RestoreProductionCenter(model.CellCountZ, pcModel, cell, registry);
+			pc.transform.SetParent(transform, false);
 		}
 
 		public void AddTerrainModifier(HexCell cell, TerrainModifierModel tmModel) {
