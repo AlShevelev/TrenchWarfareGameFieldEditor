@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Tools = TrenchWarfare.ToolPanels;
 using TrenchWarfare.ToolPanels.State;
+using SimpleFileBrowser;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,6 +14,7 @@ using TrenchWarfare.Domain.Map;
 using TrenchWarfare.ToolPanels;
 using TrenchWarfare.SaveLoad;
 using TrenchWarfare.Domain.Game;
+
 
 namespace TrenchWarfare {
 	public class HexMapEditor : MonoBehaviour {
@@ -183,76 +185,90 @@ namespace TrenchWarfare {
 		}
 
 		public void Save() {
-			string path = EditorUtility.SaveFilePanel("Save map", "", "map1.map", "map");
-
-			if (path.Length == 0) {		// Cancel button
-				return;
-			}
-
-			using(BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.Create))) {
-				Saver.Save(writer, hexGrid.Model, new GameState(0, new Dictionary<Nation, NationGameState>()));
-			}
+			FileBrowser.SetFilters(true, ".map");
+			FileBrowser.ShowSaveDialog(
+                onSuccess: (path) => {
+					using(BinaryWriter writer = new BinaryWriter(File.Open(path[0], FileMode.Create))) {
+						Saver.Save(writer, hexGrid.Model, new GameState(0, new Dictionary<Nation, NationGameState>()));
+					}
+				},
+                onCancel: null,
+                FileBrowser.PickMode.Files,
+                allowMultiSelection: false,
+                initialPath: null,
+                initialFilename: "map1.map",
+                title: "Save map",
+                saveButtonText: "Save"
+			);
 		}
 
 		public void Load() {
-			string path = EditorUtility.OpenFilePanel("Load map", "", "map");
+			FileBrowser.SetFilters(true, ".map");
+			FileBrowser.ShowLoadDialog(
+				onSuccess: (path) => {
+					using (BinaryReader reader = new BinaryReader(File.OpenRead(path[0]))) {
+						var loaded = Loader.Load(reader);
+						hexGrid.Restore(loaded.Item1);
+						mainCamera.setStartZoomAndPosition();
+					}
 
-			if (path.Length == 0) {		// Cancel button
-				return;
-			}
+					var conditions = hexGrid.Model.Conditions;
+					state.Nations = conditions.Conditions.nations.Select(i => i.code);
 
-			if(!File.Exists(path)) {
-				EditorUtility.DisplayDialog("File not found", "Map file not found: " + path, "OK");
-				return;
-			}
-
-			using (BinaryReader reader = new BinaryReader(File.OpenRead(path))) {
-				var loaded = Loader.Load(reader);
-				hexGrid.Restore(loaded.Item1);
-				mainCamera.setStartZoomAndPosition();
-			}
-
-			var conditions = hexGrid.Model.Conditions;			
-			state.Nations = conditions.Conditions.nations.Select(i => i.code);
-
-			transform.Find("Menu Panel")
-				.GetComponent<EditorMenuPanel>()
-				.OnNationsSet(state.Nations);
+					transform.Find("Menu Panel")
+						.GetComponent<EditorMenuPanel>()
+						.OnNationsSet(state.Nations);
+				},
+				onCancel: null,
+				FileBrowser.PickMode.Files,
+				allowMultiSelection: false,
+				initialPath: null,
+				initialFilename: null,
+				title: "Load map",
+				loadButtonText: "Load"
+			);
 		}
 
 		public void ExportMetadata() {
-			string path = EditorUtility.SaveFilePanel("Export map metadata", "", "map1.map.json", "map.json");
-
-			if (path.Length == 0) {		// Cancel button
-				return;
-			}
-
-			string rawData = hexGrid.Model.Conditions.ExportToJson();
-			File.WriteAllText(path, rawData);
+			FileBrowser.SetFilters(true, ".map.json");
+			FileBrowser.ShowSaveDialog(
+                onSuccess: (path) => {
+					string rawData = hexGrid.Model.Conditions.ExportToJson();
+					File.WriteAllText(path[0], rawData);
+				},
+                onCancel: null,
+                FileBrowser.PickMode.Files,
+                allowMultiSelection: false,
+                initialPath: null,
+                initialFilename: "map1.map.json",
+                title: "Export map metadata",
+                saveButtonText: "Export"
+			);
 		}
 
 		public void ImportMetadata() {
-			string path = EditorUtility.OpenFilePanel("Import map metadata", "", "map.json");
+			FileBrowser.SetFilters(true, ".map.json");
+			FileBrowser.ShowLoadDialog(
+                onSuccess: (path) => {
+					string rawData = File.ReadAllText(path[0]);
 
-			if (path.Length == 0) {		// Cancel button
-				return;
-			}
-
-			if (!File.Exists(path)) {
-				EditorUtility.DisplayDialog("Metadata not found", "Metadata file not found: " + path, "OK");
-				return;
-			}
-
-			string rawData = File.ReadAllText(path);
-
-			var conditions = hexGrid.Model.Conditions;
-			conditions.ImportFromJson(rawData);
+					var conditions = hexGrid.Model.Conditions;
+					conditions.ImportFromJson(rawData);
 			
-			state.Nations = conditions.Conditions.nations.Select(i => i.code);
+					state.Nations = conditions.Conditions.nations.Select(i => i.code);
 
-			transform.Find("Menu Panel")
-				.GetComponent<EditorMenuPanel>()
-				.OnNationsSet(state.Nations);
+					transform.Find("Menu Panel")
+						.GetComponent<EditorMenuPanel>()
+						.OnNationsSet(state.Nations);
+				},
+                onCancel: null,
+                FileBrowser.PickMode.Files,
+                allowMultiSelection: false,
+                initialPath: null,
+                initialFilename: null,
+                title: "Import map metadata",
+                loadButtonText: "Import"
+			);
 		}
 
 		public void ShowGrid(bool visible) {
